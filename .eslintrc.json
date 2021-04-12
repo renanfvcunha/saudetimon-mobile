@@ -17,6 +17,16 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        },
+        "prettierx": {
+            "options": {
+                "usePrettierrc": true
+            }
+        }
+    },
     "plugins": [
         "react",
         "@typescript-eslint",
@@ -27,13 +37,20 @@
         "prettierx/options": "warn",
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": "error",
-        "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+        "react/jsx-filename-extension": [
+            "error",
+            {
+                "extensions": [
+                    ".tsx"
+                ]
+            }
+        ],
         "import/extensions": [
             "error",
             "ignorePackages",
             {
-              "ts": "never",
-              "tsx": "never"
+                "ts": "never",
+                "tsx": "never"
             }
         ],
         "react/style-prop-object": "off"
