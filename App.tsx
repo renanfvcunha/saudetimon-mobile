@@ -6,7 +6,7 @@ import Routes from './src/routes';
 const App: React.FC = () => (
   <>
     <Routes />
-    <StatusBar style="auto" />
+    <StatusBar style="light" />
   </>
 );
 
