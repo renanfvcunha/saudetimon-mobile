@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
   View,
   Text,
@@ -18,41 +19,44 @@ const Home: React.FC = () => {
   const navigation = useNavigation();
 
   return (
-    <ImageBackground source={backgroundBlue} style={styles.container}>
-      <View style={styles.rectanglesTop}>
-        <View style={styles.rectangle1} />
-        <View style={styles.rectangle2} />
-        <View style={styles.rectangle3} />
-        <View style={styles.rectangle4} />
-        <Text />
-      </View>
-
-      <View style={styles.logo}>
-        <Image source={logo} style={styles.logoImg} />
-      </View>
-
-      <View style={styles.mainContent}>
-        <Image source={hand} style={styles.hand} />
-
-        <View style={styles.buttons}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate('Registration')}
-          >
-            <LinearGradient
-              colors={['#2265ac', '#034f9a']}
-              style={styles.btnStart}
-            >
-              <Text style={styles.btnStartTxt}>Começar Cadastro</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btnDoubts} activeOpacity={0.5}>
-            <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
-          </TouchableOpacity>
+    <>
+      <ImageBackground source={backgroundBlue} style={styles.container}>
+        <View style={styles.rectanglesTop}>
+          <View style={styles.rectangle1} />
+          <View style={styles.rectangle2} />
+          <View style={styles.rectangle3} />
+          <View style={styles.rectangle4} />
+          <Text />
         </View>
-      </View>
-    </ImageBackground>
+
+        <View style={styles.logo}>
+          <Image source={logo} style={styles.logoImg} />
+        </View>
+
+        <View style={styles.mainContent}>
+          <Image source={hand} style={styles.hand} />
+
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate('Registration')}
+            >
+              <LinearGradient
+                colors={['#2265ac', '#034f9a']}
+                style={styles.btnStart}
+              >
+                <Text style={styles.btnStartTxt}>Começar Cadastro</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.btnDoubts} activeOpacity={0.5}>
+              <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
+      <StatusBar style="light" />
+    </>
   );
 };
 

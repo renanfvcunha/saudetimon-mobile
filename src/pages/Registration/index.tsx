@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
   View,
   ImageBackground,
@@ -21,67 +22,74 @@ const Registration: React.FC = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <ImageBackground source={backgroundYellow} style={styles.container}>
-        <View style={styles.logo}>
-          <Image source={logoPref} style={styles.logoImg} />
-        </View>
-
-        <View style={styles.menu}>
-          <View style={styles.pageTitle}>
-            <Text style={styles.pageTitleText}>Cadastro</Text>
+    <>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ImageBackground source={backgroundYellow} style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={logoPref} style={styles.logoImg} />
           </View>
 
-          <View style={styles.items}>
-            <TouchableOpacity style={styles.item} activeOpacity={0.5}>
-              <Image source={seniors} style={styles.itemImg} />
-              <View style={styles.itemTexts}>
-                <Text style={styles.itemTextUpper}>Idosos</Text>
-                <Text style={styles.itemTextLower}>
-                  De acordo com a faixa etária da vacinação
-                </Text>
-              </View>
-            </TouchableOpacity>
+          <View style={styles.menu}>
+            <View style={styles.pageTitle}>
+              <Text style={styles.pageTitleText}>Cadastro</Text>
+            </View>
 
-            <TouchableOpacity style={styles.item} activeOpacity={0.5}>
-              <Image source={comorbidity} style={styles.itemImg} />
-              <View style={styles.itemTexts}>
-                <Text style={styles.itemTextUpper}>Comorbidades</Text>
-                <Text style={styles.itemTextLower}>Nomes de Doenças</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.items}>
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate('SeniorsRegistration')}
+              >
+                <Image source={seniors} style={styles.itemImg} />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>Idosos Acamados</Text>
+                  <Text style={styles.itemTextLower}>
+                    De acordo com a faixa etária da vacinação
+                  </Text>
+                </View>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item} activeOpacity={0.5}>
-              <Image source={check} style={styles.itemImg} />
-              <View style={styles.itemTexts}>
-                <Text style={styles.itemTextUpper}>Checagem</Text>
-                <Text style={styles.itemTextLower}>
-                  Verifique o status da sua solicitação
-                </Text>
-              </View>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
+                <Image source={comorbidity} style={styles.itemImg} />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>Comorbidades</Text>
+                  <Text style={styles.itemTextLower}>Nomes de Doenças</Text>
+                </View>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item} activeOpacity={0.5}>
-              <Image source={vacLoc} style={styles.itemImg} />
-              <View style={styles.itemTexts}>
-                <Text style={styles.itemTextUpper}>Locais de Vacinação</Text>
-                <Text style={styles.itemTextLower}>
-                  Verifique o status da sua solicitação
-                </Text>
-              </View>
+              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
+                <Image source={check} style={styles.itemImg} />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>Checagem</Text>
+                  <Text style={styles.itemTextLower}>
+                    Verifique o status da sua solicitação
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
+                <Image source={vacLoc} style={styles.itemImg} />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>Locais de Vacinação</Text>
+                  <Text style={styles.itemTextLower}>
+                    Verifique o status da sua solicitação
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              style={styles.btnBack}
+              activeOpacity={0.5}
+              onPress={() => navigation.goBack()}
+            >
+              <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.btnBack}
-            activeOpacity={0.5}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.btnBackText}>Voltar</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </ScrollView>
+        </ImageBackground>
+      </ScrollView>
+      <StatusBar style="light" backgroundColor="#ffc816" />
+    </>
   );
 };
 

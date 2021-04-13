@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './pages/Home';
 import Registration from './pages/Registration';
+import SeniorsRegistration from './pages/SeniorsRegistration';
 
 const Routes: React.FC = () => {
   const Stack = createStackNavigator();
@@ -20,6 +21,11 @@ const Routes: React.FC = () => {
         <Stack.Screen
           name="Registration"
           component={Registration}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SeniorsRegistration"
+          component={SeniorsRegistration}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
