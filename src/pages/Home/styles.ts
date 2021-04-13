@@ -1,21 +1,24 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const logoWidth = windowWidth * 0.68;
 const logoHeight = (logoWidth * 7) / 16;
 const buttonWidth = windowWidth * 0.77;
 const buttonHeight = buttonWidth * 0.151351351;
+const handHeight = windowHeight * 0.68;
+const handWidth = handHeight * 1.08575804;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
+    paddingTop: Constants.statusBarHeight,
   },
   rectanglesTop: {
-    height: `${Platform.OS === 'web' ? '1%' : '4%'}`,
+    height: '1%',
     flexDirection: 'row',
-    paddingTop: Constants.statusBarHeight,
   },
   rectangle1: {
     width: '25%',
@@ -52,15 +55,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: '6%',
     backgroundColor: '#efefef',
-    borderTopLeftRadius: windowWidth * 0.25,
-    borderTopRightRadius: windowWidth * 0.25,
+    borderTopStartRadius: windowWidth * 0.25,
+    borderTopEndRadius: windowWidth * 0.25,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   hand: {
     position: 'absolute',
-    width: 500,
-    height: 544,
+    width: handWidth,
+    height: handHeight,
     right: 30,
   },
   buttons: {
