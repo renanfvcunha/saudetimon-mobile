@@ -17,11 +17,12 @@ import {
   launchImageLibraryAsync,
 } from 'expo-image-picker';
 import { getDocumentAsync } from 'expo-document-picker';
-import { MaterialIcons as MdIcon, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons as MdIcon } from '@expo/vector-icons';
 
 import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
+import AttachmentField from './AttachmentField';
 
 interface IAttachment {
   uri: string;
@@ -32,6 +33,15 @@ interface IAttachment {
 const SeniosRegistration: React.FC = () => {
   const navigation = useNavigation();
 
+  const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [susCard, setSusCard] = useState('');
+  const [phone, setPhone] = useState('');
+  const [street, setStreet] = useState('');
+  const [number, setNumber] = useState('');
+  const [complement, setComplement] = useState('');
+  const [reference, setReference] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
   const [idDocVerse, setIdDocVerse] = useState<IAttachment>();
   const [addressProof, setAddressProof] = useState<IAttachment>();
@@ -40,21 +50,21 @@ const SeniosRegistration: React.FC = () => {
   const setAttachments = (
     field: number,
     uri: string,
-    name: string,
+    fileName: string,
     type: string
   ) => {
     switch (field) {
       case 0:
-        setIdDocFront({ uri, name: String(name), type });
+        setIdDocFront({ uri, name: String(fileName), type });
         break;
       case 1:
-        setIdDocVerse({ uri, name: String(name), type });
+        setIdDocVerse({ uri, name: String(fileName), type });
         break;
       case 2:
-        setAddressProof({ uri, name: String(name), type });
+        setAddressProof({ uri, name: String(fileName), type });
         break;
       case 3:
-        setPhoto({ uri, name: String(name), type });
+        setPhoto({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -70,10 +80,10 @@ const SeniosRegistration: React.FC = () => {
 
     if (!result.cancelled) {
       const { uri } = result;
-      const name = String(uri.split('/').pop());
+      const fileName = String(uri.split('/').pop());
       const type = `image/${uri.split('.').pop()}`;
 
-      setAttachments(field, uri, name, type);
+      setAttachments(field, uri, fileName, type);
     }
   };
 
@@ -86,10 +96,10 @@ const SeniosRegistration: React.FC = () => {
 
     if (!result.cancelled) {
       const { uri } = result;
-      const name = String(uri.split('/').pop());
+      const fileName = String(uri.split('/').pop());
       const type = `image/${uri.split('.').pop()}`;
 
-      setAttachments(field, uri, name, type);
+      setAttachments(field, uri, fileName, type);
     }
   };
 
@@ -101,10 +111,10 @@ const SeniosRegistration: React.FC = () => {
 
     if (result.type === 'success') {
       const { uri } = result;
-      const { name } = result;
+      const fileName = result.name;
       const type = 'application/pdf';
 
-      setAttachments(field, uri, name, type);
+      setAttachments(field, uri, fileName, type);
     }
   };
 
@@ -129,8 +139,8 @@ const SeniosRegistration: React.FC = () => {
                 </Text>
                 <TextInput
                   style={styles.input}
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={name}
+                  onChange={e => setName(e.nativeEvent.text)}
                 />
               </View>
 
@@ -141,8 +151,8 @@ const SeniosRegistration: React.FC = () => {
                 <TextInput
                   style={styles.input}
                   keyboardType="numeric"
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={cpf}
+                  onChange={e => setCpf(e.nativeEvent.text)}
                 />
               </View>
 
@@ -151,8 +161,8 @@ const SeniosRegistration: React.FC = () => {
                 <TextInput
                   style={styles.input}
                   keyboardType="numeric"
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={susCard}
+                  onChange={e => setSusCard(e.nativeEvent.text)}
                 />
               </View>
 
@@ -164,8 +174,8 @@ const SeniosRegistration: React.FC = () => {
                   style={styles.input}
                   keyboardType="numeric"
                   placeholder="(00) 00000-0000"
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={phone}
+                  onChange={e => setPhone(e.nativeEvent.text)}
                 />
               </View>
             </View>
@@ -178,8 +188,8 @@ const SeniosRegistration: React.FC = () => {
                 </Text>
                 <TextInput
                   style={styles.input}
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={street}
+                  onChange={e => setStreet(e.nativeEvent.text)}
                 />
               </View>
 
@@ -190,8 +200,8 @@ const SeniosRegistration: React.FC = () => {
                 <TextInput
                   style={styles.input}
                   keyboardType="numeric"
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={number}
+                  onChange={e => setNumber(e.nativeEvent.text)}
                 />
               </View>
 
@@ -199,8 +209,8 @@ const SeniosRegistration: React.FC = () => {
                 <Text style={styles.inputName}>Complemento</Text>
                 <TextInput
                   style={styles.input}
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={complement}
+                  onChange={e => setComplement(e.nativeEvent.text)}
                 />
               </View>
 
@@ -210,8 +220,8 @@ const SeniosRegistration: React.FC = () => {
                 </Text>
                 <TextInput
                   style={styles.input}
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={reference}
+                  onChange={e => setReference(e.nativeEvent.text)}
                 />
               </View>
 
@@ -221,322 +231,46 @@ const SeniosRegistration: React.FC = () => {
                 </Text>
                 <TextInput
                   style={styles.input}
-                  /* value={formValues[i].value}
-                onChange={e => handleChangeValue(i, e)} */
+                  value={neighborhood}
+                  onChange={e => setNeighborhood(e.nativeEvent.text)}
                 />
               </View>
             </View>
 
             <Text style={styles.fieldsCategory}>Anexos</Text>
             <View style={styles.fields}>
-              <View style={styles.textInput}>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() =>
-                    Alert.alert(
-                      'Tipo de Arquivo',
-                      undefined,
-                      [
-                        {
-                          text: 'Documento (PDF)',
-                          style: 'default',
-                          onPress: () => pickDocument(0),
-                        },
-                        {
-                          text: 'Imagem',
-                          style: 'default',
-                          onPress: () =>
-                            Alert.alert(
-                              'Adicionar Imagem...',
-                              undefined,
-                              [
-                                {
-                                  text: 'Da Galeria',
-                                  style: 'default',
-                                  onPress: () => pickImageFromGallery(0),
-                                },
-                                {
-                                  text: 'Da Câmera',
-                                  style: 'default',
-                                  onPress: () => pickImageFromCamera(0),
-                                },
-                              ],
-                              { cancelable: true }
-                            ),
-                        },
-                      ],
-                      { cancelable: true }
-                    )
-                  }
-                >
-                  <Text style={styles.inputName}>
-                    Documento de Identidade - Frente{' '}
-                    <Text style={styles.mandatory}>*</Text>
-                  </Text>
-                </TouchableOpacity>
-                {idDocFront && idDocFront.type === 'application/pdf' && (
-                  <View style={styles.pdf}>
-                    <View style={{ top: -10 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert(
-                            'Deseja apagar este arquivo?',
-                            undefined,
-                            [
-                              {
-                                style: 'cancel',
-                                text: 'Cancelar',
-                              },
-                              {
-                                style: 'destructive',
-                                text: 'Apagar',
-                                onPress: () => setIdDocFront(undefined),
-                              },
-                            ]
-                          )
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                    <AntDesign name="pdffile1" size={24} color="#000" />
-                    <Text style={styles.pdfName}>{idDocFront.name}</Text>
-                  </View>
-                )}
-                {idDocFront && idDocFront.type !== 'application/pdf' && (
-                  <View style={styles.img}>
-                    <Image
-                      source={{ uri: idDocFront.uri }}
-                      style={styles.imgSelected}
-                    />
-                    <View style={{ position: 'absolute', right: 0 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert('Deseja apagar esta imagem?', undefined, [
-                            {
-                              style: 'cancel',
-                              text: 'Cancelar',
-                            },
-                            {
-                              style: 'destructive',
-                              text: 'Apagar',
-                              onPress: () => setIdDocFront(undefined),
-                            },
-                          ])
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              </View>
+              <AttachmentField
+                field={idDocFront}
+                setField={setIdDocFront}
+                fieldNumber={0}
+                fieldName="Documento de Identidade - Frente"
+                mandatory
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
 
-              <View style={styles.textInput}>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() =>
-                    Alert.alert(
-                      'Tipo de Arquivo',
-                      undefined,
-                      [
-                        {
-                          text: 'Documento (PDF)',
-                          style: 'default',
-                          onPress: () => pickDocument(1),
-                        },
-                        {
-                          text: 'Imagem',
-                          style: 'default',
-                          onPress: () =>
-                            Alert.alert(
-                              'Adicionar Imagem...',
-                              undefined,
-                              [
-                                {
-                                  text: 'Da Galeria',
-                                  style: 'default',
-                                  onPress: () => pickImageFromGallery(1),
-                                },
-                                {
-                                  text: 'Da Câmera',
-                                  style: 'default',
-                                  onPress: () => pickImageFromCamera(1),
-                                },
-                              ],
-                              { cancelable: true }
-                            ),
-                        },
-                      ],
-                      { cancelable: true }
-                    )
-                  }
-                >
-                  <Text style={styles.inputName}>
-                    Documento de Identidade - Verso{' '}
-                    <Text style={styles.mandatory}>*</Text>
-                  </Text>
-                </TouchableOpacity>
-                {idDocVerse && idDocVerse.type === 'application/pdf' && (
-                  <View style={styles.pdf}>
-                    <View style={{ top: -10 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert(
-                            'Deseja apagar este arquivo?',
-                            undefined,
-                            [
-                              {
-                                style: 'cancel',
-                                text: 'Cancelar',
-                              },
-                              {
-                                style: 'destructive',
-                                text: 'Apagar',
-                                onPress: () => setIdDocVerse(undefined),
-                              },
-                            ]
-                          )
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                    <AntDesign name="pdffile1" size={24} color="#000" />
-                    <Text style={styles.pdfName}>{idDocVerse.name}</Text>
-                  </View>
-                )}
-                {idDocVerse && idDocVerse.type !== 'application/pdf' && (
-                  <View style={styles.img}>
-                    <Image
-                      source={{ uri: idDocVerse.uri }}
-                      style={styles.imgSelected}
-                    />
-                    <View style={{ position: 'absolute', right: 0 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert('Deseja apagar esta imagem?', undefined, [
-                            {
-                              style: 'cancel',
-                              text: 'Cancelar',
-                            },
-                            {
-                              style: 'destructive',
-                              text: 'Apagar',
-                              onPress: () => setIdDocVerse(undefined),
-                            },
-                          ])
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              </View>
+              <AttachmentField
+                field={idDocVerse}
+                setField={setIdDocVerse}
+                fieldNumber={1}
+                fieldName="Documento de Identidade - Verso"
+                mandatory
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
 
-              <View style={styles.textInput}>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() =>
-                    Alert.alert(
-                      'Tipo de Arquivo',
-                      undefined,
-                      [
-                        {
-                          text: 'Documento (PDF)',
-                          style: 'default',
-                          onPress: () => pickDocument(2),
-                        },
-                        {
-                          text: 'Imagem',
-                          style: 'default',
-                          onPress: () =>
-                            Alert.alert(
-                              'Adicionar Imagem...',
-                              undefined,
-                              [
-                                {
-                                  text: 'Da Galeria',
-                                  style: 'default',
-                                  onPress: () => pickImageFromGallery(2),
-                                },
-                                {
-                                  text: 'Da Câmera',
-                                  style: 'default',
-                                  onPress: () => pickImageFromCamera(2),
-                                },
-                              ],
-                              { cancelable: true }
-                            ),
-                        },
-                      ],
-                      { cancelable: true }
-                    )
-                  }
-                >
-                  <Text style={styles.inputName}>
-                    Comprovante de Endereço{' '}
-                    <Text style={styles.mandatory}>*</Text>
-                  </Text>
-                </TouchableOpacity>
-                {addressProof && addressProof.type === 'application/pdf' && (
-                  <View style={styles.pdf}>
-                    <View style={{ top: -10 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert(
-                            'Deseja apagar este arquivo?',
-                            undefined,
-                            [
-                              {
-                                style: 'cancel',
-                                text: 'Cancelar',
-                              },
-                              {
-                                style: 'destructive',
-                                text: 'Apagar',
-                                onPress: () => setAddressProof(undefined),
-                              },
-                            ]
-                          )
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                    <AntDesign name="pdffile1" size={24} color="#000" />
-                    <Text style={styles.pdfName}>{addressProof.name}</Text>
-                  </View>
-                )}
-                {addressProof && addressProof.type !== 'application/pdf' && (
-                  <View style={styles.img}>
-                    <Image
-                      source={{ uri: addressProof.uri }}
-                      style={styles.imgSelected}
-                    />
-                    <View style={{ position: 'absolute', right: 0 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert('Deseja apagar esta imagem?', undefined, [
-                            {
-                              style: 'cancel',
-                              text: 'Cancelar',
-                            },
-                            {
-                              style: 'destructive',
-                              text: 'Apagar',
-                              onPress: () => setAddressProof(undefined),
-                            },
-                          ])
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              </View>
+              <AttachmentField
+                field={addressProof}
+                setField={setAddressProof}
+                fieldNumber={2}
+                fieldName="Comprovante de Endereço"
+                mandatory
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
 
               <View style={styles.textInput}>
                 <TouchableOpacity
