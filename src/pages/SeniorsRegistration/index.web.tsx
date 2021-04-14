@@ -13,6 +13,7 @@ import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import AttachmentField from './AttachmentField.web';
+import masks from '../../utils/masks';
 
 const SeniosRegistration: React.FC = () => {
   const navigation = useNavigation();
@@ -67,7 +68,7 @@ const SeniosRegistration: React.FC = () => {
               style={styles.input}
               keyboardType="numeric"
               value={cpf}
-              onChange={e => setCpf(e.nativeEvent.text)}
+              onChange={e => setCpf(masks.cpfMask(e.nativeEvent.text))}
             />
           </View>
 
@@ -77,7 +78,7 @@ const SeniosRegistration: React.FC = () => {
               style={styles.input}
               keyboardType="numeric"
               value={susCard}
-              onChange={e => setSusCard(e.nativeEvent.text)}
+              onChange={e => setSusCard(masks.susCardMask(e.nativeEvent.text))}
             />
           </View>
 
@@ -90,7 +91,7 @@ const SeniosRegistration: React.FC = () => {
               keyboardType="numeric"
               placeholder="(00) 00000-0000"
               value={phone}
-              onChange={e => setPhone(e.nativeEvent.text)}
+              onChange={e => setPhone(masks.phoneMask(e.nativeEvent.text))}
             />
           </View>
         </View>
@@ -116,7 +117,7 @@ const SeniosRegistration: React.FC = () => {
               style={styles.input}
               keyboardType="numeric"
               value={number}
-              onChange={e => setNumber(e.nativeEvent.text)}
+              onChange={e => setNumber(masks.numberMask(e.nativeEvent.text))}
             />
           </View>
 

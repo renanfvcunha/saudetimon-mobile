@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginLeft: marginItemsLeft,
   },
   fieldsCategory: {
-    marginLeft: '11%',
+    textAlign: 'center',
     marginBottom: '2%',
     fontSize: 18,
     color: 'rgba(56, 53, 53, 0.8)',

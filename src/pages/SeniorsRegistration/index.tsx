@@ -23,6 +23,7 @@ import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import AttachmentField from './AttachmentField';
+import masks from '../../utils/masks';
 
 interface IAttachment {
   uri: string;
@@ -30,7 +31,7 @@ interface IAttachment {
   type: string;
 }
 
-const SeniosRegistration: React.FC = () => {
+const SeniorsRegistration: React.FC = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState('');
@@ -152,7 +153,7 @@ const SeniosRegistration: React.FC = () => {
                   style={styles.input}
                   keyboardType="numeric"
                   value={cpf}
-                  onChange={e => setCpf(e.nativeEvent.text)}
+                  onChange={e => setCpf(masks.cpfMask(e.nativeEvent.text))}
                 />
               </View>
 
@@ -162,7 +163,9 @@ const SeniosRegistration: React.FC = () => {
                   style={styles.input}
                   keyboardType="numeric"
                   value={susCard}
-                  onChange={e => setSusCard(e.nativeEvent.text)}
+                  onChange={e =>
+                    setSusCard(masks.susCardMask(e.nativeEvent.text))
+                  }
                 />
               </View>
 
@@ -175,7 +178,7 @@ const SeniosRegistration: React.FC = () => {
                   keyboardType="numeric"
                   placeholder="(00) 00000-0000"
                   value={phone}
-                  onChange={e => setPhone(e.nativeEvent.text)}
+                  onChange={e => setPhone(masks.phoneMask(e.nativeEvent.text))}
                 />
               </View>
             </View>
@@ -344,4 +347,4 @@ const SeniosRegistration: React.FC = () => {
   );
 };
 
-export default SeniosRegistration;
+export default SeniorsRegistration;
