@@ -275,7 +275,25 @@ const SeniosRegistration: React.FC = () => {
               <View style={styles.textInput}>
                 <TouchableOpacity
                   activeOpacity={0.5}
-                  onPress={() => pickImageFromCamera(3)}
+                  onPress={() =>
+                    Alert.alert(
+                      'Adicionar Imagem...',
+                      undefined,
+                      [
+                        {
+                          text: 'Da Galeria',
+                          style: 'default',
+                          onPress: () => pickImageFromGallery(3),
+                        },
+                        {
+                          text: 'Da Câmera',
+                          style: 'default',
+                          onPress: () => pickImageFromCamera(3),
+                        },
+                      ],
+                      { cancelable: true }
+                    )
+                  }
                 >
                   <Text style={styles.inputName}>
                     Foto do(a) Paciente <Text style={styles.mandatory}>*</Text>

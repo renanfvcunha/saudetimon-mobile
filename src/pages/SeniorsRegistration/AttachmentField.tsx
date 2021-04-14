@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 
-interface IField {
+interface Props {
   field?: {
     uri: string;
     name: string;
     type: string;
   };
-  setField: React.Dispatch<React.SetStateAction<IField['field'] | undefined>>;
+  setField: React.Dispatch<React.SetStateAction<Props['field'] | undefined>>;
   fieldNumber: number;
   fieldName: string;
   mandatory?: boolean;
@@ -20,7 +20,7 @@ interface IField {
   pickImageFromCamera: (field: number) => Promise<void>;
 }
 
-const AttachmentField: React.FC<IField> = ({
+const AttachmentField: React.FC<Props> = ({
   field,
   setField,
   fieldNumber,
