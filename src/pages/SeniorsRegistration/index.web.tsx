@@ -15,7 +15,7 @@ import logoPref from '../../images/logoPref.png';
 import AttachmentField from './AttachmentField.web';
 import masks from '../../utils/masks';
 
-const SeniosRegistration: React.FC = () => {
+const SeniorsRegistration: React.FC = () => {
   const navigation = useNavigation();
   const inputIdDocFrontRef = createRef<HTMLInputElement>();
   const inputIdDocVerseRef = createRef<HTMLInputElement>();
@@ -205,4 +205,4 @@ const SeniosRegistration: React.FC = () => {
   );
 };
 
-export default SeniosRegistration;
+export default SeniorsRegistration;
