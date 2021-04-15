@@ -26,7 +26,7 @@ import styles from './styles';
 import IPatient, { IAttachment } from '../../../typescript/IPatient';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
-import AttachmentField from './AttachmentField';
+import AttachmentField from '../../components/AttachmentField';
 import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import catchHandler from '../../utils/catchHandler';

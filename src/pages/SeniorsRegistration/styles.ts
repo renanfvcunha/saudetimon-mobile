@@ -85,14 +85,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 16,
   },
-  pdf: {
-    marginTop: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  pdfName: {
-    marginLeft: 8,
-  },
   img: {
     width: 90,
     marginTop: 8,

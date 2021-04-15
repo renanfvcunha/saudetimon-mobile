@@ -16,7 +16,7 @@ import styles from './styles';
 import IPatient from '../../../typescript/IPatient';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
-import AttachmentField from './AttachmentField.web';
+import AttachmentField from '../../components/AttachmentField/index.web';
 import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import swAlert from '../../utils/alert';
