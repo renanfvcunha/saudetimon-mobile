@@ -10,6 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { Picker } from '@react-native-picker/picker';
 
 import styles from './styles';
 import IPatient from '../../../typescript/IPatient';
@@ -29,6 +30,7 @@ const SeniorsRegistration: React.FC = () => {
   const inputAddressProofRef = createRef<HTMLInputElement>();
   const inputPhotoRef = createRef<HTMLInputElement>();
 
+  const [selectedGroup, setSelectedGroup] = useState('idosos_acamados');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
@@ -48,7 +50,7 @@ const SeniorsRegistration: React.FC = () => {
 
     try {
       const msg = await createPatientCall(
-        'idosos_acamados',
+        selectedGroup,
         patientParsed,
         idDocFront,
         idDocVerse,
@@ -75,7 +77,22 @@ const SeniorsRegistration: React.FC = () => {
 
       <View style={styles.menu}>
         <View style={styles.pageTitle}>
-          <Text style={styles.pageTitleText}>Idosos Acamados</Text>
+          <Text style={styles.pageTitleText}>Idosos</Text>
+        </View>
+
+        <Text style={styles.fieldsCategory}>Grupo</Text>
+        <View style={styles.fields}>
+          <Picker
+            selectedValue={selectedGroup}
+            onValueChange={itemValue => setSelectedGroup(itemValue as string)}
+            style={{ width: '100%' }}
+          >
+            <Picker.Item
+              label="Idosos Acamados de 74 anos ou mais"
+              value="idosos_acamados"
+            />
+            <Picker.Item label="Idosos de 60 anos ou mais" value="idosos" />
+          </Picker>
         </View>
 
         <Text style={styles.fieldsCategory}>Dados Gerais</Text>
