@@ -1,4 +1,4 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, useContext, createRef } from 'react';
 import {
   ImageBackground,
   View,
@@ -8,33 +8,64 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import styles from './styles';
+import IPatient from '../../../typescript/IPatient';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import AttachmentField from './AttachmentField.web';
 import masks from '../../utils/masks';
+import PatientContext from '../../contexts/patientContext';
+import swAlert from '../../utils/alert';
+import catchHandler from '../../utils/catchHandler';
 
 const SeniorsRegistration: React.FC = () => {
   const navigation = useNavigation();
+  const { uploadProgress, createPatientCall } = useContext(PatientContext);
   const inputIdDocFrontRef = createRef<HTMLInputElement>();
   const inputIdDocVerseRef = createRef<HTMLInputElement>();
   const inputAddressProofRef = createRef<HTMLInputElement>();
   const inputPhotoRef = createRef<HTMLInputElement>();
 
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [susCard, setSusCard] = useState('');
-  const [phone, setPhone] = useState('');
-  const [street, setStreet] = useState('');
-  const [number, setNumber] = useState('');
-  const [complement, setComplement] = useState('');
-  const [reference, setReference] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
+  const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
   const [addressProof, setAddressProof] = useState<File>();
   const [photo, setPhoto] = useState<File>();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    const patientParsed = {
+      ...patient,
+      cpf: masks.numberMask(patient.cpf),
+      susCard: `${patient.susCard && masks.numberMask(patient.susCard)}`,
+      phone: masks.numberMask(patient.phone),
+    };
+
+    try {
+      const msg = await createPatientCall(
+        'idosos_acamados',
+        patientParsed,
+        idDocFront,
+        idDocVerse,
+        addressProof,
+        photo
+      );
+
+      swAlert('success', '', msg);
+    } catch (err) {
+      catchHandler(
+        err,
+        'Não foi possível efetuar o cadastro. Tente novamente ou contate o suporte.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ImageBackground source={backgroundYellow} style={styles.container}>
@@ -55,8 +86,10 @@ const SeniorsRegistration: React.FC = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={name}
-              onChange={e => setName(e.nativeEvent.text)}
+              value={patient.name}
+              onChange={e =>
+                setPatient({ ...patient, name: e.nativeEvent.text })
+              }
             />
           </View>
 
@@ -67,8 +100,13 @@ const SeniorsRegistration: React.FC = () => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={cpf}
-              onChange={e => setCpf(masks.cpfMask(e.nativeEvent.text))}
+              value={patient.cpf}
+              onChange={e =>
+                setPatient({
+                  ...patient,
+                  cpf: masks.cpfMask(e.nativeEvent.text),
+                })
+              }
             />
           </View>
 
@@ -77,8 +115,13 @@ const SeniorsRegistration: React.FC = () => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={susCard}
-              onChange={e => setSusCard(masks.susCardMask(e.nativeEvent.text))}
+              value={patient.susCard}
+              onChange={e =>
+                setPatient({
+                  ...patient,
+                  susCard: masks.susCardMask(e.nativeEvent.text),
+                })
+              }
             />
           </View>
 
@@ -90,8 +133,13 @@ const SeniorsRegistration: React.FC = () => {
               style={styles.input}
               keyboardType="numeric"
               placeholder="(00) 00000-0000"
-              value={phone}
-              onChange={e => setPhone(masks.phoneMask(e.nativeEvent.text))}
+              value={patient.phone}
+              onChange={e =>
+                setPatient({
+                  ...patient,
+                  phone: masks.phoneMask(e.nativeEvent.text),
+                })
+              }
             />
           </View>
         </View>
@@ -104,8 +152,10 @@ const SeniorsRegistration: React.FC = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={street}
-              onChange={e => setStreet(e.nativeEvent.text)}
+              value={patient.street}
+              onChange={e =>
+                setPatient({ ...patient, street: e.nativeEvent.text })
+              }
             />
           </View>
 
@@ -116,8 +166,10 @@ const SeniorsRegistration: React.FC = () => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={number}
-              onChange={e => setNumber(masks.numberMask(e.nativeEvent.text))}
+              value={patient.number}
+              onChange={e =>
+                setPatient({ ...patient, number: e.nativeEvent.text })
+              }
             />
           </View>
 
@@ -125,8 +177,10 @@ const SeniorsRegistration: React.FC = () => {
             <Text style={styles.inputName}>Complemento</Text>
             <TextInput
               style={styles.input}
-              value={complement}
-              onChange={e => setComplement(e.nativeEvent.text)}
+              value={patient.complement}
+              onChange={e =>
+                setPatient({ ...patient, complement: e.nativeEvent.text })
+              }
             />
           </View>
 
@@ -136,8 +190,10 @@ const SeniorsRegistration: React.FC = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={reference}
-              onChange={e => setReference(e.nativeEvent.text)}
+              value={patient.reference}
+              onChange={e =>
+                setPatient({ ...patient, reference: e.nativeEvent.text })
+              }
             />
           </View>
 
@@ -147,8 +203,10 @@ const SeniorsRegistration: React.FC = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={neighborhood}
-              onChange={e => setNeighborhood(e.nativeEvent.text)}
+              value={patient.neighborhood}
+              onChange={e =>
+                setPatient({ ...patient, neighborhood: e.nativeEvent.text })
+              }
             />
           </View>
         </View>
@@ -192,6 +250,23 @@ const SeniorsRegistration: React.FC = () => {
             filesAccepted="image/*"
           />
         </View>
+
+        <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
+          <LinearGradient colors={['#2265ac', '#034f9a']} style={styles.submit}>
+            <Text style={styles.submitTxt}>Enviar</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
+        {loading && (
+          <AnimatedCircularProgress
+            size={80}
+            width={12}
+            fill={uploadProgress}
+            tintColor="#00e0ff"
+            backgroundColor="#3d5875"
+            style={{ alignSelf: 'center' }}
+          />
+        )}
 
         <TouchableOpacity
           style={styles.btnBack}

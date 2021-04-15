@@ -13,13 +13,12 @@ const catchHandler = (err: Err, errMsg: string): void => {
       swAlert(
         'error',
         'Erro',
-        'Não foi possível conectar ao servidor. Tente novamente ou contate o suporte.',
-        'Ok'
+        'Não foi possível conectar ao servidor. Tente novamente ou contate o suporte.'
       );
     } else if (err.response) {
-      swAlert('error', 'Erro', err.response.data.msg, 'Ok');
+      swAlert('error', 'Erro', err.response.data.msg);
     } else {
-      swAlert('error', 'Erro', errMsg, 'Ok');
+      swAlert('error', 'Erro', errMsg);
     }
   } else if (err.message === 'Network Error') {
     Alert.alert(
