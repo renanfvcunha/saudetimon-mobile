@@ -61,7 +61,11 @@ const Registration: React.FC = () => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate('StatusCheck')}
+              >
                 <Image source={check} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Checagem</Text>
@@ -80,7 +84,7 @@ const Registration: React.FC = () => {
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Locais de Vacinação</Text>
                   <Text style={styles.itemTextLower}>
-                    Verifique o status da sua solicitação
+                    Clique para visualizar o local no mapa
                   </Text>
                 </View>
               </TouchableOpacity>
