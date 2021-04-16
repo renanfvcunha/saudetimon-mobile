@@ -42,14 +42,18 @@ const Registration: React.FC = () => {
               >
                 <Image source={seniors} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Idosos Acamados</Text>
+                  <Text style={styles.itemTextUpper}>Idosos</Text>
                   <Text style={styles.itemTextLower}>
                     De acordo com a faixa etária da vacinação
                   </Text>
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate('ComorbidityRegistration')}
+              >
                 <Image source={comorbidity} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Comorbidades</Text>

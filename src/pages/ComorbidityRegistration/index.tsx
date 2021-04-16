@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   View,
@@ -24,6 +24,7 @@ import { Picker } from '@react-native-picker/picker';
 
 import styles from './styles';
 import IPatient, { IAttachment } from '../../../typescript/IPatient';
+import IComorbidity from '../../../typescript/IComorbidity';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import AttachmentField from '../../components/AttachmentField';
@@ -31,17 +32,28 @@ import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import catchHandler from '../../utils/catchHandler';
 
-const SeniorsRegistration: React.FC = () => {
+const ComorbidityRegistration: React.FC = () => {
   const navigation = useNavigation();
-  const { uploadProgress, createPatientCall } = useContext(PatientContext);
+  const {
+    uploadProgress,
+    createPatientCall,
+    getComorbiditiesCall,
+  } = useContext(PatientContext);
 
-  const [selectedGroup, setSelectedGroup] = useState('idosos_acamados');
+  const [selectedGroup, setSelectedGroup] = useState('paciente_oncologico');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
   const [idDocVerse, setIdDocVerse] = useState<IAttachment>();
   const [addressProof, setAddressProof] = useState<IAttachment>();
   const [photo, setPhoto] = useState<IAttachment>();
+  const [medicalReport, setMedicalReport] = useState<IAttachment>();
+  const [medicalAuthorization, setMedicalAuthorization] = useState<
+    IAttachment
+  >();
+  const [medicalPrescription, setMedicalPrescription] = useState<IAttachment>();
   const [loading, setLoading] = useState(false);
+  const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
+  const [selectedComorbidity, setSelectedComorbidity] = useState('');
 
   const setAttachments = (
     field: number,
@@ -61,6 +73,15 @@ const SeniorsRegistration: React.FC = () => {
         break;
       case 3:
         setPhoto({ uri, name: String(fileName), type });
+        break;
+      case 4:
+        setMedicalReport({ uri, name: String(fileName), type });
+        break;
+      case 5:
+        setMedicalAuthorization({ uri, name: String(fileName), type });
+        break;
+      case 6:
+        setMedicalPrescription({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -117,12 +138,19 @@ const SeniorsRegistration: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true);
 
+    const susCardParsed = patient.susCard
+      ? masks.numberMask(patient.susCard)
+      : undefined;
+
     const patientParsed = {
       ...patient,
       cpf: masks.numberMask(patient.cpf),
-      susCard: `${patient.susCard && masks.numberMask(patient.susCard)}`,
+      susCard: susCardParsed,
       phone: masks.numberMask(patient.phone),
     };
+
+    const idComorbidity =
+      selectedGroup === 'comorbidades' ? selectedComorbidity : undefined;
 
     try {
       const msg = await createPatientCall(
@@ -131,7 +159,11 @@ const SeniorsRegistration: React.FC = () => {
         idDocFront,
         idDocVerse,
         addressProof,
-        photo
+        photo,
+        idComorbidity,
+        medicalReport,
+        medicalAuthorization,
+        medicalPrescription
       );
 
       Alert.alert('', msg);
@@ -146,6 +178,26 @@ const SeniorsRegistration: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const getComorbidities = async () => {
+      try {
+        const data = await getComorbiditiesCall();
+
+        setComorbidities(data);
+        setSelectedComorbidity(data[0].id.toString());
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar as comorbidades. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    if (selectedGroup === 'comorbidades') {
+      getComorbidities();
+    }
+  }, [getComorbiditiesCall, selectedGroup]);
+
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,7 +208,7 @@ const SeniorsRegistration: React.FC = () => {
 
           <View style={styles.menu}>
             <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Idosos</Text>
+              <Text style={styles.pageTitleText}>Comorbidades</Text>
             </View>
 
             <Text style={styles.fieldsCategory}>Grupo</Text>
@@ -169,12 +221,44 @@ const SeniorsRegistration: React.FC = () => {
                 style={{ width: '100%' }}
               >
                 <Picker.Item
-                  label="Idosos Acamados de 74 anos ou mais"
-                  value="idosos_acamados"
+                  label="Paciente oncológico em tratamento de quimioterapia ou radioterapia"
+                  value="paciente_oncologico"
                 />
-                <Picker.Item label="Idosos de 60 anos ou mais" value="idosos" />
+                <Picker.Item
+                  label="Paciente renal em tratamento com diálise ou hemodiálise"
+                  value="paciente_renal"
+                />
+                <Picker.Item label="Outras Comorbidades" value="comorbidades" />
               </Picker>
             </View>
+
+            {selectedGroup === 'comorbidades' && (
+              <>
+                <Text style={styles.fieldsCategory}>Comorbidade</Text>
+                <View style={styles.fields}>
+                  <Picker
+                    selectedValue={selectedComorbidity}
+                    onValueChange={itemValue =>
+                      setSelectedComorbidity(itemValue as string)
+                    }
+                    style={{ width: '100%' }}
+                  >
+                    {comorbidities &&
+                      comorbidities.map(comorbidity => (
+                        <Picker.Item
+                          key={comorbidity.id}
+                          label={comorbidity.comorbidity}
+                          value={comorbidity.id.toString()}
+                        />
+                      ))}
+                  </Picker>
+                  <Text style={styles.helperText}>
+                    Se sua comorbidade não está na lista, então infelizmente
+                    você não está elegível ao cadastro.
+                  </Text>
+                </View>
+              </>
+            )}
 
             <Text style={styles.fieldsCategory}>Dados Gerais</Text>
             <View style={styles.fields}>
@@ -399,6 +483,42 @@ const SeniorsRegistration: React.FC = () => {
                   </View>
                 )}
               </View>
+
+              <AttachmentField
+                field={medicalReport}
+                setField={setMedicalReport}
+                fieldNumber={4}
+                fieldName="Laudo Médico"
+                mandatory={selectedGroup !== 'comorbidades'}
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
+
+              {selectedGroup !== 'comorbidades' && (
+                <AttachmentField
+                  field={medicalAuthorization}
+                  setField={setMedicalAuthorization}
+                  fieldNumber={5}
+                  fieldName="Autorização Médica"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              {selectedGroup === 'comorbidades' && (
+                <AttachmentField
+                  field={medicalPrescription}
+                  setField={setMedicalPrescription}
+                  fieldNumber={6}
+                  fieldName="Prescrição Médica"
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
             </View>
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
@@ -436,4 +556,4 @@ const SeniorsRegistration: React.FC = () => {
   );
 };
 
-export default SeniorsRegistration;
+export default ComorbidityRegistration;

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import api from '../services/api';
 import IPatient, { IAttachment } from '../../typescript/IPatient';
+import IComorbidity from '../../typescript/IComorbidity';
 
 interface PatientContextData {
   uploadProgress: number;
@@ -13,8 +14,13 @@ interface PatientContextData {
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File
+    photo?: IAttachment | File,
+    idComorbidity?: string,
+    medicalReport?: IAttachment | File,
+    medicalAuthorization?: IAttachment | File,
+    medicalPrescription?: IAttachment | File
   ) => Promise<string>;
+  getComorbiditiesCall: () => Promise<IComorbidity[]>;
 }
 
 const PatientContext = createContext<PatientContextData>(
@@ -30,7 +36,11 @@ export const PatientProvider: React.FC = ({ children }) => {
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File
+    photo?: IAttachment | File,
+    idComorbidity?: string,
+    medicalReport?: IAttachment | File,
+    medicalAuthorization?: IAttachment | File,
+    medicalPrescription?: IAttachment | File
   ) => {
     setUploadProgress(0);
 
@@ -55,6 +65,18 @@ export const PatientProvider: React.FC = ({ children }) => {
       data.append('addressProof', addressProof as Blob);
       data.append('photo', photo as Blob);
     }
+    if (idComorbidity) {
+      data.append('idComorbidity', idComorbidity);
+    }
+    if (medicalReport) {
+      data.append('medicalReport', medicalReport as Blob);
+    }
+    if (medicalAuthorization) {
+      data.append('medicalAuthorization', medicalAuthorization as Blob);
+    }
+    if (medicalPrescription) {
+      data.append('medicalPrescription', medicalPrescription as Blob);
+    }
 
     const response: AxiosResponse<{ msg: string }> = await api.post(
       '/patients',
@@ -72,8 +94,18 @@ export const PatientProvider: React.FC = ({ children }) => {
     return response.data.msg;
   };
 
+  const getComorbiditiesCall = async () => {
+    const response: AxiosResponse<IComorbidity[]> = await api.get(
+      '/comorbidities'
+    );
+
+    return response.data;
+  };
+
   return (
-    <PatientContext.Provider value={{ uploadProgress, createPatientCall }}>
+    <PatientContext.Provider
+      value={{ uploadProgress, createPatientCall, getComorbiditiesCall }}
+    >
       {children}
     </PatientContext.Provider>
   );

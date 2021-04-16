@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './pages/Home';
 import Registration from './pages/Registration';
 import SeniorsRegistration from './pages/SeniorsRegistration';
+import ComorbidityRegistration from './pages/ComorbidityRegistration';
 
 const Routes: React.FC = () => {
   const Stack = createStackNavigator();
@@ -26,6 +27,11 @@ const Routes: React.FC = () => {
         <Stack.Screen
           name="SeniorsRegistration"
           component={SeniorsRegistration}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ComorbidityRegistration"
+          component={ComorbidityRegistration}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
