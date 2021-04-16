@@ -2,23 +2,20 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   View,
+  Text,
+  ScrollView,
   ImageBackground,
   Image,
-  Text,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { openURL } from 'expo-linking';
 
 import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
-import seniors from '../../images/seniors.png';
-import comorbidity from '../../images/comorbidity.png';
-import check from '../../images/check.png';
-import vacLoc from '../../images/vacLoc.png';
 
-const Registration: React.FC = () => {
+const VaccinationLocations: React.FC = () => {
   const navigation = useNavigation();
 
   return (
@@ -31,57 +28,69 @@ const Registration: React.FC = () => {
 
           <View style={styles.menu}>
             <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Cadastro</Text>
+              <Text style={styles.pageTitleText}>Locais de Vacinação</Text>
             </View>
 
             <View style={styles.items}>
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('SeniorsRegistration')}
+                onPress={() =>
+                  openURL('https://maps.app.goo.gl/j9jpJtnKJkoaihVR9')
+                }
               >
-                <Image source={seniors} style={styles.itemImg} />
+                <Image
+                  source={{
+                    uri:
+                      'https://lh5.googleusercontent.com/p/AF1QipNxRrauJHriyEjZBnLQEjyAF90ot5BP5TLRP8vW=w426-h240-k-no',
+                  }}
+                  style={styles.itemImg}
+                />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Idosos</Text>
-                  <Text style={styles.itemTextLower}>
-                    De acordo com a faixa etária da vacinação
+                  <Text style={styles.itemTextUpper}>
+                    Ginásio Francisco Carlos Jansen
                   </Text>
+                  <Text style={styles.itemTextLower}>Drives-Thru</Text>
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('ComorbidityRegistration')}
+                onPress={() =>
+                  openURL('https://maps.app.goo.gl/GYgwoBA7iftEYYxS6')
+                }
               >
-                <Image source={comorbidity} style={styles.itemImg} />
+                <Image
+                  source={{
+                    uri:
+                      'https://lh5.googleusercontent.com/p/AF1QipMyudKnN5aiYHhW8DjzwXhdP8o7izXvQJVawn09=w408-h250-k-no',
+                  }}
+                  style={styles.itemImg}
+                />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Comorbidades</Text>
-                  <Text style={styles.itemTextLower}>Nomes de Doenças</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.item} activeOpacity={0.5}>
-                <Image source={check} style={styles.itemImg} />
-                <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Checagem</Text>
-                  <Text style={styles.itemTextLower}>
-                    Verifique o status da sua solicitação
-                  </Text>
+                  <Text style={styles.itemTextUpper}>Fundação Cidadania</Text>
+                  <Text style={styles.itemTextLower}>Ponto Fixo</Text>
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('VaccinationLocations')}
+                onPress={() =>
+                  openURL('https://maps.app.goo.gl/YsLHNvqTLhPRz3Fs8')
+                }
               >
-                <Image source={vacLoc} style={styles.itemImg} />
+                <Image
+                  source={{
+                    uri:
+                      'https://lh5.googleusercontent.com/p/AF1QipNyimW4rG5MZEOyAszfkNtrSn2IUlRGixvx87rx=w478-h240-k-no',
+                  }}
+                  style={styles.itemImg}
+                />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Locais de Vacinação</Text>
-                  <Text style={styles.itemTextLower}>
-                    Verifique o status da sua solicitação
-                  </Text>
+                  <Text style={styles.itemTextUpper}>Cocais Shopping</Text>
+                  <Text style={styles.itemTextLower}>Drives-Thru</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -101,4 +110,4 @@ const Registration: React.FC = () => {
   );
 };
 
-export default Registration;
+export default VaccinationLocations;
