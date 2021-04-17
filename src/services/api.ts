@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const apiUrl = __DEV__ ? process.env.API_URL || 'http://10.0.2.2:3333' : '';
+
 const api = axios.create({
-  baseURL: 'http://192.168.18.99:3333',
+  baseURL: apiUrl,
 });
 
 export default api;
