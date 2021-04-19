@@ -31,6 +31,7 @@ const StatusCheck: React.FC = () => {
   const getStatus = async () => {
     try {
       setLoading(true);
+      if (status) setStatus(undefined);
 
       const data = await getStatusCall(masks.numberMask(cpf));
 
@@ -73,7 +74,7 @@ const StatusCheck: React.FC = () => {
                 style={{ position: 'absolute', right: 0 }}
                 onPress={getStatus}
               >
-                <AntDesign name="checkcircleo" size={20} color="green" />
+                <AntDesign name="search1" size={20} color="#000" />
               </TouchableOpacity>
             </View>
           </View>
@@ -103,17 +104,21 @@ const StatusCheck: React.FC = () => {
                   </Text>
                 </View>
               </View>
-              {status.position && (
-                <Text style={styles.statusPosition}>
-                  Posição na fila: {status.position}
-                </Text>
+              {status.position && status.approveds && (
+                <View style={styles.statusComplement}>
+                  <Text style={styles.statusComplementText}>
+                    Posição na fila: {status.position} de {status.approveds}
+                    {'\n'}
+                    Grupo: {status.patient.group.group}
+                  </Text>
+                </View>
               )}
               {status.patient.patientStatus.message && (
-                <>
-                  <Text style={styles.statusPosition}>
+                <View style={styles.statusComplement}>
+                  <Text style={styles.statusComplementText}>
                     Motivo:{`\n${status.patient.patientStatus.message}`}
                   </Text>
-                </>
+                </View>
               )}
             </>
           )}

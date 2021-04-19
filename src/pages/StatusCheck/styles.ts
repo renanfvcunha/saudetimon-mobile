@@ -92,7 +92,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
   },
-  statusPosition: {
+  statusComplement: {
+    alignSelf: 'center',
+    width: '80%',
+  },
+  statusComplementText: {
     textAlign: 'center',
     marginTop: '5%',
     fontSize: 24,

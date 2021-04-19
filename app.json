@@ -4,7 +4,7 @@
     "slug": "saude-timon",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/images/logoSquared.png",
     "splash": {
       "image": "./src/images/splash.png",
       "resizeMode": "contain",
@@ -27,7 +27,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/images/favicon.png"
     }
   }
 }

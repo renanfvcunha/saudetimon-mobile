@@ -2,6 +2,10 @@ export default interface IStatus {
   patient: {
     id: number;
     cpf: string;
+    group: {
+      id: number;
+      group: string;
+    };
     patientStatus: {
       message: string | null;
       status: {
@@ -12,4 +16,5 @@ export default interface IStatus {
     };
   };
   position?: number;
+  approveds?: number;
 }
