@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import api from '../services/api';
 import IPatient, { IAttachment } from '../../typescript/IPatient';
 import IComorbidity from '../../typescript/IComorbidity';
+import IStatus from '../../typescript/IStatus';
 
 interface PatientContextData {
   uploadProgress: number;
@@ -21,6 +22,7 @@ interface PatientContextData {
     medicalPrescription?: IAttachment | File
   ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
+  getStatusCall: (cpf: string) => Promise<IStatus>;
 }
 
 const PatientContext = createContext<PatientContextData>(
@@ -102,9 +104,22 @@ export const PatientProvider: React.FC = ({ children }) => {
     return response.data;
   };
 
+  const getStatusCall = async (cpf: string) => {
+    const response: AxiosResponse<IStatus> = await api.get(
+      `/patients/status/${cpf}`
+    );
+
+    return response.data;
+  };
+
   return (
     <PatientContext.Provider
-      value={{ uploadProgress, createPatientCall, getComorbiditiesCall }}
+      value={{
+        uploadProgress,
+        createPatientCall,
+        getComorbiditiesCall,
+        getStatusCall,
+      }}
     >
       {children}
     </PatientContext.Provider>

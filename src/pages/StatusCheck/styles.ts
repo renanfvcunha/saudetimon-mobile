@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    resizeMode: 'cover',
   },
   logo: {
     marginTop: '10%',
@@ -60,23 +59,48 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 16,
   },
-  submit: {
-    width: '70%',
-    height: '35%',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 6,
-    marginBottom: '5%',
-  },
-  submitTxt: {
-    color: '#efefef',
-    fontSize: 28,
-    fontWeight: '700',
+  status: {
     textAlign: 'center',
+    fontSize: 28,
+    color: '#848484',
+  },
+  statusContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusBackground: {
+    width: '50%',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 4,
+  },
+  statusAnalysis: {
+    backgroundColor: '#73c2cf',
+  },
+  statusApproved: {
+    backgroundColor: '#83bb72',
+  },
+  statusDenied: {
+    backgroundColor: '#cf1312',
+  },
+  statusText: {
+    color: '#fff',
+    fontSize: 36,
+    fontWeight: '700',
+  },
+  statusHelperText: {
+    textAlign: 'center',
+    color: '#fff',
+  },
+  statusPosition: {
+    textAlign: 'center',
+    marginTop: '5%',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#777',
   },
   btnBack: {
-    marginTop: '5%',
-    marginBottom: '10%',
+    marginTop: '10%',
     width: '40%',
     height: '5%',
     backgroundColor: '#73c2cf',
