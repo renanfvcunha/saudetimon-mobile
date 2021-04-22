@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Saúde Timon",
-    "slug": "saude-timon",
+    "name": "Saúde Timon 24h",
+    "slug": "saude-timon-24h",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./src/images/logoSquared.png",
@@ -22,9 +22,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./src/images/logoSquaredAdaptive.png",
+        "backgroundColor": "#093d74"
+      },
+      "package": "app.b2bdesenvolvimentos.saudetimon24h",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./src/images/favicon.png"
