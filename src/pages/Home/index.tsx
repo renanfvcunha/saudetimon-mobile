@@ -16,7 +16,7 @@ import backgroundBlue from '../../images/backgroundBlue.png';
 import hand from '../../images/hand.png';
 
 const Home: React.FC = () => {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   return (
     <>
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
           <View style={styles.buttons}>
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={() => navigation.navigate('Registration')}
+              onPress={() => navigate('Registration')}
             >
               <LinearGradient
                 colors={['#2265ac', '#034f9a']}
@@ -49,7 +49,11 @@ const Home: React.FC = () => {
               </LinearGradient>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.btnDoubts} activeOpacity={0.5}>
+            <TouchableOpacity
+              style={styles.btnDoubts}
+              activeOpacity={0.5}
+              onPress={() => navigate('FrequentDoubts')}
+            >
               <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
             </TouchableOpacity>
           </View>

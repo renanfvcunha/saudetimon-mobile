@@ -19,7 +19,7 @@ import check from '../../images/check.png';
 import vacLoc from '../../images/vacLoc.png';
 
 const Registration: React.FC = () => {
-  const navigation = useNavigation();
+  const { navigate, goBack } = useNavigation();
 
   return (
     <>
@@ -38,7 +38,7 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('SeniorsRegistration')}
+                onPress={() => navigate('SeniorsRegistration')}
               >
                 <Image source={seniors} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
@@ -52,7 +52,7 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('ComorbidityRegistration')}
+                onPress={() => navigate('ComorbidityRegistration')}
               >
                 <Image source={comorbidity} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
@@ -64,7 +64,7 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('StatusCheck')}
+                onPress={() => navigate('StatusCheck')}
               >
                 <Image source={check} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
@@ -78,7 +78,7 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('VaccinationLocations')}
+                onPress={() => navigate('VaccinationLocations')}
               >
                 <Image source={vacLoc} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
@@ -93,7 +93,7 @@ const Registration: React.FC = () => {
             <TouchableOpacity
               style={styles.btnBack}
               activeOpacity={0.5}
-              onPress={() => navigation.goBack()}
+              onPress={() => goBack()}
             >
               <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
