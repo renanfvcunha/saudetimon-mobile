@@ -89,12 +89,47 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     borderRadius: 6,
+    marginBottom: '5%',
   },
   btnDoubtsTxt: {
     color: '#81ba75',
     fontSize: 28,
     fontWeight: '700',
     textAlign: 'center',
+  },
+  btnPhones: {
+    width: buttonWidth,
+    height: buttonHeight,
+    backgroundColor: '#81ba75',
+    justifyContent: 'center',
+    borderRadius: 6,
+  },
+  btnPhonesTxt: {
+    color: '#fff',
+    fontSize: 28,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 12,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  phone: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  closeModal: {
+    marginTop: '5%',
+    alignSelf: 'flex-end',
   },
 });
 

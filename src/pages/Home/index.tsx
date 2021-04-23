@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   View,
@@ -6,9 +6,11 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import styles from './styles';
 import logo from '../../images/logo.png';
@@ -17,6 +19,7 @@ import hand from '../../images/hand.png';
 
 const Home: React.FC = () => {
   const { navigate } = useNavigation();
+  const [modalPhones, setModalPhones] = useState(false);
 
   return (
     <>
@@ -56,9 +59,41 @@ const Home: React.FC = () => {
             >
               <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.btnPhones}
+              activeOpacity={0.5}
+              onPress={() => setModalPhones(true)}
+            >
+              <Text style={styles.btnPhonesTxt}>Telefones</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
+
+      <Modal
+        animationType="slide"
+        transparent
+        visible={modalPhones}
+        onRequestClose={() => setModalPhones(!modalPhones)}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Telefones</Text>
+            <TouchableOpacity>
+              <FontAwesome name="whatsapp" size={24} color="green" />
+              <Text>Disk Saúde</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setModalPhones(!modalPhones)}
+              style={styles.closeModal}
+            >
+              <Text>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <StatusBar style="light" />
     </>
   );
