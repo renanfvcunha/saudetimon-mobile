@@ -7,10 +7,13 @@ import {
   ImageBackground,
   TouchableOpacity,
   Modal,
+  Platform,
 } from 'react-native';
+import ModalWeb from 'modal-react-native-web';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import { openURL } from 'expo-linking';
 
 import styles from './styles';
 import logo from '../../images/logo.png';
@@ -71,28 +74,123 @@ const Home: React.FC = () => {
         </View>
       </ImageBackground>
 
-      <Modal
-        animationType="slide"
-        transparent
-        visible={modalPhones}
-        onRequestClose={() => setModalPhones(!modalPhones)}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Telefones</Text>
-            <TouchableOpacity>
-              <FontAwesome name="whatsapp" size={24} color="green" />
-              <Text>Disk Saúde</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setModalPhones(!modalPhones)}
-              style={styles.closeModal}
-            >
-              <Text>Fechar</Text>
-            </TouchableOpacity>
+      {Platform.OS !== 'web' ? (
+        <Modal
+          animationType="slide"
+          transparent
+          visible={modalPhones}
+          onRequestClose={() => setModalPhones(!modalPhones)}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Telefones</Text>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/559996474456')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#2dD366" />
+                <Text style={[styles.phoneTxt, styles.bgSuccess]}>
+                  Disk Saúde - COVID
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/559988352919')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgInfo]}>Disk Saúde</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/5586998159221')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgWarning]}>
+                  Alô Psicólogo 1
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/5586998163425')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgError]}>
+                  Alô Psicólogo 2
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setModalPhones(!modalPhones)}
+                style={styles.closeModal}
+                activeOpacity={0.5}
+              >
+                <Text style={styles.closeModalTxt}>Fechar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      ) : (
+        <ModalWeb
+          animationType="slide"
+          transparent
+          visible={modalPhones}
+          onRequestClose={() => setModalPhones(!modalPhones)}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Telefones</Text>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/559996474456')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#2dD366" />
+                <Text style={[styles.phoneTxt, styles.bgSuccess]}>
+                  Disk Saúde - COVID
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/559988352919')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgInfo]}>Disk Saúde</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/5586998159221')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgWarning]}>
+                  Alô Psicólogo 1
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.phone}
+                activeOpacity={0.5}
+                onPress={() => openURL('https://wa.me/5586998163425')}
+              >
+                <FontAwesome name="whatsapp" size={24} color="#25d366" />
+                <Text style={[styles.phoneTxt, styles.bgError]}>
+                  Alô Psicólogo 2
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setModalPhones(!modalPhones)}
+                style={styles.closeModal}
+                activeOpacity={0.5}
+              >
+                <Text style={styles.closeModalTxt}>Fechar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ModalWeb>
+      )}
 
       <StatusBar style="light" />
     </>
