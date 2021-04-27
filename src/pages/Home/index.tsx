@@ -68,7 +68,7 @@ const Home: React.FC = () => {
               activeOpacity={0.5}
               onPress={() => setModalPhones(true)}
             >
-              <Text style={styles.btnPhonesTxt}>Telefones</Text>
+              <Text style={styles.btnPhonesTxt}>Fale Conosco</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
         >
           <View style={styles.modal}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Telefones</Text>
+              <Text style={styles.modalTitle}>Fale Conosco</Text>
               <TouchableOpacity
                 style={styles.phone}
                 activeOpacity={0.5}
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
         >
           <View style={styles.modal}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Telefones</Text>
+              <Text style={styles.modalTitle}>Fale Conosco</Text>
               <TouchableOpacity
                 style={styles.phone}
                 activeOpacity={0.5}

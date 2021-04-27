@@ -93,6 +93,28 @@ const VaccinationLocations: React.FC = () => {
                   <Text style={styles.itemTextLower}>Drives-Thru</Text>
                 </View>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.5}
+                onPress={() =>
+                  openURL('https://maps.app.goo.gl/JivC1RbhFvzaiwRq7')
+                }
+              >
+                <Image
+                  source={{
+                    uri:
+                      'https://lh5.googleusercontent.com/p/AF1QipN0f6vDdaka-j9KCGUepnQ3BZTGDCuEjoYL5G3o=w408-h306-k-no',
+                  }}
+                  style={styles.itemImg}
+                />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>
+                    Projeto Educativo Mãos Dadas
+                  </Text>
+                  <Text style={styles.itemTextLower}>Ponto Fixo</Text>
+                </View>
+              </TouchableOpacity>
             </View>
 
             <TouchableOpacity
