@@ -93,7 +93,7 @@ const Registration: React.FC = () => {
             <TouchableOpacity
               style={styles.btnBack}
               activeOpacity={0.5}
-              onPress={() => goBack()}
+              onPress={goBack}
             >
               <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>

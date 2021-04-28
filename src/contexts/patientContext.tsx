@@ -23,6 +23,7 @@ interface PatientContextData {
   ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
+  getPatientCall: (cpf: string) => Promise<IPatient>;
 }
 
 const PatientContext = createContext<PatientContextData>(
@@ -112,6 +113,14 @@ export const PatientProvider: React.FC = ({ children }) => {
     return response.data;
   };
 
+  const getPatientCall = async (cpf: string) => {
+    const response: AxiosResponse<IPatient> = await api.get(
+      `/patients/me/${cpf}`
+    );
+
+    return response.data;
+  };
+
   return (
     <PatientContext.Provider
       value={{
@@ -119,6 +128,7 @@ export const PatientProvider: React.FC = ({ children }) => {
         createPatientCall,
         getComorbiditiesCall,
         getStatusCall,
+        getPatientCall,
       }}
     >
       {children}

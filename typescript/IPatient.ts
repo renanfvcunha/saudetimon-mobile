@@ -5,6 +5,7 @@ export interface IAttachment {
 }
 
 export default interface IPatient {
+  id?: number;
   name: string;
   cpf: string;
   susCard?: string;
@@ -14,4 +15,5 @@ export default interface IPatient {
   complement?: string;
   reference: string;
   neighborhood: string;
+  idComorbidity?: number;
 }

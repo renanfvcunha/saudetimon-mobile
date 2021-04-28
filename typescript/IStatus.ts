@@ -4,6 +4,7 @@ export default interface IStatus {
     cpf: string;
     group: {
       id: number;
+      slug: string;
       group: string;
     };
     patientStatus: {

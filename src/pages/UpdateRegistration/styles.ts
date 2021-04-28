@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
+    resizeMode: 'cover',
   },
   logo: {
     marginTop: '10%',
@@ -50,78 +51,82 @@ const styles = StyleSheet.create({
   items: {
     marginLeft: marginItemsLeft,
   },
+  fieldsCategory: {
+    textAlign: 'center',
+    marginBottom: '2%',
+    fontSize: 18,
+    color: 'rgba(56, 53, 53, 0.8)',
+  },
+  fields: {
+    width: '80%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: 'rgba(56, 53, 53, 0.5)',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: '2%',
+    paddingHorizontal: '5%',
+    marginBottom: '5%',
+  },
+  helperText: {
+    fontSize: 12,
+    marginLeft: '3%',
+    marginTop: `${Platform.OS === 'web' ? '3%' : '0%'}`,
+  },
   textInput: {
     marginBottom: 24,
-    width: '80%',
+    width: '100%',
+  },
+  inputName: {
+    fontSize: 18,
+    color: 'rgba(56, 53, 53, 0.8)',
+  },
+  mandatory: {
+    color: '#c62828',
   },
   input: {
     borderColor: 'rgba(56, 53, 53, 0.5)',
     borderBottomWidth: 1,
     fontSize: 16,
   },
-  status: {
-    textAlign: 'center',
+  editButton: {
+    position: 'absolute',
+    right: 0,
+  },
+  img: {
+    width: 90,
+    marginTop: 8,
+    backgroundColor: '#fff',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 12,
+    elevation: 5,
+    padding: 12,
+  },
+  imgSelected: {
+    width: 64,
+    height: 64,
+  },
+  submit: {
+    width: '80%',
+    height: buttonHeight,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderRadius: 6,
+    marginBottom: '5%',
+  },
+  submitTxt: {
+    color: '#efefef',
     fontSize: 28,
-    color: '#848484',
-  },
-  statusContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  statusBackground: {
-    width: '50%',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 4,
-  },
-  statusAnalysis: {
-    backgroundColor: '#73c2cf',
-  },
-  statusApproved: {
-    backgroundColor: '#83bb72',
-  },
-  statusDenied: {
-    backgroundColor: '#cf1312',
-  },
-  statusText: {
-    color: '#fff',
-    fontSize: 36,
     fontWeight: '700',
-  },
-  statusHelperText: {
     textAlign: 'center',
-    color: '#fff',
-  },
-  statusComplement: {
-    alignSelf: 'center',
-    width: '80%',
-  },
-  statusComplementText: {
-    textAlign: 'center',
-    marginTop: '5%',
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#777',
-  },
-  btnUpdate: {
-    marginTop: '10%',
-    width: '80%',
-    alignSelf: 'center',
-    backgroundColor: '#034f9a',
-    borderRadius: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnUpdateText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: '700',
-    paddingVertical: 8,
   },
   btnBack: {
-    marginTop: '10%',
+    marginTop: '5%',
+    marginBottom: '10%',
     width: '40%',
-    paddingVertical: 4,
+    height: '3%',
     backgroundColor: '#73c2cf',
     borderTopEndRadius: 4,
     borderBottomEndRadius: 4,

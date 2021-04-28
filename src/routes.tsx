@@ -10,6 +10,7 @@ import ComorbidityRegistration from './pages/ComorbidityRegistration';
 import StatusCheck from './pages/StatusCheck';
 import VaccinationLocations from './pages/VaccinationLocations';
 import FrequentDoubts from './pages/FrequentDoubts';
+import UpdateRegistration from './pages/UpdateRegistration';
 
 const Routes: React.FC = () => {
   const Stack = createStackNavigator();
@@ -50,6 +51,11 @@ const Routes: React.FC = () => {
         <Stack.Screen
           name="FrequentDoubts"
           component={FrequentDoubts}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdateRegistration"
+          component={UpdateRegistration}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
