@@ -21,6 +21,18 @@ interface PatientContextData {
     medicalAuthorization?: IAttachment | File,
     medicalPrescription?: IAttachment | File
   ) => Promise<string>;
+  updatePatientCall: (
+    id: string,
+    patient: IPatient,
+    idDocFront?: IAttachment | File,
+    idDocVerse?: IAttachment | File,
+    addressProof?: IAttachment | File,
+    photo?: IAttachment | File,
+    idComorbidity?: string,
+    medicalReport?: IAttachment | File,
+    medicalAuthorization?: IAttachment | File,
+    medicalPrescription?: IAttachment | File
+  ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
   getPatientCall: (cpf: string) => Promise<IPatient>;
@@ -97,6 +109,75 @@ export const PatientProvider: React.FC = ({ children }) => {
     return response.data.msg;
   };
 
+  const updatePatientCall = async (
+    id: string,
+    patient: IPatient,
+    idDocFront?: IAttachment | File,
+    idDocVerse?: IAttachment | File,
+    addressProof?: IAttachment | File,
+    photo?: IAttachment | File,
+    idComorbidity?: string,
+    medicalReport?: IAttachment | File,
+    medicalAuthorization?: IAttachment | File,
+    medicalPrescription?: IAttachment | File
+  ) => {
+    setUploadProgress(0);
+
+    const data = new FormData();
+    data.append('name', patient.name);
+    data.append('cpf', patient.cpf);
+    if (patient.susCard) {
+      data.append('susCard', patient.susCard);
+    }
+    data.append('phone', patient.phone);
+    data.append('street', patient.street);
+    data.append('number', patient.number);
+    if (patient.complement) {
+      data.append('complement', patient.complement);
+    }
+    data.append('reference', patient.reference);
+    data.append('neighborhood', patient.neighborhood);
+    if (idDocFront) {
+      data.append('idDocFront', idDocFront as Blob);
+    }
+    if (idDocVerse) {
+      data.append('idDocVerse', idDocVerse as Blob);
+    }
+    if (addressProof) {
+      data.append('addressProof', addressProof as Blob);
+    }
+    if (photo) {
+      data.append('photo', photo as Blob);
+    }
+    if (idComorbidity) {
+      data.append('idComorbidity', idComorbidity);
+    }
+    if (medicalReport) {
+      data.append('medicalReport', medicalReport as Blob);
+    }
+    if (medicalAuthorization) {
+      data.append('medicalAuthorization', medicalAuthorization as Blob);
+    }
+    if (medicalPrescription) {
+      data.append('medicalPrescription', medicalPrescription as Blob);
+    }
+
+    const response: AxiosResponse<{ msg: string }> = await api.put(
+      `/patients/${id}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        onUploadProgress: (e: ProgressEvent) => {
+          setUploadProgress((e.loaded * 100) / e.total);
+        },
+      }
+    );
+
+    return response.data.msg;
+  };
+
   const getComorbiditiesCall = async () => {
     const response: AxiosResponse<IComorbidity[]> = await api.get(
       '/comorbidities'
@@ -129,6 +210,7 @@ export const PatientProvider: React.FC = ({ children }) => {
         getComorbiditiesCall,
         getStatusCall,
         getPatientCall,
+        updatePatientCall,
       }}
     >
       {children}

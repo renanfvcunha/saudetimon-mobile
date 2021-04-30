@@ -115,13 +115,14 @@ const StatusCheck: React.FC = () => {
                     </Text>
                   </View>
                 )}
-                {status.patient.patientStatus.message && (
-                  <View style={styles.statusComplement}>
-                    <Text style={styles.statusComplementText}>
-                      Motivo:{`\n${status.patient.patientStatus.message}`}
-                    </Text>
-                  </View>
-                )}
+                {status.patient.patientStatus.status.id === 3 &&
+                  status.patient.patientStatus.message && (
+                    <View style={styles.statusComplement}>
+                      <Text style={styles.statusComplementText}>
+                        Motivo:{`\n${status.patient.patientStatus.message}`}
+                      </Text>
+                    </View>
+                  )}
               </>
             )}
 

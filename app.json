@@ -25,7 +25,7 @@
         "foregroundImage": "./src/images/logoSquaredAdaptive.png",
         "backgroundColor": "#093d74"
       },
-      "package": "app.b2bdesenvolvimentos.saudetimon24h",
+      "package": "com.accesssollutions.saudetimon24h",
       "versionCode": 1
     },
     "web": {

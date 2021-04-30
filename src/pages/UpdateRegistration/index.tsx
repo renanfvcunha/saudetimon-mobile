@@ -19,7 +19,7 @@ import {
 import { getDocumentAsync } from 'expo-document-picker';
 import { MaterialIcons as MdIcon, Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-// import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import PropTypes from 'prop-types';
 import { Picker } from '@react-native-picker/picker';
 
@@ -43,9 +43,14 @@ interface Props {
 }
 
 const UpdateRegistration: React.FC<Props> = ({ route }) => {
-  const { goBack } = useNavigation();
+  const { goBack, reset } = useNavigation();
   const { cpf, group } = route.params;
-  const { getComorbiditiesCall, getPatientCall } = useContext(PatientContext);
+  const {
+    getComorbiditiesCall,
+    getPatientCall,
+    updatePatientCall,
+    uploadProgress,
+  } = useContext(PatientContext);
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
@@ -57,7 +62,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
     IAttachment
   >();
   const [medicalPrescription, setMedicalPrescription] = useState<IAttachment>();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
     cpf: false,
@@ -152,28 +157,41 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
     }
   };
 
-  /* const handleSubmit = async () => {
+  const handleSubmit = async () => {
     setLoading(true);
 
     const patientParsed = {
       ...patient,
       cpf: masks.numberMask(patient.cpf),
-      susCard: `${patient.susCard && masks.numberMask(patient.susCard)}`,
+      susCard: patient.susCard ? masks.numberMask(patient.susCard) : undefined,
       phone: masks.numberMask(patient.phone),
     };
 
     try {
-      const msg = await createPatientCall(
-        selectedGroup,
-        patientParsed,
-        idDocFront,
-        idDocVerse,
-        addressProof,
-        photo
-      );
+      if (patient.id) {
+        const msg = await updatePatientCall(
+          patient.id.toString(),
+          patientParsed,
+          idDocFront,
+          idDocVerse,
+          addressProof,
+          photo,
+          selectedComorbidity,
+          medicalReport,
+          medicalAuthorization,
+          medicalPrescription
+        );
 
-      Alert.alert('', 'Mensagem');
-      goBack();
+        Alert.alert('', msg);
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Home',
+            },
+          ],
+        });
+      }
     } catch (err) {
       catchHandler(
         err,
@@ -182,7 +200,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
     } finally {
       setLoading(false);
     }
-  }; */
+  };
 
   useEffect(() => {
     const getPatient = async () => {
@@ -646,7 +664,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
               )}
             </View>
 
-            <TouchableOpacity activeOpacity={0.5} /* onPress={handleSubmit} */>
+            <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
               <LinearGradient
                 colors={['#2265ac', '#034f9a']}
                 style={styles.submit}
@@ -655,7 +673,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
               </LinearGradient>
             </TouchableOpacity>
 
-            {/* {loading && (
+            {loading && (
               <AnimatedCircularProgress
                 size={80}
                 width={12}
@@ -664,7 +682,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 backgroundColor="#3d5875"
                 style={{ alignSelf: 'center' }}
               />
-            )} */}
+            )}
 
             <TouchableOpacity
               style={styles.btnBack}

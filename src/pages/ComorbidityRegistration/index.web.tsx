@@ -54,14 +54,10 @@ const ComorbidityRegistration: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    const susCardParsed = patient.susCard
-      ? masks.numberMask(patient.susCard)
-      : undefined;
-
     const patientParsed = {
       ...patient,
       cpf: masks.numberMask(patient.cpf),
-      susCard: susCardParsed,
+      susCard: patient.susCard ? masks.numberMask(patient.susCard) : undefined,
       phone: masks.numberMask(patient.phone),
     };
 

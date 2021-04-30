@@ -120,7 +120,7 @@ const SeniorsRegistration: React.FC = () => {
     const patientParsed = {
       ...patient,
       cpf: masks.numberMask(patient.cpf),
-      susCard: `${patient.susCard && masks.numberMask(patient.susCard)}`,
+      susCard: patient.susCard ? masks.numberMask(patient.susCard) : undefined,
       phone: masks.numberMask(patient.phone),
     };
 
