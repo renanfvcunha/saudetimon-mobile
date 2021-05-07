@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const windowWidth = Dimensions.get('window').width;
@@ -48,8 +48,24 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+  helperText: {
+    fontSize: 12,
+    marginLeft: '3%',
+    marginTop: `${Platform.OS === 'web' ? '3%' : '0%'}`,
+  },
   items: {
     marginLeft: marginItemsLeft,
+  },
+  radioButtons: {
+    width: '80%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: '5%',
+  },
+  radioButtonItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   fieldsCategory: {
     textAlign: 'center',

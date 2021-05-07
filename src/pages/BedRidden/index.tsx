@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   View,
@@ -17,10 +17,10 @@ import {
   launchImageLibraryAsync,
 } from 'expo-image-picker';
 import { getDocumentAsync } from 'expo-document-picker';
-import { MaterialIcons as MdIcon } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Picker } from '@react-native-picker/picker';
+import { RadioButton } from 'react-native-paper';
 
 import styles from './styles';
 import IPatient, { IAttachment } from '../../../typescript/IPatient';
@@ -30,18 +30,34 @@ import AttachmentField from '../../components/AttachmentField';
 import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import catchHandler from '../../utils/catchHandler';
+import IGroup from '../../../typescript/IGroup';
+import IComorbidity from '../../../typescript/IComorbidity';
 
-const SeniorsRegistration: React.FC = () => {
-  const navigation = useNavigation();
-  const { uploadProgress, createPatientCall } = useContext(PatientContext);
+const BedRidden: React.FC = () => {
+  const { goBack } = useNavigation();
+  const {
+    uploadProgress,
+    getGroupsCall,
+    createPatientCall,
+    getComorbiditiesCall,
+  } = useContext(PatientContext);
 
-  const [selectedGroup, setSelectedGroup] = useState('idosos_acamados');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
   const [idDocVerse, setIdDocVerse] = useState<IAttachment>();
+  const [cpf, setCpf] = useState<IAttachment>();
   const [addressProof, setAddressProof] = useState<IAttachment>();
-  const [photo, setPhoto] = useState<IAttachment>();
+  const [medicalReport, setMedicalReport] = useState<IAttachment>();
+  const [medicalAuthorization, setMedicalAuthorization] = useState<
+    IAttachment
+  >();
   const [loading, setLoading] = useState(false);
+  const [groups, setGroups] = useState<IGroup[]>();
+  const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedComorbidity, setSelectedComorbidity] = useState('');
+  const [renOncImun, setRenOncImun] = useState('0');
+  const [comorbidityPatient, setComorbidityPatient] = useState('0');
 
   const setAttachments = (
     field: number,
@@ -57,10 +73,16 @@ const SeniorsRegistration: React.FC = () => {
         setIdDocVerse({ uri, name: String(fileName), type });
         break;
       case 2:
-        setAddressProof({ uri, name: String(fileName), type });
+        setCpf({ uri, name: String(fileName), type });
         break;
       case 3:
-        setPhoto({ uri, name: String(fileName), type });
+        setAddressProof({ uri, name: String(fileName), type });
+        break;
+      case 4:
+        setMedicalReport({ uri, name: String(fileName), type });
+        break;
+      case 5:
+        setMedicalAuthorization({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -126,16 +148,18 @@ const SeniorsRegistration: React.FC = () => {
 
     try {
       const msg = await createPatientCall(
-        selectedGroup,
+        'selectedGroup',
         patientParsed,
         idDocFront,
         idDocVerse,
+        cpf,
         addressProof,
-        photo
+        medicalReport,
+        medicalAuthorization
       );
 
       Alert.alert('', msg);
-      navigation.goBack();
+      goBack();
     } catch (err) {
       catchHandler(
         err,
@@ -145,6 +169,44 @@ const SeniorsRegistration: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const getGroups = async () => {
+      try {
+        const data = await getGroupsCall('1');
+
+        setGroups(data);
+        setSelectedGroup(data[0].id.toString());
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar os grupos. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    getGroups();
+  }, [getGroupsCall]);
+
+  useEffect(() => {
+    const getComorbidities = async () => {
+      try {
+        const data = await getComorbiditiesCall();
+
+        setComorbidities(data);
+        setSelectedComorbidity(data[0].id.toString());
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar as comorbidades. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    if (comorbidityPatient === '1') {
+      getComorbidities();
+    }
+  }, [comorbidityPatient, getComorbiditiesCall]);
 
   return (
     <>
@@ -156,7 +218,7 @@ const SeniorsRegistration: React.FC = () => {
 
           <View style={styles.menu}>
             <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Idosos</Text>
+              <Text style={styles.pageTitleText}>Acamados</Text>
             </View>
 
             <Text style={styles.fieldsCategory}>Grupo</Text>
@@ -168,13 +230,90 @@ const SeniorsRegistration: React.FC = () => {
                 }
                 style={{ width: '100%' }}
               >
-                <Picker.Item
-                  label="Idosos Acamados de 74 anos ou mais"
-                  value="idosos_acamados"
-                />
-                <Picker.Item label="Idosos de 60 anos ou mais" value="idosos" />
+                {groups &&
+                  groups.map(group => (
+                    <Picker.Item
+                      key={group.id}
+                      label={group.group}
+                      value={group.id.toString()}
+                    />
+                  ))}
               </Picker>
             </View>
+
+            <Text style={styles.fieldsCategory}>
+              Paciente Renal, Oncológico ou Imonussuprimido?
+            </Text>
+            <View style={styles.radioButtons}>
+              <View style={styles.radioButtonItem}>
+                <RadioButton
+                  value="0"
+                  status={renOncImun === '0' ? 'checked' : 'unchecked'}
+                  onPress={() => setRenOncImun('0')}
+                  color="#000"
+                />
+                <Text>Não</Text>
+              </View>
+              <View style={styles.radioButtonItem}>
+                <RadioButton
+                  value="1"
+                  status={renOncImun === '1' ? 'checked' : 'unchecked'}
+                  onPress={() => setRenOncImun('1')}
+                  color="#000"
+                />
+                <Text>Sim</Text>
+              </View>
+            </View>
+
+            <Text style={styles.fieldsCategory}>Paciente com Comorbidade?</Text>
+            <View style={styles.radioButtons}>
+              <View style={styles.radioButtonItem}>
+                <RadioButton
+                  value="0"
+                  status={comorbidityPatient === '0' ? 'checked' : 'unchecked'}
+                  onPress={() => setComorbidityPatient('0')}
+                  color="#000"
+                />
+                <Text>Não</Text>
+              </View>
+              <View style={styles.radioButtonItem}>
+                <RadioButton
+                  value="1"
+                  status={comorbidityPatient === '1' ? 'checked' : 'unchecked'}
+                  onPress={() => setComorbidityPatient('1')}
+                  color="#000"
+                />
+                <Text>Sim</Text>
+              </View>
+            </View>
+
+            {comorbidityPatient === '1' && (
+              <>
+                <Text style={styles.fieldsCategory}>Comorbidade</Text>
+                <View style={styles.fields}>
+                  <Picker
+                    selectedValue={selectedComorbidity}
+                    onValueChange={itemValue =>
+                      setSelectedComorbidity(itemValue as string)
+                    }
+                    style={{ width: '100%' }}
+                  >
+                    {comorbidities &&
+                      comorbidities.map(comorbidity => (
+                        <Picker.Item
+                          key={comorbidity.id}
+                          label={comorbidity.comorbidity}
+                          value={comorbidity.id.toString()}
+                        />
+                      ))}
+                  </Picker>
+                  <Text style={styles.helperText}>
+                    Se sua comorbidade não está na lista, então infelizmente
+                    você não está elegível ao cadastro.
+                  </Text>
+                </View>
+              </>
+            )}
 
             <Text style={styles.fieldsCategory}>Dados Gerais</Text>
             <View style={styles.fields}>
@@ -343,62 +482,6 @@ const SeniorsRegistration: React.FC = () => {
                 pickImageFromGallery={pickImageFromGallery}
                 pickImageFromCamera={pickImageFromCamera}
               />
-
-              <View style={styles.textInput}>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() =>
-                    Alert.alert(
-                      'Adicionar Imagem...',
-                      undefined,
-                      [
-                        {
-                          text: 'Da Galeria',
-                          style: 'default',
-                          onPress: () => pickImageFromGallery(3),
-                        },
-                        {
-                          text: 'Da Câmera',
-                          style: 'default',
-                          onPress: () => pickImageFromCamera(3),
-                        },
-                      ],
-                      { cancelable: true }
-                    )
-                  }
-                >
-                  <Text style={styles.inputName}>
-                    Foto do(a) Paciente <Text style={styles.mandatory}>*</Text>
-                  </Text>
-                </TouchableOpacity>
-                {photo && (
-                  <View style={styles.img}>
-                    <Image
-                      source={{ uri: photo.uri }}
-                      style={styles.imgSelected}
-                    />
-                    <View style={{ position: 'absolute', right: 0 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert('Deseja apagar esta imagem?', undefined, [
-                            {
-                              style: 'cancel',
-                              text: 'Cancelar',
-                            },
-                            {
-                              style: 'destructive',
-                              text: 'Apagar',
-                              onPress: () => setPhoto(undefined),
-                            },
-                          ])
-                        }
-                      >
-                        <MdIcon name="cancel" color="#f44336" size={16} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              </View>
             </View>
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
@@ -424,7 +507,7 @@ const SeniorsRegistration: React.FC = () => {
             <TouchableOpacity
               style={styles.btnBack}
               activeOpacity={0.5}
-              onPress={() => navigation.goBack()}
+              onPress={goBack}
             >
               <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
@@ -436,4 +519,4 @@ const SeniorsRegistration: React.FC = () => {
   );
 };
 
-export default SeniorsRegistration;
+export default BedRidden;

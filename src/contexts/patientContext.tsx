@@ -6,6 +6,7 @@ import api from '../services/api';
 import IPatient, { IAttachment } from '../../typescript/IPatient';
 import IComorbidity from '../../typescript/IComorbidity';
 import IStatus from '../../typescript/IStatus';
+import IGroup from '../../typescript/IGroup';
 
 interface PatientContextData {
   uploadProgress: number;
@@ -14,28 +15,37 @@ interface PatientContextData {
     patient: IPatient,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
+    cpf?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File,
-    idComorbidity?: string,
     medicalReport?: IAttachment | File,
     medicalAuthorization?: IAttachment | File,
-    medicalPrescription?: IAttachment | File
+    workContract?: IAttachment | File,
+    prenatalCard?: IAttachment | File,
+    puerperalCard?: IAttachment | File,
+    bornAliveDec?: IAttachment | File,
+    patientContract?: IAttachment | File,
+    idComorbidity?: string
   ) => Promise<string>;
   updatePatientCall: (
     id: string,
     patient: IPatient,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
+    cpf?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File,
-    idComorbidity?: string,
     medicalReport?: IAttachment | File,
     medicalAuthorization?: IAttachment | File,
-    medicalPrescription?: IAttachment | File
+    workContract?: IAttachment | File,
+    prenatalCard?: IAttachment | File,
+    puerperalCard?: IAttachment | File,
+    bornAliveDec?: IAttachment | File,
+    patientContract?: IAttachment | File,
+    idComorbidity?: string
   ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
   getPatientCall: (cpf: string) => Promise<IPatient>;
+  getGroupsCall: (idCategory: string) => Promise<IGroup[]>;
 }
 
 const PatientContext = createContext<PatientContextData>(
@@ -50,12 +60,16 @@ export const PatientProvider: React.FC = ({ children }) => {
     patient: IPatient,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
+    cpf?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File,
-    idComorbidity?: string,
     medicalReport?: IAttachment | File,
     medicalAuthorization?: IAttachment | File,
-    medicalPrescription?: IAttachment | File
+    workContract?: IAttachment | File,
+    prenatalCard?: IAttachment | File,
+    puerperalCard?: IAttachment | File,
+    bornAliveDec?: IAttachment | File,
+    patientContract?: IAttachment | File,
+    idComorbidity?: string
   ) => {
     setUploadProgress(0);
 
@@ -74,11 +88,17 @@ export const PatientProvider: React.FC = ({ children }) => {
     }
     data.append('reference', patient.reference);
     data.append('neighborhood', patient.neighborhood);
-    if (idDocFront && idDocVerse && addressProof && photo) {
+    if (idDocFront) {
       data.append('idDocFront', idDocFront as Blob);
+    }
+    if (idDocVerse) {
       data.append('idDocVerse', idDocVerse as Blob);
+    }
+    if (addressProof) {
       data.append('addressProof', addressProof as Blob);
-      data.append('photo', photo as Blob);
+    }
+    if (cpf) {
+      data.append('cpf', cpf as Blob);
     }
     if (idComorbidity) {
       data.append('idComorbidity', idComorbidity);
@@ -89,8 +109,20 @@ export const PatientProvider: React.FC = ({ children }) => {
     if (medicalAuthorization) {
       data.append('medicalAuthorization', medicalAuthorization as Blob);
     }
-    if (medicalPrescription) {
-      data.append('medicalPrescription', medicalPrescription as Blob);
+    if (workContract) {
+      data.append('workContract', workContract as Blob);
+    }
+    if (prenatalCard) {
+      data.append('prenatalCard', prenatalCard as Blob);
+    }
+    if (puerperalCard) {
+      data.append('puerperalCard', puerperalCard as Blob);
+    }
+    if (bornAliveDec) {
+      data.append('bornAliveDec', bornAliveDec as Blob);
+    }
+    if (patientContract) {
+      data.append('patientContract', patientContract as Blob);
     }
 
     const response: AxiosResponse<{ msg: string }> = await api.post(
@@ -114,12 +146,16 @@ export const PatientProvider: React.FC = ({ children }) => {
     patient: IPatient,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
+    cpf?: IAttachment | File,
     addressProof?: IAttachment | File,
-    photo?: IAttachment | File,
-    idComorbidity?: string,
     medicalReport?: IAttachment | File,
     medicalAuthorization?: IAttachment | File,
-    medicalPrescription?: IAttachment | File
+    workContract?: IAttachment | File,
+    prenatalCard?: IAttachment | File,
+    puerperalCard?: IAttachment | File,
+    bornAliveDec?: IAttachment | File,
+    patientContract?: IAttachment | File,
+    idComorbidity?: string
   ) => {
     setUploadProgress(0);
 
@@ -146,8 +182,8 @@ export const PatientProvider: React.FC = ({ children }) => {
     if (addressProof) {
       data.append('addressProof', addressProof as Blob);
     }
-    if (photo) {
-      data.append('photo', photo as Blob);
+    if (cpf) {
+      data.append('cpf', cpf as Blob);
     }
     if (idComorbidity) {
       data.append('idComorbidity', idComorbidity);
@@ -158,8 +194,20 @@ export const PatientProvider: React.FC = ({ children }) => {
     if (medicalAuthorization) {
       data.append('medicalAuthorization', medicalAuthorization as Blob);
     }
-    if (medicalPrescription) {
-      data.append('medicalPrescription', medicalPrescription as Blob);
+    if (workContract) {
+      data.append('workContract', workContract as Blob);
+    }
+    if (prenatalCard) {
+      data.append('prenatalCard', prenatalCard as Blob);
+    }
+    if (puerperalCard) {
+      data.append('puerperalCard', puerperalCard as Blob);
+    }
+    if (bornAliveDec) {
+      data.append('bornAliveDec', bornAliveDec as Blob);
+    }
+    if (patientContract) {
+      data.append('patientContract', patientContract as Blob);
     }
 
     const response: AxiosResponse<{ msg: string }> = await api.put(
@@ -176,6 +224,14 @@ export const PatientProvider: React.FC = ({ children }) => {
     );
 
     return response.data.msg;
+  };
+
+  const getGroupsCall = async (idCategory: string) => {
+    const response: AxiosResponse<IGroup[]> = await api.get(
+      `/groups?idCategory=${idCategory}`
+    );
+
+    return response.data;
   };
 
   const getComorbiditiesCall = async () => {
@@ -207,6 +263,7 @@ export const PatientProvider: React.FC = ({ children }) => {
       value={{
         uploadProgress,
         createPatientCall,
+        getGroupsCall,
         getComorbiditiesCall,
         getStatusCall,
         getPatientCall,

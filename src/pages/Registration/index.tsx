@@ -38,11 +38,11 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigate('SeniorsRegistration')}
+                onPress={() => navigate('BedRidden')}
               >
                 <Image source={seniors} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Idosos</Text>
+                  <Text style={styles.itemTextUpper}>Pacientes Acamados</Text>
                   <Text style={styles.itemTextLower}>
                     De acordo com a faixa etária da vacinação
                   </Text>
