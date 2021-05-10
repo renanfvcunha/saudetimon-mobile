@@ -11,8 +11,11 @@ import IGroup from '../../typescript/IGroup';
 interface PatientContextData {
   uploadProgress: number;
   createPatientCall: (
-    groupSlug: string,
     patient: IPatient,
+    idCategory: string,
+    idGroup: string,
+    renOncImun: string,
+    idComorbidity?: string,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
     cpf?: IAttachment | File,
@@ -23,8 +26,7 @@ interface PatientContextData {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File,
-    idComorbidity?: string
+    patientContract?: IAttachment | File
   ) => Promise<string>;
   updatePatientCall: (
     id: string,
@@ -56,8 +58,11 @@ export const PatientProvider: React.FC = ({ children }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const createPatientCall = async (
-    groupSlug: string,
     patient: IPatient,
+    idCategory: string,
+    idGroup: string,
+    renOncImun: string,
+    idComorbidity?: string,
     idDocFront?: IAttachment | File,
     idDocVerse?: IAttachment | File,
     cpf?: IAttachment | File,
@@ -68,13 +73,11 @@ export const PatientProvider: React.FC = ({ children }) => {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File,
-    idComorbidity?: string
+    patientContract?: IAttachment | File
   ) => {
     setUploadProgress(0);
 
     const data = new FormData();
-    data.append('groupSlug', groupSlug);
     data.append('name', patient.name);
     data.append('cpf', patient.cpf);
     if (patient.susCard) {
@@ -88,6 +91,12 @@ export const PatientProvider: React.FC = ({ children }) => {
     }
     data.append('reference', patient.reference);
     data.append('neighborhood', patient.neighborhood);
+    data.append('idCategory', idCategory);
+    data.append('idGroup', idGroup);
+    data.append('renOncImun', renOncImun);
+    if (idComorbidity) {
+      data.append('idComorbidity', idComorbidity);
+    }
     if (idDocFront) {
       data.append('idDocFront', idDocFront as Blob);
     }
@@ -99,9 +108,6 @@ export const PatientProvider: React.FC = ({ children }) => {
     }
     if (cpf) {
       data.append('cpf', cpf as Blob);
-    }
-    if (idComorbidity) {
-      data.append('idComorbidity', idComorbidity);
     }
     if (medicalReport) {
       data.append('medicalReport', medicalReport as Blob);

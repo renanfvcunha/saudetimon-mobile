@@ -67,6 +67,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  attachmentText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  snackAddAttachment: {
+    backgroundColor: 'rgba(56, 53, 53, 0.8)',
+    width: '50%',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 32,
+  },
+  snackAddAttachmentTxt: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
   fieldsCategory: {
     textAlign: 'center',
     marginBottom: '2%',
@@ -146,6 +163,16 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 20,
     fontWeight: '700',
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 8,
   },
 });
 

@@ -25,7 +25,7 @@ const AttachmentField: React.FC<Props> = ({
   setField,
   fieldNumber,
   fieldName,
-  mandatory,
+  mandatory = false,
   pickDocument,
   pickImageFromGallery,
   pickImageFromCamera,

@@ -146,10 +146,18 @@ const BedRidden: React.FC = () => {
       phone: masks.numberMask(patient.phone),
     };
 
+    const selectedComorbidityParsed =
+      comorbidityPatient === '1' ? selectedComorbidity : undefined;
+
+    const renOncImunParsed = renOncImun === '1' ? 'true' : 'false';
+
     try {
       const msg = await createPatientCall(
-        'selectedGroup',
         patientParsed,
+        '1',
+        selectedGroup,
+        renOncImunParsed,
+        selectedComorbidityParsed,
         idDocFront,
         idDocVerse,
         cpf,
@@ -473,15 +481,52 @@ const BedRidden: React.FC = () => {
               />
 
               <AttachmentField
+                field={cpf}
+                setField={setCpf}
+                fieldNumber={2}
+                fieldName="CPF ou Cartão SUS"
+                mandatory
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
+
+              <AttachmentField
                 field={addressProof}
                 setField={setAddressProof}
-                fieldNumber={2}
+                fieldNumber={3}
                 fieldName="Comprovante de Endereço"
                 mandatory
                 pickDocument={pickDocument}
                 pickImageFromGallery={pickImageFromGallery}
                 pickImageFromCamera={pickImageFromCamera}
               />
+
+              {(comorbidityPatient === '1' || renOncImun === '1') && (
+                <AttachmentField
+                  field={medicalReport}
+                  setField={setMedicalReport}
+                  fieldNumber={4}
+                  fieldName="Laudo Médico Atualizado"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              {renOncImun === '1' && (
+                <AttachmentField
+                  field={medicalAuthorization}
+                  setField={setMedicalAuthorization}
+                  fieldNumber={5}
+                  fieldName="Autorização Médica"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
             </View>
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
