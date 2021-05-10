@@ -1,4 +1,4 @@
-import React, { useState, useContext, createRef } from 'react';
+import React, { useState, useContext, createRef, useEffect } from 'react';
 import {
   ImageBackground,
   View,
@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Picker } from '@react-native-picker/picker';
+import { RadioButton } from 'react-native-paper';
 
 import styles from './styles';
 import IPatient from '../../../typescript/IPatient';
@@ -21,22 +22,38 @@ import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import swAlert from '../../utils/alert';
 import catchHandler from '../../utils/catchHandler';
+import IGroup from '../../../typescript/IGroup';
+import IComorbidity from '../../../typescript/IComorbidity';
 
 const SeniorsRegistration: React.FC = () => {
-  const navigation = useNavigation();
-  const { uploadProgress, createPatientCall } = useContext(PatientContext);
+  const { goBack } = useNavigation();
+  const {
+    uploadProgress,
+    createPatientCall,
+    getGroupsCall,
+    getComorbiditiesCall,
+  } = useContext(PatientContext);
   const inputIdDocFrontRef = createRef<HTMLInputElement>();
   const inputIdDocVerseRef = createRef<HTMLInputElement>();
+  const inputCpfRef = createRef<HTMLInputElement>();
   const inputAddressProofRef = createRef<HTMLInputElement>();
-  const inputPhotoRef = createRef<HTMLInputElement>();
+  const inputMedicalReportRef = createRef<HTMLInputElement>();
+  const inputMedicalAuthorizationRef = createRef<HTMLInputElement>();
 
-  const [selectedGroup, setSelectedGroup] = useState('idosos_acamados');
+  const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
+  const [cpf, setCpf] = useState<File>();
   const [addressProof, setAddressProof] = useState<File>();
-  const [photo, setPhoto] = useState<File>();
+  const [medicalReport, setMedicalReport] = useState<File>();
+  const [medicalAuthorization, setMedicalAuthorization] = useState<File>();
+  const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
+  const [renOncImun, setRenOncImun] = useState('0');
+  const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
+  const [selectedComorbidity, setSelectedComorbidity] = useState('');
+  const [comorbidityPatient, setComorbidityPatient] = useState('0');
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -48,18 +65,28 @@ const SeniorsRegistration: React.FC = () => {
       phone: masks.numberMask(patient.phone),
     };
 
+    const selectedComorbidityParsed =
+      comorbidityPatient === '1' ? selectedComorbidity : undefined;
+
+    const renOncImunParsed = renOncImun === '1' ? 'true' : 'false';
+
     try {
       const msg = await createPatientCall(
-        selectedGroup,
         patientParsed,
+        '1',
+        selectedGroup,
+        renOncImunParsed,
+        selectedComorbidityParsed,
         idDocFront,
         idDocVerse,
+        cpf,
         addressProof,
-        photo
+        medicalReport,
+        medicalAuthorization
       );
 
       swAlert('success', '', msg);
-      navigation.goBack();
+      goBack();
     } catch (err) {
       catchHandler(
         err,
@@ -70,6 +97,44 @@ const SeniorsRegistration: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const getGroups = async () => {
+      try {
+        const data = await getGroupsCall('1');
+
+        setGroups(data);
+        setSelectedGroup(data[0].id.toString());
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar os grupos. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    getGroups();
+  }, [getGroupsCall]);
+
+  useEffect(() => {
+    const getComorbidities = async () => {
+      try {
+        const data = await getComorbiditiesCall();
+
+        setComorbidities(data);
+        setSelectedComorbidity(data[0].id.toString());
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar as comorbidades. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    if (comorbidityPatient === '1') {
+      getComorbidities();
+    }
+  }, [comorbidityPatient, getComorbiditiesCall]);
+
   return (
     <ImageBackground source={backgroundYellow} style={styles.container}>
       <View style={styles.logo}>
@@ -78,7 +143,7 @@ const SeniorsRegistration: React.FC = () => {
 
       <View style={styles.menu}>
         <View style={styles.pageTitle}>
-          <Text style={styles.pageTitleText}>Idosos</Text>
+          <Text style={styles.pageTitleText}>Acamados</Text>
         </View>
 
         <Text style={styles.fieldsCategory}>Grupo</Text>
@@ -88,13 +153,90 @@ const SeniorsRegistration: React.FC = () => {
             onValueChange={itemValue => setSelectedGroup(itemValue as string)}
             style={{ width: '100%' }}
           >
-            <Picker.Item
-              label="Idosos Acamados de 74 anos ou mais"
-              value="idosos_acamados"
-            />
-            <Picker.Item label="Idosos de 60 anos ou mais" value="idosos" />
+            {groups &&
+              groups.map(group => (
+                <Picker.Item
+                  key={group.id}
+                  label={group.group}
+                  value={group.id.toString()}
+                />
+              ))}
           </Picker>
         </View>
+
+        <Text style={styles.fieldsCategory}>
+          Paciente Renal, Oncológico ou Imonussuprimido?
+        </Text>
+        <View style={styles.radioButtons}>
+          <View style={styles.radioButtonItem}>
+            <RadioButton
+              value="0"
+              status={renOncImun === '0' ? 'checked' : 'unchecked'}
+              onPress={() => setRenOncImun('0')}
+              color="#000"
+            />
+            <Text>Não</Text>
+          </View>
+          <View style={styles.radioButtonItem}>
+            <RadioButton
+              value="1"
+              status={renOncImun === '1' ? 'checked' : 'unchecked'}
+              onPress={() => setRenOncImun('1')}
+              color="#000"
+            />
+            <Text>Sim</Text>
+          </View>
+        </View>
+
+        <Text style={styles.fieldsCategory}>Paciente com Comorbidade?</Text>
+        <View style={styles.radioButtons}>
+          <View style={styles.radioButtonItem}>
+            <RadioButton
+              value="0"
+              status={comorbidityPatient === '0' ? 'checked' : 'unchecked'}
+              onPress={() => setComorbidityPatient('0')}
+              color="#000"
+            />
+            <Text>Não</Text>
+          </View>
+          <View style={styles.radioButtonItem}>
+            <RadioButton
+              value="1"
+              status={comorbidityPatient === '1' ? 'checked' : 'unchecked'}
+              onPress={() => setComorbidityPatient('1')}
+              color="#000"
+            />
+            <Text>Sim</Text>
+          </View>
+        </View>
+
+        {comorbidityPatient === '1' && (
+          <>
+            <Text style={styles.fieldsCategory}>Comorbidade</Text>
+            <View style={styles.fields}>
+              <Picker
+                selectedValue={selectedComorbidity}
+                onValueChange={itemValue =>
+                  setSelectedComorbidity(itemValue as string)
+                }
+                style={{ width: '100%' }}
+              >
+                {comorbidities &&
+                  comorbidities.map(comorbidity => (
+                    <Picker.Item
+                      key={comorbidity.id}
+                      label={comorbidity.comorbidity}
+                      value={comorbidity.id.toString()}
+                    />
+                  ))}
+              </Picker>
+              <Text style={styles.helperText}>
+                Se sua comorbidade não está na lista, então infelizmente você
+                não está elegível ao cadastro.
+              </Text>
+            </View>
+          </>
+        )}
 
         <Text style={styles.fieldsCategory}>Dados Gerais</Text>
         <View style={styles.fields}>
@@ -250,6 +392,15 @@ const SeniorsRegistration: React.FC = () => {
           />
 
           <AttachmentField
+            ref={inputCpfRef}
+            field={cpf}
+            setField={setCpf}
+            refClick={() => inputCpfRef.current?.click()}
+            fieldName="CPF ou Cartão SUS"
+            mandatory
+          />
+
+          <AttachmentField
             ref={inputAddressProofRef}
             field={addressProof}
             setField={setAddressProof}
@@ -258,15 +409,27 @@ const SeniorsRegistration: React.FC = () => {
             mandatory
           />
 
-          <AttachmentField
-            ref={inputPhotoRef}
-            field={photo}
-            setField={setPhoto}
-            refClick={() => inputPhotoRef.current?.click()}
-            fieldName="Foto do(a) Paciente"
-            mandatory
-            filesAccepted="image/*"
-          />
+          {(comorbidityPatient === '1' || renOncImun === '1') && (
+            <AttachmentField
+              ref={inputMedicalReportRef}
+              field={medicalReport}
+              setField={setMedicalReport}
+              refClick={() => inputMedicalReportRef.current?.click()}
+              fieldName="Laudo Médico Atualizado"
+              mandatory
+            />
+          )}
+
+          {renOncImun === '1' && (
+            <AttachmentField
+              ref={inputMedicalAuthorizationRef}
+              field={medicalAuthorization}
+              setField={setMedicalAuthorization}
+              refClick={() => inputMedicalAuthorizationRef.current?.click()}
+              fieldName="Autorização Médica"
+              mandatory
+            />
+          )}
         </View>
 
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
@@ -289,7 +452,7 @@ const SeniorsRegistration: React.FC = () => {
         <TouchableOpacity
           style={styles.btnBack}
           activeOpacity={0.5}
-          onPress={() => navigation.goBack()}
+          onPress={goBack}
         >
           <Text style={styles.btnBackText}>Voltar</Text>
         </TouchableOpacity>

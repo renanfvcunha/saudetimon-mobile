@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: windowWidth * 0.25,
   },
   pageTitle: {
-    top: '-3%',
+    top: windowWidth * 0.001,
     alignSelf: 'center',
     width: buttonWidth,
     height: buttonHeight,
