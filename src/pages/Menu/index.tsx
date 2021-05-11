@@ -48,7 +48,7 @@ const Menu: React.FC = () => {
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Pacientes Acamados</Text>
                   <Text style={styles.itemTextLower}>
-                    De acordo com a faixa etária da vacinação
+                    Cadastro para pacientes acamados
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -61,7 +61,23 @@ const Menu: React.FC = () => {
                 <Image source={comorbidity} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Sobra de Doses</Text>
-                  <Text style={styles.itemTextLower}>Nomes de Doenças</Text>
+                  <Text style={styles.itemTextLower}>
+                    Cadastro para sobra de doses
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.5}
+                onPress={() => navigate('Registration')}
+              >
+                <Image source={comorbidity} style={styles.itemImg} />
+                <View style={styles.itemTexts}>
+                  <Text style={styles.itemTextUpper}>Cadastro</Text>
+                  <Text style={styles.itemTextLower}>
+                    Cadastro Geral para Grupos Prioritários
+                  </Text>
                 </View>
               </TouchableOpacity>
 

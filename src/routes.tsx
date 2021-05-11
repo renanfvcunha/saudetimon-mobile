@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import BedRidden from './pages/BedRidden';
 import LeftOver from './pages/LeftOver';
+import Registration from './pages/Registration';
 import StatusCheck from './pages/StatusCheck';
 import VaccinationLocations from './pages/VaccinationLocations';
 import FrequentDoubts from './pages/FrequentDoubts';
@@ -36,6 +37,11 @@ const Routes: React.FC = () => {
         <Stack.Screen
           name="LeftOver"
           component={LeftOver}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Registration"
+          component={Registration}
           options={{ headerShown: false }}
         />
         <Stack.Screen
