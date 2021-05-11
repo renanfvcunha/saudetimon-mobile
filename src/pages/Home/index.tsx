@@ -45,13 +45,13 @@ const Home: React.FC = () => {
           <View style={styles.buttons}>
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={() => navigate('Registration')}
+              onPress={() => navigate('Menu')}
             >
               <LinearGradient
                 colors={['#2265ac', '#034f9a']}
                 style={styles.btnStart}
               >
-                <Text style={styles.btnStartTxt}>Começar Cadastro</Text>
+                <Text style={styles.btnStartTxt}>Menu</Text>
               </LinearGradient>
             </TouchableOpacity>
 

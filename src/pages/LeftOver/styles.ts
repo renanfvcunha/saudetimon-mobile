@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: windowWidth * 0.25,
   },
   pageTitle: {
-    top: '-3%',
+    top: windowWidth * 0.001,
     alignSelf: 'center',
     width: buttonWidth,
     height: buttonHeight,
@@ -48,8 +48,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+  helperText: {
+    fontSize: 12,
+    marginLeft: '3%',
+    marginTop: `${Platform.OS === 'web' ? '3%' : '0%'}`,
+  },
   items: {
     marginLeft: marginItemsLeft,
+  },
+  attachmentText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  snackAddAttachment: {
+    backgroundColor: 'rgba(56, 53, 53, 0.8)',
+    width: '50%',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 32,
+  },
+  snackAddAttachmentTxt: {
+    fontSize: 18,
+    fontWeight: '700',
   },
   fieldsCategory: {
     textAlign: 'center',
@@ -68,11 +90,6 @@ const styles = StyleSheet.create({
     paddingVertical: '2%',
     paddingHorizontal: '5%',
     marginBottom: '5%',
-  },
-  helperText: {
-    fontSize: 12,
-    marginLeft: '3%',
-    marginTop: `${Platform.OS === 'web' ? '3%' : '0%'}`,
   },
   textInput: {
     marginBottom: 24,
@@ -122,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '10%',
     width: '40%',
-    height: '3%',
+    height: 32,
     backgroundColor: '#73c2cf',
     borderTopEndRadius: 4,
     borderBottomEndRadius: 4,
@@ -135,6 +152,16 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 20,
     fontWeight: '700',
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 8,
   },
 });
 

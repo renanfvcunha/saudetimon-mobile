@@ -18,7 +18,7 @@ import comorbidity from '../../images/comorbidity.png';
 import check from '../../images/check.png';
 import vacLoc from '../../images/vacLoc.png';
 
-const Registration: React.FC = () => {
+const Menu: React.FC = () => {
   const { navigate, goBack } = useNavigation();
 
   return (
@@ -31,7 +31,7 @@ const Registration: React.FC = () => {
 
           <View style={styles.menu}>
             <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Cadastro</Text>
+              <Text style={styles.pageTitleText}>Menu</Text>
             </View>
 
             <View style={styles.items}>
@@ -52,11 +52,11 @@ const Registration: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigate('ComorbidityRegistration')}
+                onPress={() => navigate('LeftOver')}
               >
                 <Image source={comorbidity} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Comorbidades</Text>
+                  <Text style={styles.itemTextUpper}>Sobra de Doses</Text>
                   <Text style={styles.itemTextLower}>Nomes de Doenças</Text>
                 </View>
               </TouchableOpacity>
@@ -105,4 +105,4 @@ const Registration: React.FC = () => {
   );
 };
 
-export default Registration;
+export default Menu;

@@ -4,9 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './pages/Home';
-import Registration from './pages/Registration';
+import Menu from './pages/Menu';
 import BedRidden from './pages/BedRidden';
-import ComorbidityRegistration from './pages/ComorbidityRegistration';
+import LeftOver from './pages/LeftOver';
 import StatusCheck from './pages/StatusCheck';
 import VaccinationLocations from './pages/VaccinationLocations';
 import FrequentDoubts from './pages/FrequentDoubts';
@@ -24,8 +24,8 @@ const Routes: React.FC = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Registration"
-          component={Registration}
+          name="Menu"
+          component={Menu}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -34,8 +34,8 @@ const Routes: React.FC = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ComorbidityRegistration"
-          component={ComorbidityRegistration}
+          name="LeftOver"
+          component={LeftOver}
           options={{ headerShown: false }}
         />
         <Stack.Screen

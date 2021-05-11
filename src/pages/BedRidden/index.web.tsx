@@ -25,7 +25,7 @@ import catchHandler from '../../utils/catchHandler';
 import IGroup from '../../../typescript/IGroup';
 import IComorbidity from '../../../typescript/IComorbidity';
 
-const SeniorsRegistration: React.FC = () => {
+const BedRidden: React.FC = () => {
   const { goBack } = useNavigation();
   const {
     uploadProgress,
@@ -461,4 +461,4 @@ const SeniorsRegistration: React.FC = () => {
   );
 };
 
-export default SeniorsRegistration;
+export default BedRidden;

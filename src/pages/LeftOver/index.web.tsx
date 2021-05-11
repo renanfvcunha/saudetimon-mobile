@@ -14,7 +14,6 @@ import { Picker } from '@react-native-picker/picker';
 
 import styles from './styles';
 import IPatient from '../../../typescript/IPatient';
-import IComorbidity from '../../../typescript/IComorbidity';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import AttachmentField from '../../components/AttachmentField/index.web';
@@ -22,34 +21,28 @@ import masks from '../../utils/masks';
 import PatientContext from '../../contexts/patientContext';
 import swAlert from '../../utils/alert';
 import catchHandler from '../../utils/catchHandler';
+import IGroup from '../../../typescript/IGroup';
 
-const ComorbidityRegistration: React.FC = () => {
-  const navigation = useNavigation();
-  const {
-    uploadProgress,
-    createPatientCall,
-    getComorbiditiesCall,
-  } = useContext(PatientContext);
+const LeftOver: React.FC = () => {
+  const { goBack } = useNavigation();
+  const { uploadProgress, createPatientCall, getGroupsCall } = useContext(
+    PatientContext
+  );
   const inputIdDocFrontRef = createRef<HTMLInputElement>();
   const inputIdDocVerseRef = createRef<HTMLInputElement>();
+  const inputCpfRef = createRef<HTMLInputElement>();
   const inputAddressProofRef = createRef<HTMLInputElement>();
-  const inputPhotoRef = createRef<HTMLInputElement>();
-  const inputMedicalReportRef = createRef<HTMLInputElement>();
-  const inputMedicalAuthorizationRef = createRef<HTMLInputElement>();
-  const inputMedicalPrescriptionRef = createRef<HTMLInputElement>();
+  const inputWorkContractRef = createRef<HTMLInputElement>();
 
-  const [selectedGroup, setSelectedGroup] = useState('paciente_oncologico');
+  const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
+  const [cpf, setCpf] = useState<File>();
   const [addressProof, setAddressProof] = useState<File>();
-  const [medicalReport, setMedicalReport] = useState<File>();
-  const [medicalAuthorization, setMedicalAuthorization] = useState<File>();
-  const [medicalPrescription, setMedicalPrescription] = useState<File>();
-  const [photo, setPhoto] = useState<File>();
+  const [workContract, setWorkContract] = useState<File>();
+  const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
-  const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
-  const [selectedComorbidity, setSelectedComorbidity] = useState('');
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -61,25 +54,24 @@ const ComorbidityRegistration: React.FC = () => {
       phone: masks.numberMask(patient.phone),
     };
 
-    const idComorbidity =
-      selectedGroup === 'comorbidades' ? selectedComorbidity : undefined;
-
     try {
       const msg = await createPatientCall(
-        selectedGroup,
         patientParsed,
+        '2',
+        selectedGroup,
+        'false',
+        undefined,
         idDocFront,
         idDocVerse,
+        cpf,
         addressProof,
-        photo,
-        idComorbidity,
-        medicalReport,
-        medicalAuthorization,
-        medicalPrescription
+        undefined,
+        undefined,
+        workContract
       );
 
       swAlert('success', '', msg);
-      navigation.goBack();
+      goBack();
     } catch (err) {
       catchHandler(
         err,
@@ -91,24 +83,22 @@ const ComorbidityRegistration: React.FC = () => {
   };
 
   useEffect(() => {
-    const getComorbidities = async () => {
+    const getGroups = async () => {
       try {
-        const data = await getComorbiditiesCall();
+        const data = await getGroupsCall('2');
 
-        setComorbidities(data);
-        setSelectedComorbidity(data[0].id.toString());
+        setGroups(data);
+        setSelectedGroup(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
-          'Não foi possível listar as comorbidades. Tente novamente ou contate o suporte.'
+          'Não foi possível listar os grupos. Tente novamente ou contate o suporte.'
         );
       }
     };
 
-    if (selectedGroup === 'comorbidades') {
-      getComorbidities();
-    }
-  }, [getComorbiditiesCall, selectedGroup]);
+    getGroups();
+  }, [getGroupsCall]);
 
   return (
     <ImageBackground source={backgroundYellow} style={styles.container}>
@@ -118,7 +108,7 @@ const ComorbidityRegistration: React.FC = () => {
 
       <View style={styles.menu}>
         <View style={styles.pageTitle}>
-          <Text style={styles.pageTitleText}>Comorbidades</Text>
+          <Text style={styles.pageTitleText}>Sobra de Doses</Text>
         </View>
 
         <Text style={styles.fieldsCategory}>Grupo</Text>
@@ -128,45 +118,16 @@ const ComorbidityRegistration: React.FC = () => {
             onValueChange={itemValue => setSelectedGroup(itemValue as string)}
             style={{ width: '100%' }}
           >
-            <Picker.Item
-              label="Paciente oncológico em tratamento de quimioterapia ou radioterapia"
-              value="paciente_oncologico"
-            />
-            <Picker.Item
-              label="Paciente renal em tratamento com diálise ou hemodiálise"
-              value="paciente_renal"
-            />
-            <Picker.Item label="Outras Comorbidades" value="comorbidades" />
+            {groups &&
+              groups.map(group => (
+                <Picker.Item
+                  key={group.id}
+                  label={group.group}
+                  value={group.id.toString()}
+                />
+              ))}
           </Picker>
         </View>
-
-        {selectedGroup === 'comorbidades' && (
-          <>
-            <Text style={styles.fieldsCategory}>Comorbidade</Text>
-            <View style={styles.fields}>
-              <Picker
-                selectedValue={selectedComorbidity}
-                onValueChange={itemValue =>
-                  setSelectedComorbidity(itemValue as string)
-                }
-                style={{ width: '100%' }}
-              >
-                {comorbidities &&
-                  comorbidities.map(comorbidity => (
-                    <Picker.Item
-                      key={comorbidity.id}
-                      label={comorbidity.comorbidity}
-                      value={comorbidity.id.toString()}
-                    />
-                  ))}
-              </Picker>
-              <Text style={styles.helperText}>
-                Se sua comorbidade não está na lista, então infelizmente você
-                não está elegível ao cadastro.
-              </Text>
-            </View>
-          </>
-        )}
 
         <Text style={styles.fieldsCategory}>Dados Gerais</Text>
         <View style={styles.fields}>
@@ -322,6 +283,15 @@ const ComorbidityRegistration: React.FC = () => {
           />
 
           <AttachmentField
+            ref={inputCpfRef}
+            field={cpf}
+            setField={setCpf}
+            refClick={() => inputCpfRef.current?.click()}
+            fieldName="CPF ou Cartão SUS"
+            mandatory
+          />
+
+          <AttachmentField
             ref={inputAddressProofRef}
             field={addressProof}
             setField={setAddressProof}
@@ -331,44 +301,13 @@ const ComorbidityRegistration: React.FC = () => {
           />
 
           <AttachmentField
-            ref={inputPhotoRef}
-            field={photo}
-            setField={setPhoto}
-            refClick={() => inputPhotoRef.current?.click()}
-            fieldName="Foto do(a) Paciente"
+            ref={inputWorkContractRef}
+            field={workContract}
+            setField={setWorkContract}
+            refClick={() => inputWorkContractRef.current?.click()}
+            fieldName="Contracheque ou Contrato de Trabalho"
             mandatory
-            filesAccepted="image/*"
           />
-
-          <AttachmentField
-            ref={inputMedicalReportRef}
-            field={medicalReport}
-            setField={setMedicalReport}
-            refClick={() => inputMedicalReportRef.current?.click()}
-            fieldName="Laudo Médico"
-            mandatory={selectedGroup !== 'comorbidades'}
-          />
-
-          {selectedGroup !== 'comorbidades' && (
-            <AttachmentField
-              ref={inputMedicalAuthorizationRef}
-              field={medicalAuthorization}
-              setField={setMedicalAuthorization}
-              refClick={() => inputMedicalAuthorizationRef.current?.click()}
-              fieldName="Autorização Médica"
-              mandatory
-            />
-          )}
-
-          {selectedGroup === 'comorbidades' && (
-            <AttachmentField
-              ref={inputMedicalPrescriptionRef}
-              field={medicalPrescription}
-              setField={setMedicalPrescription}
-              refClick={() => inputMedicalPrescriptionRef.current?.click()}
-              fieldName="Prescrição Médica"
-            />
-          )}
         </View>
 
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
@@ -391,7 +330,7 @@ const ComorbidityRegistration: React.FC = () => {
         <TouchableOpacity
           style={styles.btnBack}
           activeOpacity={0.5}
-          onPress={() => navigation.goBack()}
+          onPress={goBack}
         >
           <Text style={styles.btnBackText}>Voltar</Text>
         </TouchableOpacity>
@@ -400,4 +339,4 @@ const ComorbidityRegistration: React.FC = () => {
   );
 };
 
-export default ComorbidityRegistration;
+export default LeftOver;
