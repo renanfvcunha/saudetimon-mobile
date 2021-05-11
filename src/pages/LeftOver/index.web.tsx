@@ -101,7 +101,11 @@ const LeftOver: React.FC = () => {
   }, [getGroupsCall]);
 
   return (
-    <ImageBackground source={backgroundYellow} style={styles.container}>
+    <ImageBackground
+      source={backgroundYellow}
+      style={styles.container}
+      imageStyle={{ resizeMode: 'repeat' }}
+    >
       <View style={styles.logo}>
         <Image source={logoPref} style={styles.logoImg} />
       </View>

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: windowWidth * 0.25,
   },
   pageTitle: {
-    top: '-3%',
+    top: windowWidth * 0.001,
     alignSelf: 'center',
     width: buttonWidth,
     height: buttonHeight,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   btnBack: {
-    marginTop: '10%',
+    top: windowWidth,
     width: '40%',
     paddingVertical: 4,
     backgroundColor: '#73c2cf',

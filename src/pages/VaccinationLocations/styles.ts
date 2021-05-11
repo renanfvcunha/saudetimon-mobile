@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    resizeMode: 'cover',
   },
   logo: {
     marginTop: '10%',
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: windowWidth * 0.25,
   },
   pageTitle: {
-    top: '-3%',
+    top: windowWidth * 0.0001,
     alignSelf: 'center',
     width: buttonWidth,
     height: buttonHeight,
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '10%',
     width: '40%',
-    height: '5%',
+    height: 32,
     backgroundColor: '#73c2cf',
     borderTopEndRadius: 4,
     borderBottomEndRadius: 4,

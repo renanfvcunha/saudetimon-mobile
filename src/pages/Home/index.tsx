@@ -26,50 +26,56 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <ImageBackground source={backgroundBlue} style={styles.container}>
-        <View style={styles.rectanglesTop}>
-          <View style={styles.rectangle1} />
-          <View style={styles.rectangle2} />
-          <View style={styles.rectangle3} />
-          <View style={styles.rectangle4} />
-          <Text />
-        </View>
+      <ImageBackground
+        source={backgroundBlue}
+        style={styles.container}
+        imageStyle={{ resizeMode: 'repeat' }}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={styles.rectanglesTop}>
+            <View style={styles.rectangle1} />
+            <View style={styles.rectangle2} />
+            <View style={styles.rectangle3} />
+            <View style={styles.rectangle4} />
+            <Text />
+          </View>
 
-        <View style={styles.logo}>
-          <Image source={logo} style={styles.logoImg} />
-        </View>
+          <View style={styles.logo}>
+            <Image source={logo} style={styles.logoImg} />
+          </View>
 
-        <View style={styles.mainContent}>
-          <Image source={hand} style={styles.hand} />
+          <View style={styles.mainContent}>
+            <Image source={hand} style={styles.hand} />
 
-          <View style={styles.buttons}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => navigate('Menu')}
-            >
-              <LinearGradient
-                colors={['#2265ac', '#034f9a']}
-                style={styles.btnStart}
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => navigate('Menu')}
               >
-                <Text style={styles.btnStartTxt}>Menu</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+                <LinearGradient
+                  colors={['#2265ac', '#034f9a']}
+                  style={styles.btnStart}
+                >
+                  <Text style={styles.btnStartTxt}>Menu</Text>
+                </LinearGradient>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.btnDoubts}
-              activeOpacity={0.5}
-              onPress={() => navigate('FrequentDoubts')}
-            >
-              <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnDoubts}
+                activeOpacity={0.5}
+                onPress={() => navigate('FrequentDoubts')}
+              >
+                <Text style={styles.btnDoubtsTxt}>Dúvidas Frequentes</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.btnPhones}
-              activeOpacity={0.5}
-              onPress={() => setModalPhones(true)}
-            >
-              <Text style={styles.btnPhonesTxt}>Fale Conosco</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnPhones}
+                activeOpacity={0.5}
+                onPress={() => setModalPhones(true)}
+              >
+                <Text style={styles.btnPhonesTxt}>Fale Conosco</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ImageBackground>

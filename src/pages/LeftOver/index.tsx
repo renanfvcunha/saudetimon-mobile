@@ -177,17 +177,21 @@ const LeftOver: React.FC = () => {
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground source={backgroundYellow} style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={logoPref} style={styles.logoImg} />
+      <ImageBackground
+        source={backgroundYellow}
+        style={styles.container}
+        imageStyle={{ resizeMode: 'cover' }}
+      >
+        <View style={styles.logo}>
+          <Image source={logoPref} style={styles.logoImg} />
+        </View>
+
+        <View style={styles.menu}>
+          <View style={styles.pageTitle}>
+            <Text style={styles.pageTitleText}>Sobra de Doses</Text>
           </View>
 
-          <View style={styles.menu}>
-            <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Sobra de Doses</Text>
-            </View>
-
+          <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.fieldsCategory}>Grupo</Text>
             <View style={styles.fields}>
               <Picker
@@ -426,9 +430,9 @@ const LeftOver: React.FC = () => {
             >
               <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </ScrollView>
+          </ScrollView>
+        </View>
+      </ImageBackground>
       <StatusBar style="light" backgroundColor="#ffc816" />
     </>
   );

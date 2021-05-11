@@ -12,7 +12,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
-import { ScrollView } from 'react-native-gesture-handler';
 import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
@@ -49,108 +48,110 @@ const StatusCheck: React.FC = () => {
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground source={backgroundYellow} style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={logoPref} style={styles.logoImg} />
+      <ImageBackground
+        source={backgroundYellow}
+        style={styles.container}
+        imageStyle={{ resizeMode: 'cover' }}
+      >
+        <View style={styles.logo}>
+          <Image source={logoPref} style={styles.logoImg} />
+        </View>
+
+        <View style={styles.menu}>
+          <View style={styles.pageTitle}>
+            <Text style={styles.pageTitleText}>Checagem</Text>
           </View>
 
-          <View style={styles.menu}>
-            <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Checagem</Text>
+          <View style={styles.items}>
+            <View style={styles.textInput}>
+              <TextInput
+                placeholder="CPF"
+                keyboardType="numeric"
+                style={styles.input}
+                value={cpf}
+                onChange={e => setCpf(masks.cpfMask(e.nativeEvent.text))}
+                returnKeyType="send"
+                onSubmitEditing={getStatus}
+              />
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{ position: 'absolute', right: 0 }}
+                onPress={getStatus}
+              >
+                <AntDesign name="search1" size={20} color="#000" />
+              </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={styles.items}>
-              <View style={styles.textInput}>
-                <TextInput
-                  placeholder="CPF"
-                  keyboardType="numeric"
-                  style={styles.input}
-                  value={cpf}
-                  onChange={e => setCpf(masks.cpfMask(e.nativeEvent.text))}
-                  returnKeyType="send"
-                  onSubmitEditing={getStatus}
-                />
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={{ position: 'absolute', right: 0 }}
-                  onPress={getStatus}
+          {loading && <ActivityIndicator color="#034f9a" size={32} />}
+
+          {status && (
+            <>
+              <Text style={styles.status}>Status:</Text>
+              <View style={styles.statusContainer}>
+                <View
+                  style={[
+                    styles.statusBackground,
+                    status.patient.patientStatus.status.id === 1 &&
+                      styles.statusAnalysis,
+                    status.patient.patientStatus.status.id === 2 &&
+                      styles.statusApproved,
+                    status.patient.patientStatus.status.id === 3 &&
+                      styles.statusDenied,
+                  ]}
                 >
-                  <AntDesign name="search1" size={20} color="#000" />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {loading && <ActivityIndicator color="#034f9a" size={32} />}
-
-            {status && (
-              <>
-                <Text style={styles.status}>Status:</Text>
-                <View style={styles.statusContainer}>
-                  <View
-                    style={[
-                      styles.statusBackground,
-                      status.patient.patientStatus.status.id === 1 &&
-                        styles.statusAnalysis,
-                      status.patient.patientStatus.status.id === 2 &&
-                        styles.statusApproved,
-                      status.patient.patientStatus.status.id === 3 &&
-                        styles.statusDenied,
-                    ]}
-                  >
-                    <Text style={styles.statusText}>
-                      {status.patient.patientStatus.status.status}
-                    </Text>
-                    <Text style={styles.statusHelperText}>
-                      {status.patient.patientStatus.status.message}
-                    </Text>
-                  </View>
+                  <Text style={styles.statusText}>
+                    {status.patient.patientStatus.status.status}
+                  </Text>
+                  <Text style={styles.statusHelperText}>
+                    {status.patient.patientStatus.status.message}
+                  </Text>
                 </View>
-                {status.position && status.approveds && (
+              </View>
+              {status.position && status.approveds && (
+                <View style={styles.statusComplement}>
+                  <Text style={styles.statusComplementText}>
+                    Posição na fila: {status.position} de {status.approveds}
+                    {'\n'}
+                    Grupo: {status.patient.group.group}
+                  </Text>
+                </View>
+              )}
+              {status.patient.patientStatus.status.id === 3 &&
+                status.patient.patientStatus.message && (
                   <View style={styles.statusComplement}>
                     <Text style={styles.statusComplementText}>
-                      Posição na fila: {status.position} de {status.approveds}
-                      {'\n'}
-                      Grupo: {status.patient.group.group}
+                      Motivo:{`\n${status.patient.patientStatus.message}`}
                     </Text>
                   </View>
                 )}
-                {status.patient.patientStatus.status.id === 3 &&
-                  status.patient.patientStatus.message && (
-                    <View style={styles.statusComplement}>
-                      <Text style={styles.statusComplementText}>
-                        Motivo:{`\n${status.patient.patientStatus.message}`}
-                      </Text>
-                    </View>
-                  )}
-              </>
-            )}
+            </>
+          )}
 
-            {status && status.patient.patientStatus.status.id === 3 && (
-              <TouchableOpacity
-                style={styles.btnUpdate}
-                activeOpacity={0.5}
-                onPress={() =>
-                  navigate('UpdateRegistration', {
-                    cpf: status.patient.cpf,
-                    group: status.patient.group.slug,
-                  })
-                }
-              >
-                <Text style={styles.btnUpdateText}>Atualizar Cadastro</Text>
-              </TouchableOpacity>
-            )}
-
+          {status && status.patient.patientStatus.status.id === 3 && (
             <TouchableOpacity
-              style={styles.btnBack}
+              style={styles.btnUpdate}
               activeOpacity={0.5}
-              onPress={goBack}
+              onPress={() =>
+                navigate('UpdateRegistration', {
+                  cpf: status.patient.cpf,
+                  group: status.patient.group.slug,
+                })
+              }
             >
-              <Text style={styles.btnBackText}>Voltar</Text>
+              <Text style={styles.btnUpdateText}>Atualizar Cadastro</Text>
             </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </ScrollView>
+          )}
+
+          <TouchableOpacity
+            style={styles.btnBack}
+            activeOpacity={0.5}
+            onPress={goBack}
+          >
+            <Text style={styles.btnBackText}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
       <StatusBar style="light" backgroundColor="#ffc816" />
     </>
   );

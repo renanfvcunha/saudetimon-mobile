@@ -13,7 +13,6 @@ const handWidth = handHeight * 1.08575804;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    resizeMode: 'cover',
     paddingTop: Constants.statusBarHeight,
   },
   rectanglesTop: {
@@ -114,6 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: '#fff',

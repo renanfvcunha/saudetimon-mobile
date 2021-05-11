@@ -20,17 +20,21 @@ const VaccinationLocations: React.FC = () => {
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground source={backgroundYellow} style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={logoPref} style={styles.logoImg} />
+      <ImageBackground
+        source={backgroundYellow}
+        style={styles.container}
+        imageStyle={{ resizeMode: 'repeat' }}
+      >
+        <View style={styles.logo}>
+          <Image source={logoPref} style={styles.logoImg} />
+        </View>
+
+        <View style={styles.menu}>
+          <View style={styles.pageTitle}>
+            <Text style={styles.pageTitleText}>Locais de Vacinação</Text>
           </View>
 
-          <View style={styles.menu}>
-            <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Locais de Vacinação</Text>
-            </View>
-
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.items}>
               <TouchableOpacity
                 style={styles.item}
@@ -116,17 +120,17 @@ const VaccinationLocations: React.FC = () => {
                 </View>
               </TouchableOpacity>
             </View>
+          </ScrollView>
 
-            <TouchableOpacity
-              style={styles.btnBack}
-              activeOpacity={0.5}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={styles.btnBackText}>Voltar</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </ScrollView>
+          <TouchableOpacity
+            style={styles.btnBack}
+            activeOpacity={0.5}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.btnBackText}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
       <StatusBar style="light" backgroundColor="#ffc816" />
     </>
   );

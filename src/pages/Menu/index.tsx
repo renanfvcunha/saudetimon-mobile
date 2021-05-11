@@ -23,17 +23,21 @@ const Menu: React.FC = () => {
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground source={backgroundYellow} style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={logoPref} style={styles.logoImg} />
+      <ImageBackground
+        source={backgroundYellow}
+        style={styles.container}
+        imageStyle={{ resizeMode: 'cover' }}
+      >
+        <View style={styles.logo}>
+          <Image source={logoPref} style={styles.logoImg} />
+        </View>
+
+        <View style={styles.menu}>
+          <View style={styles.pageTitle}>
+            <Text style={styles.pageTitleText}>Menu</Text>
           </View>
 
-          <View style={styles.menu}>
-            <View style={styles.pageTitle}>
-              <Text style={styles.pageTitleText}>Menu</Text>
-            </View>
-
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.items}>
               <TouchableOpacity
                 style={styles.item}
@@ -97,9 +101,9 @@ const Menu: React.FC = () => {
             >
               <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </ScrollView>
+          </ScrollView>
+        </View>
+      </ImageBackground>
       <StatusBar style="light" backgroundColor="#ffc816" />
     </>
   );
