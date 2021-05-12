@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 
 const windowWidth = Dimensions.get('window').width;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   helperText: {
     fontSize: 12,
     marginLeft: '3%',
-    marginTop: `${Platform.OS === 'web' ? '3%' : '0%'}`,
+    marginTop: '3%',
   },
   items: {
     marginLeft: marginItemsLeft,

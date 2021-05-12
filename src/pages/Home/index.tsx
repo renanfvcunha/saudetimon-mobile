@@ -82,7 +82,7 @@ const Home: React.FC = () => {
 
       {Platform.OS !== 'web' ? (
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent
           visible={modalPhones}
           onRequestClose={() => setModalPhones(!modalPhones)}
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
         </Modal>
       ) : (
         <ModalWeb
-          animationType="slide"
+          animationType="fade"
           transparent
           visible={modalPhones}
           onRequestClose={() => setModalPhones(!modalPhones)}
