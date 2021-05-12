@@ -170,7 +170,7 @@ const LeftOver: React.FC = () => {
         const data = await getGroupsCall('2');
 
         setGroups(data);
-        setSelectedGroup(data[0].id.toString());
+        if (selectedGroup === '') setSelectedGroup(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
@@ -180,7 +180,7 @@ const LeftOver: React.FC = () => {
     };
 
     getGroups();
-  }, [getGroupsCall]);
+  }, [getGroupsCall, selectedGroup]);
 
   return (
     <>

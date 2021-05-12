@@ -39,6 +39,10 @@ const Registration: React.FC = () => {
   const inputAddressProofRef = createRef<HTMLInputElement>();
   const inputMedicalReportRef = createRef<HTMLInputElement>();
   const inputMedicalAuthorizationRef = createRef<HTMLInputElement>();
+  const inputPreNatalCardRef = createRef<HTMLInputElement>();
+  const inputPuerperalCardRef = createRef<HTMLInputElement>();
+  const inputBornAliveDecRef = createRef<HTMLInputElement>();
+  const inputPatientContractRef = createRef<HTMLInputElement>();
 
   const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
@@ -48,6 +52,10 @@ const Registration: React.FC = () => {
   const [addressProof, setAddressProof] = useState<File>();
   const [medicalReport, setMedicalReport] = useState<File>();
   const [medicalAuthorization, setMedicalAuthorization] = useState<File>();
+  const [preNatalCard, setPreNatalCard] = useState<File>();
+  const [puerperalCard, setPuerperalCard] = useState<File>();
+  const [bornAliveDec, setBornAliveDec] = useState<File>();
+  const [patientContract, setPatientContract] = useState<File>();
   const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
   const [renOncImun, setRenOncImun] = useState('0');
@@ -73,7 +81,7 @@ const Registration: React.FC = () => {
     try {
       const msg = await createPatientCall(
         patientParsed,
-        '1',
+        '3',
         selectedGroup,
         renOncImunParsed,
         selectedComorbidityParsed,
@@ -82,7 +90,12 @@ const Registration: React.FC = () => {
         cpf,
         addressProof,
         medicalReport,
-        medicalAuthorization
+        medicalAuthorization,
+        undefined,
+        preNatalCard,
+        puerperalCard,
+        bornAliveDec,
+        patientContract
       );
 
       swAlert('success', '', msg);
@@ -434,6 +447,54 @@ const Registration: React.FC = () => {
               mandatory
             />
           )}
+
+          {groups &&
+            /gestante/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
+              <>
+                <AttachmentField
+                  ref={inputPreNatalCardRef}
+                  field={preNatalCard}
+                  setField={setPreNatalCard}
+                  refClick={() => inputPreNatalCardRef.current?.click()}
+                  fieldName="Cartão de Pré Natal"
+                  mandatory
+                />
+
+                <AttachmentField
+                  ref={inputPuerperalCardRef}
+                  field={puerperalCard}
+                  setField={setPuerperalCard}
+                  refClick={() => inputPuerperalCardRef.current?.click()}
+                  fieldName="Cartão de Puérperas"
+                  mandatory
+                />
+
+                <AttachmentField
+                  ref={inputBornAliveDecRef}
+                  field={bornAliveDec}
+                  setField={setBornAliveDec}
+                  refClick={() => inputBornAliveDecRef.current?.click()}
+                  fieldName="Declaração de Nascido Vivo"
+                  mandatory
+                />
+              </>
+            )}
+
+          {groups &&
+            groups.find(grp => grp.id.toString() === selectedGroup)?.group ===
+              'Profissionais da área da saúde - autônomos' && (
+              <AttachmentField
+                ref={inputPatientContractRef}
+                field={patientContract}
+                setField={setPatientContract}
+                refClick={() => inputPatientContractRef.current?.click()}
+                fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                mandatory
+              />
+            )}
         </View>
 
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

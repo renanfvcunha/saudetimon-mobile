@@ -52,6 +52,10 @@ const Registration: React.FC = () => {
   const [medicalAuthorization, setMedicalAuthorization] = useState<
     IAttachment
   >();
+  const [preNatalCard, setPreNatalCard] = useState<IAttachment>();
+  const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
+  const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
+  const [patientContract, setPatientContract] = useState<IAttachment>();
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<IGroup[]>();
   const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
@@ -91,6 +95,18 @@ const Registration: React.FC = () => {
         break;
       case 5:
         setMedicalAuthorization({ uri, name: String(fileName), type });
+        break;
+      case 6:
+        setPreNatalCard({ uri, name: String(fileName), type });
+        break;
+      case 7:
+        setPuerperalCard({ uri, name: String(fileName), type });
+        break;
+      case 8:
+        setBornAliveDec({ uri, name: String(fileName), type });
+        break;
+      case 9:
+        setPatientContract({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -162,7 +178,7 @@ const Registration: React.FC = () => {
     try {
       const msg = await createPatientCall(
         patientParsed,
-        '1',
+        '3',
         selectedGroup,
         renOncImunParsed,
         selectedComorbidityParsed,
@@ -171,7 +187,12 @@ const Registration: React.FC = () => {
         cpf,
         addressProof,
         medicalReport,
-        medicalAuthorization
+        medicalAuthorization,
+        undefined,
+        preNatalCard,
+        puerperalCard,
+        bornAliveDec,
+        patientContract
       );
 
       Alert.alert('', msg);
@@ -192,7 +213,7 @@ const Registration: React.FC = () => {
         const data = await getGroupsCall('3');
 
         setGroups(data);
-        setSelectedGroup(data[0].id.toString());
+        if (selectedGroup === '') setSelectedGroup(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
@@ -202,7 +223,7 @@ const Registration: React.FC = () => {
     };
 
     getGroups();
-  }, [getGroupsCall]);
+  }, [getGroupsCall, selectedGroup]);
 
   useEffect(() => {
     const getComorbidities = async () => {
@@ -210,7 +231,8 @@ const Registration: React.FC = () => {
         const data = await getComorbiditiesCall();
 
         setComorbidities(data);
-        setSelectedComorbidity(data[0].id.toString());
+        if (selectedComorbidity === '')
+          setSelectedComorbidity(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
@@ -222,7 +244,7 @@ const Registration: React.FC = () => {
     if (comorbidityPatient === '1') {
       getComorbidities();
     }
-  }, [comorbidityPatient, getComorbiditiesCall]);
+  }, [comorbidityPatient, getComorbiditiesCall, selectedComorbidity]);
 
   return (
     <>
@@ -543,6 +565,63 @@ const Registration: React.FC = () => {
                     pickImageFromCamera={pickImageFromCamera}
                   />
                 )}
+
+                {groups &&
+                  /gestante/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
+                    <>
+                      <AttachmentField
+                        field={preNatalCard}
+                        setField={setPreNatalCard}
+                        fieldNumber={6}
+                        fieldName="Cartão de Pré Natal"
+                        mandatory
+                        pickDocument={pickDocument}
+                        pickImageFromGallery={pickImageFromGallery}
+                        pickImageFromCamera={pickImageFromCamera}
+                      />
+
+                      <AttachmentField
+                        field={puerperalCard}
+                        setField={setPuerperalCard}
+                        fieldNumber={7}
+                        fieldName="Cartão de Puérperas"
+                        mandatory
+                        pickDocument={pickDocument}
+                        pickImageFromGallery={pickImageFromGallery}
+                        pickImageFromCamera={pickImageFromCamera}
+                      />
+
+                      <AttachmentField
+                        field={bornAliveDec}
+                        setField={setBornAliveDec}
+                        fieldNumber={8}
+                        fieldName="Declaração de Nascido Vivo"
+                        mandatory
+                        pickDocument={pickDocument}
+                        pickImageFromGallery={pickImageFromGallery}
+                        pickImageFromCamera={pickImageFromCamera}
+                      />
+                    </>
+                  )}
+
+                {groups &&
+                  groups.find(grp => grp.id.toString() === selectedGroup)
+                    ?.group ===
+                    'Profissionais da área da saúde - autônomos' && (
+                    <AttachmentField
+                      field={patientContract}
+                      setField={setPatientContract}
+                      fieldNumber={9}
+                      fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
               </View>
 
               <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

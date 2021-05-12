@@ -192,7 +192,7 @@ const BedRidden: React.FC = () => {
         const data = await getGroupsCall('1');
 
         setGroups(data);
-        setSelectedGroup(data[0].id.toString());
+        if (selectedGroup === '') setSelectedGroup(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
@@ -202,7 +202,7 @@ const BedRidden: React.FC = () => {
     };
 
     getGroups();
-  }, [getGroupsCall]);
+  }, [getGroupsCall, selectedGroup]);
 
   useEffect(() => {
     const getComorbidities = async () => {
@@ -210,7 +210,8 @@ const BedRidden: React.FC = () => {
         const data = await getComorbiditiesCall();
 
         setComorbidities(data);
-        setSelectedComorbidity(data[0].id.toString());
+        if (selectedComorbidity === '')
+          setSelectedComorbidity(data[0].id.toString());
       } catch (err) {
         catchHandler(
           err,
@@ -222,7 +223,7 @@ const BedRidden: React.FC = () => {
     if (comorbidityPatient === '1') {
       getComorbidities();
     }
-  }, [comorbidityPatient, getComorbiditiesCall]);
+  }, [comorbidityPatient, getComorbiditiesCall, selectedComorbidity]);
 
   return (
     <>
