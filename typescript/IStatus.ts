@@ -2,9 +2,12 @@ export default interface IStatus {
   patient: {
     id: number;
     cpf: string;
+    category: {
+      id: number;
+      category: string;
+    };
     group: {
       id: number;
-      slug: string;
       group: string;
     };
     patientStatus: {

@@ -92,11 +92,13 @@ const StatusCheck: React.FC = () => {
                 <View
                   style={[
                     styles.statusBackground,
-                    status.patient.patientStatus.status.id === 1 &&
-                      styles.statusAnalysis,
-                    status.patient.patientStatus.status.id === 2 &&
+                    status.patient.patientStatus.status.status ===
+                      'Em Análise' && styles.statusAnalysis,
+                    status.patient.patientStatus.status.status ===
+                      'Pré-Aprovado' && styles.statusPreApproved,
+                    status.patient.patientStatus.status.status === 'Aprovado' &&
                       styles.statusApproved,
-                    status.patient.patientStatus.status.id === 3 &&
+                    status.patient.patientStatus.status.status === 'Negado' &&
                       styles.statusDenied,
                   ]}
                 >
@@ -117,7 +119,7 @@ const StatusCheck: React.FC = () => {
                   </Text>
                 </View>
               )}
-              {status.patient.patientStatus.status.id === 3 &&
+              {status.patient.patientStatus.status.status === 'Negado' &&
                 status.patient.patientStatus.message && (
                   <View style={styles.statusComplement}>
                     <Text style={styles.statusComplementText}>
@@ -128,14 +130,14 @@ const StatusCheck: React.FC = () => {
             </>
           )}
 
-          {status && status.patient.patientStatus.status.id === 3 && (
+          {status && status.patient.patientStatus.status.status === 'Negado' && (
             <TouchableOpacity
               style={styles.btnUpdate}
               activeOpacity={0.5}
               onPress={() =>
                 navigate('UpdateRegistration', {
                   cpf: status.patient.cpf,
-                  group: status.patient.group.slug,
+                  group: status.patient.group.group,
                 })
               }
             >

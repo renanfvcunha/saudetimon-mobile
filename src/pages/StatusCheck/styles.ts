@@ -77,6 +77,9 @@ const styles = StyleSheet.create({
   statusAnalysis: {
     backgroundColor: '#73c2cf',
   },
+  statusPreApproved: {
+    backgroundColor: '#b7ba1b',
+  },
   statusApproved: {
     backgroundColor: '#83bb72',
   },
