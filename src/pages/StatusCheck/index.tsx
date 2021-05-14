@@ -137,6 +137,7 @@ const StatusCheck: React.FC = () => {
               onPress={() =>
                 navigate('UpdateRegistration', {
                   cpf: status.patient.cpf,
+                  category: status.patient.category.category,
                   group: status.patient.group.group,
                 })
               }

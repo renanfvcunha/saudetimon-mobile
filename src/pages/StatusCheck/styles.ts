@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   btnBack: {
-    top: windowWidth,
+    marginTop: '5%',
     width: '40%',
     paddingVertical: 4,
     backgroundColor: '#73c2cf',

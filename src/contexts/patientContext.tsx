@@ -41,8 +41,7 @@ interface PatientContextData {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File,
-    idComorbidity?: string
+    patientContract?: IAttachment | File
   ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
@@ -160,8 +159,7 @@ export const PatientProvider: React.FC = ({ children }) => {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File,
-    idComorbidity?: string
+    patientContract?: IAttachment | File
   ) => {
     setUploadProgress(0);
 
@@ -190,9 +188,6 @@ export const PatientProvider: React.FC = ({ children }) => {
     }
     if (cpf) {
       data.append('cpf', cpf as Blob);
-    }
-    if (idComorbidity) {
-      data.append('idComorbidity', idComorbidity);
     }
     if (medicalReport) {
       data.append('medicalReport', medicalReport as Blob);

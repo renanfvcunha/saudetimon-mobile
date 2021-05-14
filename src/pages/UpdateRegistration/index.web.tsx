@@ -29,6 +29,7 @@ import swAlert from '../../utils/alert';
 
 interface Params {
   cpf: string;
+  category: string;
   group: string;
 }
 
@@ -38,7 +39,7 @@ interface Props {
 
 const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const { goBack, reset } = useNavigation();
-  const { cpf, group } = route.params;
+  const { cpf, category, group } = route.params;
   const {
     getComorbiditiesCall,
     getPatientCall,
@@ -47,20 +48,28 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   } = useContext(PatientContext);
   const inputIdDocFrontRef = createRef<HTMLInputElement>();
   const inputIdDocVerseRef = createRef<HTMLInputElement>();
+  const inputCpfAttachmentRef = createRef<HTMLInputElement>();
   const inputAddressProofRef = createRef<HTMLInputElement>();
-  const inputPhotoRef = createRef<HTMLInputElement>();
   const inputMedicalReportRef = createRef<HTMLInputElement>();
   const inputMedicalAuthorizationRef = createRef<HTMLInputElement>();
-  const inputMedicalPrescriptionRef = createRef<HTMLInputElement>();
+  const inputWorkContractRef = createRef<HTMLInputElement>();
+  const inputPreNatalCardRef = createRef<HTMLInputElement>();
+  const inputPuerperalCardRef = createRef<HTMLInputElement>();
+  const inputBornAliveDecRef = createRef<HTMLInputElement>();
+  const inputPatientContractRef = createRef<HTMLInputElement>();
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
+  const [cpfAttachment, setCpfAttachment] = useState<File>();
   const [addressProof, setAddressProof] = useState<File>();
-  const [photo, setPhoto] = useState<File>();
   const [medicalReport, setMedicalReport] = useState<File>();
   const [medicalAuthorization, setMedicalAuthorization] = useState<File>();
-  const [medicalPrescription, setMedicalPrescription] = useState<File>();
+  const [workContract, setWorkContract] = useState<File>();
+  const [preNatalCard, setPreNatalCard] = useState<File>();
+  const [puerperalCard, setPuerperalCard] = useState<File>();
+  const [bornAliveDec, setBornAliveDec] = useState<File>();
+  const [patientContract, setPatientContract] = useState<File>();
   const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
@@ -93,12 +102,15 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
           patientParsed,
           idDocFront,
           idDocVerse,
+          cpfAttachment,
           addressProof,
-          photo,
-          selectedComorbidity,
           medicalReport,
           medicalAuthorization,
-          medicalPrescription
+          workContract,
+          preNatalCard,
+          puerperalCard,
+          bornAliveDec,
+          patientContract
         );
 
         swAlert('success', '', msg);
@@ -475,6 +487,14 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
               />
 
               <AttachmentField
+                ref={inputCpfAttachmentRef}
+                field={cpfAttachment}
+                setField={setCpfAttachment}
+                refClick={() => inputCpfAttachmentRef.current?.click()}
+                fieldName="CPF ou Cartão SUS"
+              />
+
+              <AttachmentField
                 ref={inputAddressProofRef}
                 field={addressProof}
                 setField={setAddressProof}
@@ -482,51 +502,72 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 fieldName="Comprovante de Endereço"
               />
 
-              <AttachmentField
-                ref={inputPhotoRef}
-                field={photo}
-                setField={setPhoto}
-                refClick={() => inputPhotoRef.current?.click()}
-                fieldName="Foto do(a) Paciente"
-                filesAccepted="image/*"
-              />
+              {(patient.idComorbidity || patient.renOncImun) && (
+                <AttachmentField
+                  ref={inputMedicalReportRef}
+                  field={medicalReport}
+                  setField={setMedicalReport}
+                  refClick={() => inputMedicalReportRef.current?.click()}
+                  fieldName="Laudo Médico"
+                />
+              )}
 
-              {['paciente_oncologico', 'paciente_renal', 'comorbidades'].find(
-                cmb => cmb === group
-              ) && (
+              {patient.renOncImun && (
+                <AttachmentField
+                  ref={inputMedicalAuthorizationRef}
+                  field={medicalAuthorization}
+                  setField={setMedicalAuthorization}
+                  refClick={() => inputMedicalAuthorizationRef.current?.click()}
+                  fieldName="Autorização Médica"
+                />
+              )}
+
+              {category === 'Sobra de Doses' && (
+                <AttachmentField
+                  ref={inputWorkContractRef}
+                  field={workContract}
+                  setField={setWorkContract}
+                  refClick={() => inputWorkContractRef.current?.click()}
+                  fieldName="Contracheque ou Contrato de Trabalho"
+                />
+              )}
+
+              {/gestante/i.test(group) && (
                 <>
                   <AttachmentField
-                    ref={inputMedicalReportRef}
-                    field={medicalReport}
-                    setField={setMedicalReport}
-                    refClick={() => inputMedicalReportRef.current?.click()}
-                    fieldName="Laudo Médico"
+                    ref={inputPreNatalCardRef}
+                    field={preNatalCard}
+                    setField={setPreNatalCard}
+                    refClick={() => inputPreNatalCardRef.current?.click()}
+                    fieldName="Cartão de Pré Natal"
                   />
 
-                  {group !== 'comorbidades' && (
-                    <AttachmentField
-                      ref={inputMedicalAuthorizationRef}
-                      field={medicalAuthorization}
-                      setField={setMedicalAuthorization}
-                      refClick={() =>
-                        inputMedicalAuthorizationRef.current?.click()
-                      }
-                      fieldName="Autorização Médica"
-                    />
-                  )}
+                  <AttachmentField
+                    ref={inputPuerperalCardRef}
+                    field={puerperalCard}
+                    setField={setPuerperalCard}
+                    refClick={() => inputPuerperalCardRef.current?.click()}
+                    fieldName="Cartão de Puérperas"
+                  />
 
-                  {group === 'comorbidades' && (
-                    <AttachmentField
-                      ref={inputMedicalPrescriptionRef}
-                      field={medicalPrescription}
-                      setField={setMedicalPrescription}
-                      refClick={() =>
-                        inputMedicalPrescriptionRef.current?.click()
-                      }
-                      fieldName="Prescrição Médica"
-                    />
-                  )}
+                  <AttachmentField
+                    ref={inputBornAliveDecRef}
+                    field={bornAliveDec}
+                    setField={setBornAliveDec}
+                    refClick={() => inputBornAliveDecRef.current?.click()}
+                    fieldName="Declaração de Nascido Vivo"
+                  />
                 </>
+              )}
+
+              {group === 'Profissionais da área da saúde - autônomos' && (
+                <AttachmentField
+                  ref={inputPatientContractRef}
+                  field={patientContract}
+                  setField={setPatientContract}
+                  refClick={() => inputPatientContractRef.current?.click()}
+                  fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                />
               )}
             </View>
 

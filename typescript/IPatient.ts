@@ -15,5 +15,6 @@ export default interface IPatient {
   complement?: string;
   reference: string;
   neighborhood: string;
-  idComorbidity?: number;
+  renOncImun: boolean;
+  idComorbidity?: number | null;
 }
