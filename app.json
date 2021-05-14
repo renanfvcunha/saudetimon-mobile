@@ -2,7 +2,7 @@
   "expo": {
     "name": "Saúde Timon 24h",
     "slug": "saude-timon-24h",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./src/images/logoSquared.png",
     "splash": {
@@ -26,7 +26,7 @@
         "backgroundColor": "#093d74"
       },
       "package": "com.accesssollutions.saudetimon24h",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./src/images/favicon.png"
