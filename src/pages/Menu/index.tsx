@@ -13,8 +13,9 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
-import seniors from '../../images/seniors.png';
-import comorbidity from '../../images/comorbidity.png';
+import bedridden from '../../images/bedridden.png';
+import leftover from '../../images/leftover.png';
+import registration from '../../images/registration.png';
 import check from '../../images/check.png';
 import vacLoc from '../../images/vacLoc.png';
 
@@ -44,7 +45,7 @@ const Menu: React.FC = () => {
                 activeOpacity={0.5}
                 onPress={() => navigate('BedRidden')}
               >
-                <Image source={seniors} style={styles.itemImg} />
+                <Image source={bedridden} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Pacientes Acamados</Text>
                   <Text style={styles.itemTextLower}>
@@ -58,7 +59,7 @@ const Menu: React.FC = () => {
                 activeOpacity={0.5}
                 onPress={() => navigate('LeftOver')}
               >
-                <Image source={comorbidity} style={styles.itemImg} />
+                <Image source={leftover} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Sobra de Doses</Text>
                   <Text style={styles.itemTextLower}>
@@ -72,7 +73,7 @@ const Menu: React.FC = () => {
                 activeOpacity={0.5}
                 onPress={() => navigate('Registration')}
               >
-                <Image source={comorbidity} style={styles.itemImg} />
+                <Image source={registration} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
                   <Text style={styles.itemTextUpper}>Cadastro</Text>
                   <Text style={styles.itemTextLower}>
