@@ -1,22 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   View,
   Text,
-  ScrollView,
   ImageBackground,
   Image,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { openURL } from 'expo-linking';
+import { AxiosResponse } from 'axios';
 
 import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
+import catchHandler from '../../utils/catchHandler';
+import IVaccineLocation from '../../../typescript/IVaccineLocation';
+import api from '../../services/api';
 
 const VaccinationLocations: React.FC = () => {
   const navigation = useNavigation();
+  const [locations, setLocations] = useState<IVaccineLocation[]>();
+
+  useEffect(() => {
+    const getLocations = async () => {
+      try {
+        const response: AxiosResponse<IVaccineLocation[]> = await api.get(
+          '/vaccinelocations'
+        );
+
+        setLocations(response.data);
+      } catch (err) {
+        catchHandler(
+          err,
+          'Não foi possível listar os locais de vacinação. Tente novamente ou contate o suporte.'
+        );
+      }
+    };
+
+    getLocations();
+  }, []);
 
   return (
     <>
@@ -34,93 +58,31 @@ const VaccinationLocations: React.FC = () => {
             <Text style={styles.pageTitleText}>Locais de Vacinação</Text>
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.items}>
-              <TouchableOpacity
-                style={styles.item}
-                activeOpacity={0.5}
-                onPress={() =>
-                  openURL('https://maps.app.goo.gl/j9jpJtnKJkoaihVR9')
-                }
-              >
-                <Image
-                  source={{
-                    uri:
-                      'https://lh5.googleusercontent.com/p/AF1QipNxRrauJHriyEjZBnLQEjyAF90ot5BP5TLRP8vW=w426-h240-k-no',
-                  }}
-                  style={styles.itemImg}
-                />
-                <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>
-                    Ginásio Francisco Carlos Jansen
-                  </Text>
-                  <Text style={styles.itemTextLower}>Drives-Thru</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.item}
-                activeOpacity={0.5}
-                onPress={() =>
-                  openURL('https://maps.app.goo.gl/GYgwoBA7iftEYYxS6')
-                }
-              >
-                <Image
-                  source={{
-                    uri:
-                      'https://lh5.googleusercontent.com/p/AF1QipMyudKnN5aiYHhW8DjzwXhdP8o7izXvQJVawn09=w408-h250-k-no',
-                  }}
-                  style={styles.itemImg}
-                />
-                <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Fundação Cidadania</Text>
-                  <Text style={styles.itemTextLower}>Ponto Fixo</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.item}
-                activeOpacity={0.5}
-                onPress={() =>
-                  openURL('https://maps.app.goo.gl/YsLHNvqTLhPRz3Fs8')
-                }
-              >
-                <Image
-                  source={{
-                    uri:
-                      'https://lh5.googleusercontent.com/p/AF1QipNyimW4rG5MZEOyAszfkNtrSn2IUlRGixvx87rx=w478-h240-k-no',
-                  }}
-                  style={styles.itemImg}
-                />
-                <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>Cocais Shopping</Text>
-                  <Text style={styles.itemTextLower}>Drives-Thru</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.item}
-                activeOpacity={0.5}
-                onPress={() =>
-                  openURL('https://maps.app.goo.gl/JivC1RbhFvzaiwRq7')
-                }
-              >
-                <Image
-                  source={{
-                    uri:
-                      'https://lh5.googleusercontent.com/p/AF1QipN0f6vDdaka-j9KCGUepnQ3BZTGDCuEjoYL5G3o=w408-h306-k-no',
-                  }}
-                  style={styles.itemImg}
-                />
-                <View style={styles.itemTexts}>
-                  <Text style={styles.itemTextUpper}>
-                    Projeto Educativo Mãos Dadas
-                  </Text>
-                  <Text style={styles.itemTextLower}>Ponto Fixo</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+          {locations && (
+            <FlatList
+              style={styles.items}
+              data={locations}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.item}
+                  activeOpacity={0.5}
+                  onPress={() => openURL(item.url)}
+                >
+                  <Image
+                    source={{
+                      uri: `${process.env.API_URL}/uploads/vacLocPics/${item.picture}`,
+                    }}
+                    style={styles.itemImg}
+                  />
+                  <View style={styles.itemTexts}>
+                    <Text style={styles.itemTextUpper}>{item.name}</Text>
+                    <Text style={styles.itemTextLower}>{item.helperText}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.id.toString()}
+            />
+          )}
 
           <TouchableOpacity
             style={styles.btnBack}
