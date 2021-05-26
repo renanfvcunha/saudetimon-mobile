@@ -70,7 +70,7 @@ const VaccinationLocations: React.FC = () => {
                 >
                   <Image
                     source={{
-                      uri: `${process.env.API_URL}/uploads/vacLocPics/${item.picture}`,
+                      uri: `${api.defaults.baseURL}/uploads/vacLocPics/${item.picture}`,
                     }}
                     style={styles.itemImg}
                   />
