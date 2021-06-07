@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import BedRidden from './pages/BedRidden';
-import LeftOver from './pages/LeftOver';
+// import LeftOver from './pages/LeftOver';
 import Registration from './pages/Registration';
 import StatusCheck from './pages/StatusCheck';
 import VaccinationLocations from './pages/VaccinationLocations';
@@ -34,11 +34,11 @@ const Routes: React.FC = () => {
           component={BedRidden}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LeftOver"
           component={LeftOver}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="Registration"
           component={Registration}

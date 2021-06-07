@@ -14,7 +14,6 @@ import styles from './styles';
 import backgroundYellow from '../../images/backgroundYellow.png';
 import logoPref from '../../images/logoPref.png';
 import bedridden from '../../images/bedridden.png';
-import leftover from '../../images/leftover.png';
 import registration from '../../images/registration.png';
 import check from '../../images/check.png';
 import vacLoc from '../../images/vacLoc.png';
@@ -54,7 +53,7 @@ const Menu: React.FC = () => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
                 onPress={() => navigate('LeftOver')}
@@ -66,7 +65,7 @@ const Menu: React.FC = () => {
                     Cadastro para sobra de doses
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={styles.item}
