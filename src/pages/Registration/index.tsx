@@ -571,18 +571,26 @@ const Registration: React.FC = () => {
                     groups.find(grp => grp.id.toString() === selectedGroup)
                       ?.group as string
                   ) && (
-                    <>
-                      <AttachmentField
-                        field={preNatalCard}
-                        setField={setPreNatalCard}
-                        fieldNumber={6}
-                        fieldName="Cartão de Pré Natal"
-                        mandatory
-                        pickDocument={pickDocument}
-                        pickImageFromGallery={pickImageFromGallery}
-                        pickImageFromCamera={pickImageFromCamera}
-                      />
+                    <AttachmentField
+                      field={preNatalCard}
+                      setField={setPreNatalCard}
+                      fieldNumber={6}
+                      fieldName="Cartão de Pré Natal"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
 
+                {groups &&
+                  groups.find(
+                    grp =>
+                      grp.id.toString() === selectedGroup &&
+                      grp.group ===
+                        'Gestantes e puérperas a partir de 18 anos COM comorbidades'
+                  ) && (
+                    <>
                       <AttachmentField
                         field={puerperalCard}
                         setField={setPuerperalCard}

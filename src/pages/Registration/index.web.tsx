@@ -453,16 +453,24 @@ const Registration: React.FC = () => {
               groups.find(grp => grp.id.toString() === selectedGroup)
                 ?.group as string
             ) && (
-              <>
-                <AttachmentField
-                  ref={inputPreNatalCardRef}
-                  field={preNatalCard}
-                  setField={setPreNatalCard}
-                  refClick={() => inputPreNatalCardRef.current?.click()}
-                  fieldName="Cartão de Pré Natal"
-                  mandatory
-                />
+              <AttachmentField
+                ref={inputPreNatalCardRef}
+                field={preNatalCard}
+                setField={setPreNatalCard}
+                refClick={() => inputPreNatalCardRef.current?.click()}
+                fieldName="Cartão de Pré Natal"
+                mandatory
+              />
+            )}
 
+          {groups &&
+            groups.find(
+              grp =>
+                grp.id.toString() === selectedGroup &&
+                grp.group ===
+                  'Gestantes e puérperas a partir de 18 anos COM comorbidades'
+            ) && (
+              <>
                 <AttachmentField
                   ref={inputPuerperalCardRef}
                   field={puerperalCard}
