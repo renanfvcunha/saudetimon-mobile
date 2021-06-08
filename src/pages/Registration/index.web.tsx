@@ -43,9 +43,11 @@ const Registration: React.FC = () => {
   const inputPuerperalCardRef = createRef<HTMLInputElement>();
   const inputBornAliveDecRef = createRef<HTMLInputElement>();
   const inputPatientContractRef = createRef<HTMLInputElement>();
+  const inputWorkContractRef = createRef<HTMLInputElement>();
 
   const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
+
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
   const [cpf, setCpf] = useState<File>();
@@ -56,6 +58,8 @@ const Registration: React.FC = () => {
   const [puerperalCard, setPuerperalCard] = useState<File>();
   const [bornAliveDec, setBornAliveDec] = useState<File>();
   const [patientContract, setPatientContract] = useState<File>();
+  const [workContract, setWorkContract] = useState<File>();
+
   const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
   const [renOncImun, setRenOncImun] = useState('0');
@@ -91,7 +95,7 @@ const Registration: React.FC = () => {
         addressProof,
         medicalReport,
         medicalAuthorization,
-        undefined,
+        workContract,
         preNatalCard,
         puerperalCard,
         bornAliveDec,
@@ -500,6 +504,78 @@ const Registration: React.FC = () => {
                 setField={setPatientContract}
                 refClick={() => inputPatientContractRef.current?.click()}
                 fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                mandatory
+              />
+            )}
+
+          {groups &&
+            /estagiário/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
+              <AttachmentField
+                ref={inputWorkContractRef}
+                field={workContract}
+                setField={setWorkContract}
+                refClick={() => inputWorkContractRef.current?.click()}
+                fieldName="Declaração de Estágio Informando Atividade Exercida"
+                mandatory
+              />
+            )}
+
+          {groups &&
+            /lactante/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
+              <>
+                <AttachmentField
+                  ref={inputMedicalReportRef}
+                  field={medicalReport}
+                  setField={setMedicalReport}
+                  refClick={() => inputMedicalReportRef.current?.click()}
+                  fieldName="Declaração Médica de Bebê Amamentando"
+                  mandatory
+                />
+
+                <AttachmentField
+                  ref={inputMedicalAuthorizationRef}
+                  field={medicalAuthorization}
+                  setField={setMedicalAuthorization}
+                  refClick={() => inputMedicalAuthorizationRef.current?.click()}
+                  fieldName="Autorização Médica"
+                  mandatory
+                />
+              </>
+            )}
+
+          {groups &&
+            /motorista/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
+              <AttachmentField
+                ref={inputWorkContractRef}
+                field={workContract}
+                setField={setWorkContract}
+                refClick={() => inputWorkContractRef.current?.click()}
+                fieldName="Declaração da Empresa Prestadora dos Serviços"
+                mandatory
+              />
+            )}
+
+          {groups &&
+            groups.find(
+              grp =>
+                grp.id.toString() === selectedGroup &&
+                grp.group === 'Trabalhadores da construção civil'
+            ) && (
+              <AttachmentField
+                ref={inputWorkContractRef}
+                field={workContract}
+                setField={setWorkContract}
+                refClick={() => inputWorkContractRef.current?.click()}
+                fieldName="Contracheque ou Declaração do Local de Trabalho"
                 mandatory
               />
             )}

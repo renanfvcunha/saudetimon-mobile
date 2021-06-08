@@ -44,6 +44,7 @@ const Registration: React.FC = () => {
   } = useContext(PatientContext);
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
+
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
   const [idDocVerse, setIdDocVerse] = useState<IAttachment>();
   const [cpf, setCpf] = useState<IAttachment>();
@@ -56,6 +57,8 @@ const Registration: React.FC = () => {
   const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
   const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
   const [patientContract, setPatientContract] = useState<IAttachment>();
+  const [workContract, setWorkContract] = useState<IAttachment>();
+
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<IGroup[]>();
   const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
@@ -107,6 +110,9 @@ const Registration: React.FC = () => {
         break;
       case 9:
         setPatientContract({ uri, name: String(fileName), type });
+        break;
+      case 10:
+        setWorkContract({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -188,7 +194,7 @@ const Registration: React.FC = () => {
         addressProof,
         medicalReport,
         medicalAuthorization,
-        undefined,
+        workContract,
         preNatalCard,
         puerperalCard,
         bornAliveDec,
@@ -624,6 +630,88 @@ const Registration: React.FC = () => {
                       setField={setPatientContract}
                       fieldNumber={9}
                       fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
+
+                {groups &&
+                  /estagiário/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
+                    <AttachmentField
+                      field={workContract}
+                      setField={setWorkContract}
+                      fieldNumber={10}
+                      fieldName="Declaração de Estágio Informando Atividade Exercida"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
+
+                {groups &&
+                  /lactante/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
+                    <>
+                      <AttachmentField
+                        field={medicalReport}
+                        setField={setMedicalReport}
+                        fieldNumber={4}
+                        fieldName="Declaração Médica de Bebê Amamentando"
+                        mandatory
+                        pickDocument={pickDocument}
+                        pickImageFromGallery={pickImageFromGallery}
+                        pickImageFromCamera={pickImageFromCamera}
+                      />
+
+                      <AttachmentField
+                        field={medicalAuthorization}
+                        setField={setMedicalAuthorization}
+                        fieldNumber={5}
+                        fieldName="Autorização Médica"
+                        mandatory
+                        pickDocument={pickDocument}
+                        pickImageFromGallery={pickImageFromGallery}
+                        pickImageFromCamera={pickImageFromCamera}
+                      />
+                    </>
+                  )}
+
+                {groups &&
+                  /motorista/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
+                    <AttachmentField
+                      field={workContract}
+                      setField={setWorkContract}
+                      fieldNumber={10}
+                      fieldName="Declaração da Empresa Prestadora dos Serviços"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
+
+                {groups &&
+                  groups.find(
+                    grp =>
+                      grp.id.toString() === selectedGroup &&
+                      grp.group === 'Trabalhadores da construção civil'
+                  ) && (
+                    <AttachmentField
+                      field={workContract}
+                      setField={setWorkContract}
+                      fieldNumber={10}
+                      fieldName="Contracheque ou Declaração do Local de Trabalho"
                       mandatory
                       pickDocument={pickDocument}
                       pickImageFromGallery={pickImageFromGallery}
