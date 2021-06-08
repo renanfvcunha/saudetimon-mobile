@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
@@ -85,74 +86,76 @@ const StatusCheck: React.FC = () => {
 
           {loading && <ActivityIndicator color="#034f9a" size={32} />}
 
-          {status && (
-            <>
-              <Text style={styles.status}>Status:</Text>
-              <View style={styles.statusContainer}>
-                <View
-                  style={[
-                    styles.statusBackground,
-                    status.patient.patientStatus.status.status ===
-                      'Em Análise' && styles.statusAnalysis,
-                    status.patient.patientStatus.status.status ===
-                      'Pré-Aprovado' && styles.statusPreApproved,
-                    status.patient.patientStatus.status.status === 'Aprovado' &&
-                      styles.statusApproved,
-                    status.patient.patientStatus.status.status === 'Negado' &&
-                      styles.statusDenied,
-                  ]}
-                >
-                  <Text style={styles.statusText}>
-                    {status.patient.patientStatus.status.status}
-                  </Text>
-                  <Text style={styles.statusHelperText}>
-                    {status.patient.patientStatus.status.message}
-                  </Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {status && (
+              <>
+                <Text style={styles.status}>Status:</Text>
+                <View style={styles.statusContainer}>
+                  <View
+                    style={[
+                      styles.statusBackground,
+                      status.patient.patientStatus.status.status ===
+                        'Em Análise' && styles.statusAnalysis,
+                      status.patient.patientStatus.status.status ===
+                        'Pré-Aprovado' && styles.statusPreApproved,
+                      status.patient.patientStatus.status.status ===
+                        'Aprovado' && styles.statusApproved,
+                      status.patient.patientStatus.status.status === 'Negado' &&
+                        styles.statusDenied,
+                    ]}
+                  >
+                    <Text style={styles.statusText}>
+                      {status.patient.patientStatus.status.status}
+                    </Text>
+                    <Text style={styles.statusHelperText}>
+                      {status.patient.patientStatus.status.message}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              {status.position && status.approveds && (
-                <View style={styles.statusComplement}>
-                  <Text style={styles.statusComplementText}>
-                    Posição na fila: {status.position} de {status.approveds}
-                    {'\n'}
-                    Grupo: {status.patient.group.group}
-                  </Text>
-                </View>
-              )}
-              {status.patient.patientStatus.status.status !== 'Em Análise' &&
-                status.patient.patientStatus.message && (
+                {status.position && status.approveds && (
                   <View style={styles.statusComplement}>
                     <Text style={styles.statusComplementText}>
-                      {status.patient.patientStatus.message}
+                      Posição na fila: {status.position} de {status.approveds}
+                      {'\n'}
+                      Grupo: {status.patient.group.group}
                     </Text>
                   </View>
                 )}
-            </>
-          )}
+                {status.patient.patientStatus.status.status !== 'Em Análise' &&
+                  status.patient.patientStatus.message && (
+                    <View style={styles.statusComplement}>
+                      <Text style={styles.statusComplementText}>
+                        {status.patient.patientStatus.message}
+                      </Text>
+                    </View>
+                  )}
+              </>
+            )}
 
-          {status && status.patient.patientStatus.status.status === 'Negado' && (
+            {status && status.patient.patientStatus.status.status === 'Negado' && (
+              <TouchableOpacity
+                style={styles.btnUpdate}
+                activeOpacity={0.5}
+                onPress={() =>
+                  navigate('UpdateRegistration', {
+                    cpf: status.patient.cpf,
+                    category: status.patient.category.category,
+                    group: status.patient.group.group,
+                  })
+                }
+              >
+                <Text style={styles.btnUpdateText}>Atualizar Cadastro</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity
-              style={styles.btnUpdate}
+              style={styles.btnBack}
               activeOpacity={0.5}
-              onPress={() =>
-                navigate('UpdateRegistration', {
-                  cpf: status.patient.cpf,
-                  category: status.patient.category.category,
-                  group: status.patient.group.group,
-                })
-              }
+              onPress={goBack}
             >
-              <Text style={styles.btnUpdateText}>Atualizar Cadastro</Text>
+              <Text style={styles.btnBackText}>Voltar</Text>
             </TouchableOpacity>
-          )}
-
-          <TouchableOpacity
-            style={styles.btnBack}
-            activeOpacity={0.5}
-            onPress={goBack}
-          >
-            <Text style={styles.btnBackText}>Voltar</Text>
-          </TouchableOpacity>
+          </ScrollView>
         </View>
       </ImageBackground>
       <StatusBar style="light" backgroundColor="#ffc816" />
