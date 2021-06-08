@@ -119,11 +119,11 @@ const StatusCheck: React.FC = () => {
                   </Text>
                 </View>
               )}
-              {status.patient.patientStatus.status.status === 'Negado' &&
+              {status.patient.patientStatus.status.status !== 'Em Análise' &&
                 status.patient.patientStatus.message && (
                   <View style={styles.statusComplement}>
                     <Text style={styles.statusComplementText}>
-                      Motivo:{`\n${status.patient.patientStatus.message}`}
+                      {status.patient.patientStatus.message}
                     </Text>
                   </View>
                 )}
