@@ -511,6 +511,10 @@ const Registration: React.FC = () => {
             /estagiário/i.test(
               groups.find(grp => grp.id.toString() === selectedGroup)
                 ?.group as string
+            ) &&
+            !/saúde/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
             ) && (
               <AttachmentField
                 ref={inputWorkContractRef}
