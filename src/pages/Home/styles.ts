@@ -7,7 +7,7 @@ const logoWidth = windowWidth * 0.68;
 const logoHeight = (logoWidth * 7) / 16;
 const buttonWidth = windowWidth * 0.77;
 const buttonHeight = buttonWidth * 0.151351351;
-const handHeight = windowHeight * 0.68;
+const handHeight = windowHeight * 0.75;
 const handWidth = handHeight * 1.08575804;
 
 const styles = StyleSheet.create({
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: handWidth,
     height: handHeight,
-    right: 30,
+    right: 0,
   },
   buttons: {
     alignItems: 'flex-end',
