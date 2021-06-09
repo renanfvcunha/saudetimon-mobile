@@ -622,9 +622,11 @@ const Registration: React.FC = () => {
                   )}
 
                 {groups &&
-                  groups.find(grp => grp.id.toString() === selectedGroup)
-                    ?.group ===
-                    'Profissionais da área da saúde - autônomos' && (
+                  groups.find(
+                    grp =>
+                      grp.id.toString() === selectedGroup &&
+                      grp.group === 'Profissionais da área da saúde'
+                  ) && (
                     <AttachmentField
                       field={patientContract}
                       setField={setPatientContract}

@@ -43,7 +43,7 @@ interface Props {
 
 const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const { goBack, reset } = useNavigation();
-  const { cpf, category, group } = route.params;
+  const { cpf, group } = route.params;
   const { getPatientCall, updatePatientCall, uploadProgress } = useContext(
     PatientContext
   );
@@ -565,35 +565,28 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 />
               )}
 
-              {category === 'Sobra de Doses' && (
+              {/gestante/i.test(group) && (
                 <AttachmentField
-                  field={workContract}
-                  setField={setWorkContract}
-                  fieldNumber={6}
-                  fieldName="Contracheque ou Contrato de Trabalho"
+                  field={preNatalCard}
+                  setField={setPreNatalCard}
+                  fieldNumber={7}
+                  fieldName="Cartão de Pré Natal"
+                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
                 />
               )}
 
-              {/gestante/i.test(group) && (
+              {group ===
+                'Gestantes e puérperas a partir de 18 anos COM comorbidades' && (
                 <>
-                  <AttachmentField
-                    field={preNatalCard}
-                    setField={setPreNatalCard}
-                    fieldNumber={7}
-                    fieldName="Cartão de Pré Natal"
-                    pickDocument={pickDocument}
-                    pickImageFromGallery={pickImageFromGallery}
-                    pickImageFromCamera={pickImageFromCamera}
-                  />
-
                   <AttachmentField
                     field={puerperalCard}
                     setField={setPuerperalCard}
                     fieldNumber={8}
                     fieldName="Cartão de Puérperas"
+                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -604,6 +597,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     setField={setBornAliveDec}
                     fieldNumber={9}
                     fieldName="Declaração de Nascido Vivo"
+                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -611,12 +605,78 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 </>
               )}
 
-              {group === 'Profissionais da área da saúde - autônomos' && (
+              {group === 'Profissionais da área da saúde' && (
                 <AttachmentField
                   field={patientContract}
                   setField={setPatientContract}
                   fieldNumber={10}
                   fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              {/estagiário/i.test(group) && (
+                <AttachmentField
+                  field={workContract}
+                  setField={setWorkContract}
+                  fieldNumber={6}
+                  fieldName="Declaração de Estágio Informando Atividade Exercida"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              {/lactante/i.test(group) && (
+                <>
+                  <AttachmentField
+                    field={medicalReport}
+                    setField={setMedicalReport}
+                    fieldNumber={4}
+                    fieldName="Declaração Médica de Bebê Amamentando"
+                    mandatory
+                    pickDocument={pickDocument}
+                    pickImageFromGallery={pickImageFromGallery}
+                    pickImageFromCamera={pickImageFromCamera}
+                  />
+
+                  <AttachmentField
+                    field={medicalAuthorization}
+                    setField={setMedicalAuthorization}
+                    fieldNumber={5}
+                    fieldName="Autorização Médica"
+                    mandatory
+                    pickDocument={pickDocument}
+                    pickImageFromGallery={pickImageFromGallery}
+                    pickImageFromCamera={pickImageFromCamera}
+                  />
+                </>
+              )}
+
+              {/motorista/i.test(group) && (
+                <AttachmentField
+                  field={workContract}
+                  setField={setWorkContract}
+                  fieldNumber={6}
+                  fieldName="Declaração da Empresa Prestadora dos Serviços"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              {group === 'Trabalhadores da construção civil' && (
+                <AttachmentField
+                  field={workContract}
+                  setField={setWorkContract}
+                  fieldNumber={6}
+                  fieldName="Contracheque ou Declaração do Local de Trabalho"
+                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
