@@ -39,7 +39,7 @@ interface Props {
 
 const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const { goBack, reset } = useNavigation();
-  const { cpf, category, group } = route.params;
+  const { cpf, group } = route.params;
   const {
     getComorbiditiesCall,
     getPatientCall,
@@ -56,7 +56,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const inputPreNatalCardRef = createRef<HTMLInputElement>();
   const inputPuerperalCardRef = createRef<HTMLInputElement>();
   const inputBornAliveDecRef = createRef<HTMLInputElement>();
-  const inputPatientContractRef = createRef<HTMLInputElement>();
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
@@ -69,7 +68,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const [preNatalCard, setPreNatalCard] = useState<File>();
   const [puerperalCard, setPuerperalCard] = useState<File>();
   const [bornAliveDec, setBornAliveDec] = useState<File>();
-  const [patientContract, setPatientContract] = useState<File>();
   const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
@@ -109,8 +107,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
           workContract,
           preNatalCard,
           puerperalCard,
-          bornAliveDec,
-          patientContract
+          bornAliveDec
         );
 
         swAlert('success', '', msg);
@@ -522,26 +519,19 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 />
               )}
 
-              {category === 'Sobra de Doses' && (
+              {/gestante/i.test(group) && (
                 <AttachmentField
-                  ref={inputWorkContractRef}
-                  field={workContract}
-                  setField={setWorkContract}
-                  refClick={() => inputWorkContractRef.current?.click()}
-                  fieldName="Contracheque ou Contrato de Trabalho"
+                  ref={inputPreNatalCardRef}
+                  field={preNatalCard}
+                  setField={setPreNatalCard}
+                  refClick={() => inputPreNatalCardRef.current?.click()}
+                  fieldName="Cartão de Pré Natal"
                 />
               )}
 
-              {/gestante/i.test(group) && (
+              {group ===
+                'Gestantes e puérperas a partir de 18 anos COM comorbidades' && (
                 <>
-                  <AttachmentField
-                    ref={inputPreNatalCardRef}
-                    field={preNatalCard}
-                    setField={setPreNatalCard}
-                    refClick={() => inputPreNatalCardRef.current?.click()}
-                    fieldName="Cartão de Pré Natal"
-                  />
-
                   <AttachmentField
                     ref={inputPuerperalCardRef}
                     field={puerperalCard}
@@ -560,13 +550,66 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 </>
               )}
 
-              {group === 'Profissionais da área da saúde - autônomos' && (
+              {/saúde/i.test(group) && (
                 <AttachmentField
-                  ref={inputPatientContractRef}
-                  field={patientContract}
-                  setField={setPatientContract}
-                  refClick={() => inputPatientContractRef.current?.click()}
-                  fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                  ref={inputWorkContractRef}
+                  field={workContract}
+                  setField={setWorkContract}
+                  refClick={() => inputWorkContractRef.current?.click()}
+                  fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
+                />
+              )}
+
+              {/estagiário/i.test(group) && (
+                <AttachmentField
+                  ref={inputWorkContractRef}
+                  field={workContract}
+                  setField={setWorkContract}
+                  refClick={() => inputWorkContractRef.current?.click()}
+                  fieldName="Declaração de Estágio Informando Atividade Exercida"
+                />
+              )}
+
+              {/lactante/i.test(group) && (
+                <>
+                  <AttachmentField
+                    ref={inputMedicalReportRef}
+                    field={medicalReport}
+                    setField={setMedicalReport}
+                    refClick={() => inputMedicalReportRef.current?.click()}
+                    fieldName="Declaração Médica de Bebê Amamentando"
+                  />
+                  <AttachmentField
+                    ref={inputMedicalAuthorizationRef}
+                    field={medicalAuthorization}
+                    setField={setMedicalAuthorization}
+                    refClick={() =>
+                      inputMedicalAuthorizationRef.current?.click()
+                    }
+                    fieldName="Autorização Médica"
+                  />
+                </>
+              )}
+
+              {/motorista/i.test(group) && (
+                <AttachmentField
+                  ref={inputWorkContractRef}
+                  field={workContract}
+                  setField={setWorkContract}
+                  refClick={() => inputWorkContractRef.current?.click()}
+                  fieldName="Declaração da Empresa Prestadora dos Serviços"
+                />
+              )}
+
+              {(/trabalhadores/i.test(group) ||
+                /caminhoneiros/i.test(group) ||
+                group === 'Forças de Segurança e Salvamento') && (
+                <AttachmentField
+                  ref={inputWorkContractRef}
+                  field={workContract}
+                  setField={setWorkContract}
+                  refClick={() => inputWorkContractRef.current?.click()}
+                  fieldName="Contracheque ou Declaração do Local de Trabalho"
                 />
               )}
             </View>

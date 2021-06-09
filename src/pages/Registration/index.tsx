@@ -56,7 +56,6 @@ const Registration: React.FC = () => {
   const [preNatalCard, setPreNatalCard] = useState<IAttachment>();
   const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
   const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
-  const [patientContract, setPatientContract] = useState<IAttachment>();
   const [workContract, setWorkContract] = useState<IAttachment>();
 
   const [loading, setLoading] = useState(false);
@@ -109,9 +108,6 @@ const Registration: React.FC = () => {
         setBornAliveDec({ uri, name: String(fileName), type });
         break;
       case 9:
-        setPatientContract({ uri, name: String(fileName), type });
-        break;
-      case 10:
         setWorkContract({ uri, name: String(fileName), type });
         break;
       default:
@@ -197,8 +193,7 @@ const Registration: React.FC = () => {
         workContract,
         preNatalCard,
         puerperalCard,
-        bornAliveDec,
-        patientContract
+        bornAliveDec
       );
 
       Alert.alert('', msg);
@@ -622,16 +617,15 @@ const Registration: React.FC = () => {
                   )}
 
                 {groups &&
-                  groups.find(
-                    grp =>
-                      grp.id.toString() === selectedGroup &&
-                      grp.group === 'Profissionais da área da saúde'
+                  /saúde/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
                   ) && (
                     <AttachmentField
-                      field={patientContract}
-                      setField={setPatientContract}
+                      field={workContract}
+                      setField={setWorkContract}
                       fieldNumber={9}
-                      fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                      fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
                       mandatory
                       pickDocument={pickDocument}
                       pickImageFromGallery={pickImageFromGallery}
@@ -647,7 +641,7 @@ const Registration: React.FC = () => {
                     <AttachmentField
                       field={workContract}
                       setField={setWorkContract}
-                      fieldNumber={10}
+                      fieldNumber={9}
                       fieldName="Declaração de Estágio Informando Atividade Exercida"
                       mandatory
                       pickDocument={pickDocument}
@@ -694,7 +688,7 @@ const Registration: React.FC = () => {
                     <AttachmentField
                       field={workContract}
                       setField={setWorkContract}
-                      fieldNumber={10}
+                      fieldNumber={9}
                       fieldName="Declaração da Empresa Prestadora dos Serviços"
                       mandatory
                       pickDocument={pickDocument}
@@ -720,7 +714,7 @@ const Registration: React.FC = () => {
                     <AttachmentField
                       field={workContract}
                       setField={setWorkContract}
-                      fieldNumber={10}
+                      fieldNumber={9}
                       fieldName="Contracheque ou Contrato de Trabalho"
                       mandatory
                       pickDocument={pickDocument}

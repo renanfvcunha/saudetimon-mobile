@@ -42,7 +42,6 @@ const Registration: React.FC = () => {
   const inputPreNatalCardRef = createRef<HTMLInputElement>();
   const inputPuerperalCardRef = createRef<HTMLInputElement>();
   const inputBornAliveDecRef = createRef<HTMLInputElement>();
-  const inputPatientContractRef = createRef<HTMLInputElement>();
   const inputWorkContractRef = createRef<HTMLInputElement>();
 
   const [selectedGroup, setSelectedGroup] = useState('');
@@ -57,7 +56,6 @@ const Registration: React.FC = () => {
   const [preNatalCard, setPreNatalCard] = useState<File>();
   const [puerperalCard, setPuerperalCard] = useState<File>();
   const [bornAliveDec, setBornAliveDec] = useState<File>();
-  const [patientContract, setPatientContract] = useState<File>();
   const [workContract, setWorkContract] = useState<File>();
 
   const [groups, setGroups] = useState<IGroup[]>();
@@ -98,8 +96,7 @@ const Registration: React.FC = () => {
         workContract,
         preNatalCard,
         puerperalCard,
-        bornAliveDec,
-        patientContract
+        bornAliveDec
       );
 
       swAlert('success', '', msg);
@@ -496,14 +493,16 @@ const Registration: React.FC = () => {
             )}
 
           {groups &&
-            groups.find(grp => grp.id.toString() === selectedGroup)?.group ===
-              'Profissionais da área da saúde - autônomos' && (
+            /saúde/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
               <AttachmentField
-                ref={inputPatientContractRef}
-                field={patientContract}
-                setField={setPatientContract}
-                refClick={() => inputPatientContractRef.current?.click()}
-                fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                ref={inputWorkContractRef}
+                field={workContract}
+                setField={setWorkContract}
+                refClick={() => inputWorkContractRef.current?.click()}
+                fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
                 mandatory
               />
             )}
@@ -565,17 +564,25 @@ const Registration: React.FC = () => {
             )}
 
           {groups &&
-            groups.find(
-              grp =>
-                grp.id.toString() === selectedGroup &&
-                grp.group === 'Trabalhadores da construção civil'
-            ) && (
+            (/trabalhadores/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) ||
+              /caminhoneiros/i.test(
+                groups.find(grp => grp.id.toString() === selectedGroup)
+                  ?.group as string
+              ) ||
+              groups.find(
+                grp =>
+                  grp.id.toString() === selectedGroup &&
+                  grp.group === 'Forças de Segurança e Salvamento'
+              )) && (
               <AttachmentField
                 ref={inputWorkContractRef}
                 field={workContract}
                 setField={setWorkContract}
                 refClick={() => inputWorkContractRef.current?.click()}
-                fieldName="Contracheque ou Declaração do Local de Trabalho"
+                fieldName="Contracheque ou Contrato de Trabalho"
                 mandatory
               />
             )}

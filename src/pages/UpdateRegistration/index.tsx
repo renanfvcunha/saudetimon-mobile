@@ -61,7 +61,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const [preNatalCard, setPreNatalCard] = useState<IAttachment>();
   const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
   const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
-  const [patientContract, setPatientContract] = useState<IAttachment>();
   const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
@@ -111,9 +110,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
         break;
       case 9:
         setBornAliveDec({ uri, name: String(fileName), type });
-        break;
-      case 10:
-        setPatientContract({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -191,8 +187,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
           workContract,
           preNatalCard,
           puerperalCard,
-          bornAliveDec,
-          patientContract
+          bornAliveDec
         );
 
         Alert.alert('', msg);
@@ -605,12 +600,12 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 </>
               )}
 
-              {group === 'Profissionais da área da saúde' && (
+              {/saúde/i.test(group) && (
                 <AttachmentField
-                  field={patientContract}
-                  setField={setPatientContract}
-                  fieldNumber={10}
-                  fieldName="Contrato com Paciente ou Declaração Autenticada em Cartório"
+                  field={workContract}
+                  setField={setWorkContract}
+                  fieldNumber={6}
+                  fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
                   mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
@@ -670,7 +665,9 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 />
               )}
 
-              {group === 'Trabalhadores da construção civil' && (
+              {(/trabalhadores/i.test(group) ||
+                /caminhoneiros/i.test(group) ||
+                group === 'Forças de Segurança e Salvamento') && (
                 <AttachmentField
                   field={workContract}
                   setField={setWorkContract}
