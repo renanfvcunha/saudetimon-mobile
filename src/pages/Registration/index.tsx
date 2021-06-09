@@ -704,16 +704,24 @@ const Registration: React.FC = () => {
                   )}
 
                 {groups &&
-                  groups.find(
-                    grp =>
-                      grp.id.toString() === selectedGroup &&
-                      grp.group === 'Trabalhadores da construção civil'
-                  ) && (
+                  (/trabalhadores/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) ||
+                    /caminhoneiros/i.test(
+                      groups.find(grp => grp.id.toString() === selectedGroup)
+                        ?.group as string
+                    ) ||
+                    groups.find(
+                      grp =>
+                        grp.id.toString() === selectedGroup &&
+                        grp.group === 'Forças de Segurança e Salvamento'
+                    )) && (
                     <AttachmentField
                       field={workContract}
                       setField={setWorkContract}
                       fieldNumber={10}
-                      fieldName="Contracheque ou Declaração do Local de Trabalho"
+                      fieldName="Contracheque ou Contrato de Trabalho"
                       mandatory
                       pickDocument={pickDocument}
                       pickImageFromGallery={pickImageFromGallery}
