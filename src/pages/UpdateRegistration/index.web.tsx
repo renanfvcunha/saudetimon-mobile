@@ -56,6 +56,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const inputPreNatalCardRef = createRef<HTMLInputElement>();
   const inputPuerperalCardRef = createRef<HTMLInputElement>();
   const inputBornAliveDecRef = createRef<HTMLInputElement>();
+  const inputAuxDocRef = createRef<HTMLInputElement>();
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
   const [idDocFront, setIdDocFront] = useState<File>();
@@ -68,6 +69,8 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const [preNatalCard, setPreNatalCard] = useState<File>();
   const [puerperalCard, setPuerperalCard] = useState<File>();
   const [bornAliveDec, setBornAliveDec] = useState<File>();
+  const [auxDoc, setAuxDoc] = useState<File>();
+
   const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
@@ -107,7 +110,8 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
           workContract,
           preNatalCard,
           puerperalCard,
-          bornAliveDec
+          bornAliveDec,
+          auxDoc
         );
 
         swAlert('success', '', msg);
@@ -612,6 +616,25 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   fieldName="Contracheque ou Declaração do Local de Trabalho"
                 />
               )}
+
+              {/deficientes/i.test(group) && (
+                <AttachmentField
+                  ref={inputMedicalReportRef}
+                  field={medicalReport}
+                  setField={setMedicalReport}
+                  refClick={() => inputMedicalReportRef.current?.click()}
+                  fieldName="Laudo Médico"
+                  mandatory
+                />
+              )}
+
+              <AttachmentField
+                ref={inputAuxDocRef}
+                field={auxDoc}
+                setField={setAuxDoc}
+                refClick={() => inputAuxDocRef.current?.click()}
+                fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+              />
             </View>
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

@@ -61,6 +61,8 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
   const [preNatalCard, setPreNatalCard] = useState<IAttachment>();
   const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
   const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
+  const [auxDoc, setAuxDoc] = useState<IAttachment>();
+
   const [loading, setLoading] = useState(false);
   const [editableFields, setEditableFields] = useState({
     name: false,
@@ -110,6 +112,9 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
         break;
       case 9:
         setBornAliveDec({ uri, name: String(fileName), type });
+        break;
+      case 10:
+        setAuxDoc({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -187,7 +192,8 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
           workContract,
           preNatalCard,
           puerperalCard,
-          bornAliveDec
+          bornAliveDec,
+          auxDoc
         );
 
         Alert.alert('', msg);
@@ -679,6 +685,29 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   pickImageFromCamera={pickImageFromCamera}
                 />
               )}
+
+              {/deficientes/i.test(group) && (
+                <AttachmentField
+                  field={medicalReport}
+                  setField={setMedicalReport}
+                  fieldNumber={4}
+                  fieldName="Laudo Médico"
+                  mandatory
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
+              )}
+
+              <AttachmentField
+                field={auxDoc}
+                setField={setAuxDoc}
+                fieldNumber={10}
+                fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+                pickDocument={pickDocument}
+                pickImageFromGallery={pickImageFromGallery}
+                pickImageFromCamera={pickImageFromCamera}
+              />
             </View>
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

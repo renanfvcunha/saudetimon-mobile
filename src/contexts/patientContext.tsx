@@ -26,7 +26,7 @@ interface PatientContextData {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File
+    auxDoc?: IAttachment | File
   ) => Promise<string>;
   updatePatientCall: (
     id: string,
@@ -41,7 +41,7 @@ interface PatientContextData {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File
+    auxDoc?: IAttachment | File
   ) => Promise<string>;
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
@@ -72,7 +72,7 @@ export const PatientProvider: React.FC = ({ children }) => {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File
+    auxDoc?: IAttachment | File
   ) => {
     setUploadProgress(0);
 
@@ -126,8 +126,8 @@ export const PatientProvider: React.FC = ({ children }) => {
     if (bornAliveDec) {
       data.append('bornAliveDec', bornAliveDec as Blob);
     }
-    if (patientContract) {
-      data.append('patientContract', patientContract as Blob);
+    if (auxDoc) {
+      data.append('auxDoc', auxDoc as Blob);
     }
 
     const response: AxiosResponse<{ msg: string }> = await api.post(
@@ -159,7 +159,7 @@ export const PatientProvider: React.FC = ({ children }) => {
     prenatalCard?: IAttachment | File,
     puerperalCard?: IAttachment | File,
     bornAliveDec?: IAttachment | File,
-    patientContract?: IAttachment | File
+    auxDoc?: IAttachment | File
   ) => {
     setUploadProgress(0);
 
@@ -207,8 +207,8 @@ export const PatientProvider: React.FC = ({ children }) => {
     if (bornAliveDec) {
       data.append('bornAliveDec', bornAliveDec as Blob);
     }
-    if (patientContract) {
-      data.append('patientContract', patientContract as Blob);
+    if (auxDoc) {
+      data.append('auxDoc', auxDoc as Blob);
     }
 
     const response: AxiosResponse<{ msg: string }> = await api.put(

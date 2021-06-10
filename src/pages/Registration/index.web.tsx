@@ -43,6 +43,7 @@ const Registration: React.FC = () => {
   const inputPuerperalCardRef = createRef<HTMLInputElement>();
   const inputBornAliveDecRef = createRef<HTMLInputElement>();
   const inputWorkContractRef = createRef<HTMLInputElement>();
+  const inputAuxDocRef = createRef<HTMLInputElement>();
 
   const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
@@ -57,6 +58,7 @@ const Registration: React.FC = () => {
   const [puerperalCard, setPuerperalCard] = useState<File>();
   const [bornAliveDec, setBornAliveDec] = useState<File>();
   const [workContract, setWorkContract] = useState<File>();
+  const [auxDoc, setAuxDoc] = useState<File>();
 
   const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
@@ -96,7 +98,8 @@ const Registration: React.FC = () => {
         workContract,
         preNatalCard,
         puerperalCard,
-        bornAliveDec
+        bornAliveDec,
+        auxDoc
       );
 
       swAlert('success', '', msg);
@@ -590,6 +593,29 @@ const Registration: React.FC = () => {
                 mandatory
               />
             )}
+
+          {groups &&
+            /deficientes/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
+              <AttachmentField
+                ref={inputMedicalReportRef}
+                field={medicalReport}
+                setField={setMedicalReport}
+                refClick={() => inputMedicalReportRef.current?.click()}
+                fieldName="Laudo Médico"
+                mandatory
+              />
+            )}
+
+          <AttachmentField
+            ref={inputAuxDocRef}
+            field={auxDoc}
+            setField={setAuxDoc}
+            refClick={() => inputAuxDocRef.current?.click()}
+            fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+          />
         </View>
 
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

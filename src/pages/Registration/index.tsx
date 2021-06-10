@@ -57,6 +57,7 @@ const Registration: React.FC = () => {
   const [puerperalCard, setPuerperalCard] = useState<IAttachment>();
   const [bornAliveDec, setBornAliveDec] = useState<IAttachment>();
   const [workContract, setWorkContract] = useState<IAttachment>();
+  const [auxDoc, setAuxDoc] = useState<IAttachment>();
 
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<IGroup[]>();
@@ -109,6 +110,9 @@ const Registration: React.FC = () => {
         break;
       case 9:
         setWorkContract({ uri, name: String(fileName), type });
+        break;
+      case 10:
+        setAuxDoc({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -193,7 +197,8 @@ const Registration: React.FC = () => {
         workContract,
         preNatalCard,
         puerperalCard,
-        bornAliveDec
+        bornAliveDec,
+        auxDoc
       );
 
       Alert.alert('', msg);
@@ -726,6 +731,33 @@ const Registration: React.FC = () => {
                       pickImageFromCamera={pickImageFromCamera}
                     />
                   )}
+
+                {groups &&
+                  /deficientes/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
+                    <AttachmentField
+                      field={medicalReport}
+                      setField={setMedicalReport}
+                      fieldNumber={4}
+                      fieldName="Laudo Médico"
+                      mandatory
+                      pickDocument={pickDocument}
+                      pickImageFromGallery={pickImageFromGallery}
+                      pickImageFromCamera={pickImageFromCamera}
+                    />
+                  )}
+
+                <AttachmentField
+                  field={auxDoc}
+                  setField={setAuxDoc}
+                  fieldNumber={10}
+                  fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
               </View>
 
               <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>
