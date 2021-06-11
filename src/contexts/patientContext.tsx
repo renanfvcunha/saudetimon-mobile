@@ -46,7 +46,7 @@ interface PatientContextData {
   getComorbiditiesCall: () => Promise<IComorbidity[]>;
   getStatusCall: (cpf: string) => Promise<IStatus>;
   getPatientCall: (cpf: string) => Promise<IPatient>;
-  getGroupsCall: (idCategory: string) => Promise<IGroup[]>;
+  getGroupsCall: (idCategory: string, orderBy?: string) => Promise<IGroup[]>;
 }
 
 const PatientContext = createContext<PatientContextData>(
@@ -227,9 +227,9 @@ export const PatientProvider: React.FC = ({ children }) => {
     return response.data.msg;
   };
 
-  const getGroupsCall = async (idCategory: string) => {
+  const getGroupsCall = async (idCategory: string, orderBy?: string) => {
     const response: AxiosResponse<IGroup[]> = await api.get(
-      `/groups?idCategory=${idCategory}`
+      `/groups?idCategory=${idCategory}&orderBy=${orderBy}`
     );
 
     return response.data;

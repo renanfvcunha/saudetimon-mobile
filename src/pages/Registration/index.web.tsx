@@ -117,7 +117,7 @@ const Registration: React.FC = () => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const data = await getGroupsCall('3');
+        const data = await getGroupsCall('3', 'group');
 
         setGroups(data);
         setSelectedGroup(data[0].id.toString());
@@ -511,25 +511,6 @@ const Registration: React.FC = () => {
             )}
 
           {groups &&
-            /estagiário/i.test(
-              groups.find(grp => grp.id.toString() === selectedGroup)
-                ?.group as string
-            ) &&
-            !/saúde/i.test(
-              groups.find(grp => grp.id.toString() === selectedGroup)
-                ?.group as string
-            ) && (
-              <AttachmentField
-                ref={inputWorkContractRef}
-                field={workContract}
-                setField={setWorkContract}
-                refClick={() => inputWorkContractRef.current?.click()}
-                fieldName="Declaração de Estágio Informando Atividade Exercida"
-                mandatory
-              />
-            )}
-
-          {groups &&
             /lactante/i.test(
               groups.find(grp => grp.id.toString() === selectedGroup)
                 ?.group as string
@@ -579,17 +560,25 @@ const Registration: React.FC = () => {
                 groups.find(grp => grp.id.toString() === selectedGroup)
                   ?.group as string
               ) ||
+              /estagiários/i.test(
+                groups.find(grp => grp.id.toString() === selectedGroup)
+                  ?.group as string
+              ) ||
               groups.find(
                 grp =>
                   grp.id.toString() === selectedGroup &&
                   grp.group === 'Forças de Segurança e Salvamento'
-              )) && (
+              )) &&
+            !/saúde/i.test(
+              groups.find(grp => grp.id.toString() === selectedGroup)
+                ?.group as string
+            ) && (
               <AttachmentField
                 ref={inputWorkContractRef}
                 field={workContract}
                 setField={setWorkContract}
                 refClick={() => inputWorkContractRef.current?.click()}
-                fieldName="Contracheque ou Contrato de Trabalho"
+                fieldName="Contracheque ou Contrato de Trabalho / Declaração do local de estágio informando atividade exercida"
                 mandatory
               />
             )}

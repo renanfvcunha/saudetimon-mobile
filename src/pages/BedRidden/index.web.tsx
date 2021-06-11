@@ -100,7 +100,7 @@ const BedRidden: React.FC = () => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const data = await getGroupsCall('1');
+        const data = await getGroupsCall('1', 'group');
 
         setGroups(data);
         setSelectedGroup(data[0].id.toString());

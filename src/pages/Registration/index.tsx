@@ -216,7 +216,7 @@ const Registration: React.FC = () => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const data = await getGroupsCall('3');
+        const data = await getGroupsCall('3', 'group');
 
         setGroups(data);
         if (selectedGroup === '') setSelectedGroup(data[0].id.toString());
@@ -630,28 +630,7 @@ const Registration: React.FC = () => {
                       field={workContract}
                       setField={setWorkContract}
                       fieldNumber={9}
-                      fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
-                      mandatory
-                      pickDocument={pickDocument}
-                      pickImageFromGallery={pickImageFromGallery}
-                      pickImageFromCamera={pickImageFromCamera}
-                    />
-                  )}
-
-                {groups &&
-                  /estagiário/i.test(
-                    groups.find(grp => grp.id.toString() === selectedGroup)
-                      ?.group as string
-                  ) &&
-                  !/saúde/i.test(
-                    groups.find(grp => grp.id.toString() === selectedGroup)
-                      ?.group as string
-                  ) && (
-                    <AttachmentField
-                      field={workContract}
-                      setField={setWorkContract}
-                      fieldNumber={9}
-                      fieldName="Declaração de Estágio Informando Atividade Exercida"
+                      fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio informando atividade exercida"
                       mandatory
                       pickDocument={pickDocument}
                       pickImageFromGallery={pickImageFromGallery}
@@ -715,16 +694,24 @@ const Registration: React.FC = () => {
                       groups.find(grp => grp.id.toString() === selectedGroup)
                         ?.group as string
                     ) ||
+                    /estagiários/i.test(
+                      groups.find(grp => grp.id.toString() === selectedGroup)
+                        ?.group as string
+                    ) ||
                     groups.find(
                       grp =>
                         grp.id.toString() === selectedGroup &&
                         grp.group === 'Forças de Segurança e Salvamento'
-                    )) && (
+                    )) &&
+                  !/saúde/i.test(
+                    groups.find(grp => grp.id.toString() === selectedGroup)
+                      ?.group as string
+                  ) && (
                     <AttachmentField
                       field={workContract}
                       setField={setWorkContract}
                       fieldNumber={9}
-                      fieldName="Contracheque ou Contrato de Trabalho"
+                      fieldName="Contracheque ou Contrato de Trabalho / Declaração do local de estágio informando atividade exercida"
                       mandatory
                       pickDocument={pickDocument}
                       pickImageFromGallery={pickImageFromGallery}

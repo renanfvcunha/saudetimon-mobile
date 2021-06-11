@@ -564,16 +564,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 />
               )}
 
-              {/estagiário/i.test(group) && (
-                <AttachmentField
-                  ref={inputWorkContractRef}
-                  field={workContract}
-                  setField={setWorkContract}
-                  refClick={() => inputWorkContractRef.current?.click()}
-                  fieldName="Declaração de Estágio Informando Atividade Exercida"
-                />
-              )}
-
               {/lactante/i.test(group) && (
                 <>
                   <AttachmentField
@@ -607,15 +597,17 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
 
               {(/trabalhadores/i.test(group) ||
                 /caminhoneiros/i.test(group) ||
-                group === 'Forças de Segurança e Salvamento') && (
-                <AttachmentField
-                  ref={inputWorkContractRef}
-                  field={workContract}
-                  setField={setWorkContract}
-                  refClick={() => inputWorkContractRef.current?.click()}
-                  fieldName="Contracheque ou Declaração do Local de Trabalho"
-                />
-              )}
+                /estagiários/i.test(group) ||
+                group === 'Forças de Segurança e Salvamento') &&
+                !/saúde/i.test(group) && (
+                  <AttachmentField
+                    ref={inputWorkContractRef}
+                    field={workContract}
+                    setField={setWorkContract}
+                    refClick={() => inputWorkContractRef.current?.click()}
+                    fieldName="Contracheque ou Declaração do Local de Trabalho"
+                  />
+                )}
 
               {/deficientes/i.test(group) && (
                 <AttachmentField
@@ -624,7 +616,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setMedicalReport}
                   refClick={() => inputMedicalReportRef.current?.click()}
                   fieldName="Laudo Médico"
-                  mandatory
                 />
               )}
 

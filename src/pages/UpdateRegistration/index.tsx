@@ -559,7 +559,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setMedicalAuthorization}
                   fieldNumber={5}
                   fieldName="Autorização Médica"
-                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
@@ -572,7 +571,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setPreNatalCard}
                   fieldNumber={7}
                   fieldName="Cartão de Pré Natal"
-                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
@@ -587,7 +585,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     setField={setPuerperalCard}
                     fieldNumber={8}
                     fieldName="Cartão de Puérperas"
-                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -598,7 +595,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     setField={setBornAliveDec}
                     fieldNumber={9}
                     fieldName="Declaração de Nascido Vivo"
-                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -612,20 +608,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setWorkContract}
                   fieldNumber={6}
                   fieldName="Contracheque ou Declaração de profissional autônomo autenticada em cartório / Declaração do local de estágio"
-                  mandatory
-                  pickDocument={pickDocument}
-                  pickImageFromGallery={pickImageFromGallery}
-                  pickImageFromCamera={pickImageFromCamera}
-                />
-              )}
-
-              {/estagiário/i.test(group) && (
-                <AttachmentField
-                  field={workContract}
-                  setField={setWorkContract}
-                  fieldNumber={6}
-                  fieldName="Declaração de Estágio Informando Atividade Exercida"
-                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
@@ -639,7 +621,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     setField={setMedicalReport}
                     fieldNumber={4}
                     fieldName="Declaração Médica de Bebê Amamentando"
-                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -650,7 +631,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     setField={setMedicalAuthorization}
                     fieldNumber={5}
                     fieldName="Autorização Médica"
-                    mandatory
                     pickDocument={pickDocument}
                     pickImageFromGallery={pickImageFromGallery}
                     pickImageFromCamera={pickImageFromCamera}
@@ -664,7 +644,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setWorkContract}
                   fieldNumber={6}
                   fieldName="Declaração da Empresa Prestadora dos Serviços"
-                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
@@ -673,18 +652,19 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
 
               {(/trabalhadores/i.test(group) ||
                 /caminhoneiros/i.test(group) ||
-                group === 'Forças de Segurança e Salvamento') && (
-                <AttachmentField
-                  field={workContract}
-                  setField={setWorkContract}
-                  fieldNumber={6}
-                  fieldName="Contracheque ou Declaração do Local de Trabalho"
-                  mandatory
-                  pickDocument={pickDocument}
-                  pickImageFromGallery={pickImageFromGallery}
-                  pickImageFromCamera={pickImageFromCamera}
-                />
-              )}
+                /estagiários/i.test(group) ||
+                group === 'Forças de Segurança e Salvamento') &&
+                !/saúde/i.test(group) && (
+                  <AttachmentField
+                    field={workContract}
+                    setField={setWorkContract}
+                    fieldNumber={6}
+                    fieldName="Contracheque ou Contrato de Trabalho / Declaração do local de estágio informando atividade exercida"
+                    pickDocument={pickDocument}
+                    pickImageFromGallery={pickImageFromGallery}
+                    pickImageFromCamera={pickImageFromCamera}
+                  />
+                )}
 
               {/deficientes/i.test(group) && (
                 <AttachmentField
@@ -692,7 +672,6 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                   setField={setMedicalReport}
                   fieldNumber={4}
                   fieldName="Laudo Médico"
-                  mandatory
                   pickDocument={pickDocument}
                   pickImageFromGallery={pickImageFromGallery}
                   pickImageFromCamera={pickImageFromCamera}
