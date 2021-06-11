@@ -7,6 +7,8 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Platform,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,9 +19,23 @@ import bedridden from '../../images/bedridden.png';
 import registration from '../../images/registration.png';
 import check from '../../images/check.png';
 import vacLoc from '../../images/vacLoc.png';
+import swAlert from '../../utils/alert';
 
 const Menu: React.FC = () => {
   const { navigate, goBack } = useNavigation();
+
+  const noRegistration = () => {
+    if (Platform.OS === 'web') {
+      return swAlert(
+        'warning',
+        '',
+        'Cadastro Temporariamente Indisponível',
+        'Ok',
+        false
+      );
+    }
+    return Alert.alert('', 'Cadastro Temporariamente Indisponível');
+  };
 
   return (
     <>
@@ -42,7 +58,8 @@ const Menu: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigate('BedRidden')}
+                // onPress={() => navigate('BedRidden')}
+                onPress={noRegistration}
               >
                 <Image source={bedridden} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
@@ -70,7 +87,8 @@ const Menu: React.FC = () => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.5}
-                onPress={() => navigate('Registration')}
+                // onPress={() => navigate('Registration')}
+                onPress={noRegistration}
               >
                 <Image source={registration} style={styles.itemImg} />
                 <View style={styles.itemTexts}>
