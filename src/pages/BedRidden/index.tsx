@@ -44,6 +44,7 @@ const BedRidden: React.FC = () => {
   } = useContext(PatientContext);
 
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
+
   const [idDocFront, setIdDocFront] = useState<IAttachment>();
   const [idDocVerse, setIdDocVerse] = useState<IAttachment>();
   const [cpf, setCpf] = useState<IAttachment>();
@@ -52,6 +53,8 @@ const BedRidden: React.FC = () => {
   const [medicalAuthorization, setMedicalAuthorization] = useState<
     IAttachment
   >();
+  const [auxDoc, setAuxDoc] = useState<IAttachment>();
+
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<IGroup[]>();
   const [comorbidities, setComorbidities] = useState<IComorbidity[]>();
@@ -91,6 +94,9 @@ const BedRidden: React.FC = () => {
         break;
       case 5:
         setMedicalAuthorization({ uri, name: String(fileName), type });
+        break;
+      case 6:
+        setAuxDoc({ uri, name: String(fileName), type });
         break;
       default:
         break;
@@ -171,7 +177,12 @@ const BedRidden: React.FC = () => {
         cpf,
         addressProof,
         medicalReport,
-        medicalAuthorization
+        medicalAuthorization,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        auxDoc
       );
 
       Alert.alert('', msg);
@@ -538,6 +549,16 @@ const BedRidden: React.FC = () => {
                     pickImageFromCamera={pickImageFromCamera}
                   />
                 )}
+
+                <AttachmentField
+                  field={auxDoc}
+                  setField={setAuxDoc}
+                  fieldNumber={6}
+                  fieldName="Documentação Auxiliar (Certidão de Casamento, Contrato de Aluguel, etc.)"
+                  pickDocument={pickDocument}
+                  pickImageFromGallery={pickImageFromGallery}
+                  pickImageFromCamera={pickImageFromCamera}
+                />
               </View>
 
               <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

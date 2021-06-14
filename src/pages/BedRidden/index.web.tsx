@@ -39,15 +39,19 @@ const BedRidden: React.FC = () => {
   const inputAddressProofRef = createRef<HTMLInputElement>();
   const inputMedicalReportRef = createRef<HTMLInputElement>();
   const inputMedicalAuthorizationRef = createRef<HTMLInputElement>();
+  const inputAuxDocRef = createRef<HTMLInputElement>();
 
   const [selectedGroup, setSelectedGroup] = useState('');
   const [patient, setPatient] = useState<IPatient>({} as IPatient);
+
   const [idDocFront, setIdDocFront] = useState<File>();
   const [idDocVerse, setIdDocVerse] = useState<File>();
   const [cpf, setCpf] = useState<File>();
   const [addressProof, setAddressProof] = useState<File>();
   const [medicalReport, setMedicalReport] = useState<File>();
   const [medicalAuthorization, setMedicalAuthorization] = useState<File>();
+  const [auxDoc, setAuxDoc] = useState<File>();
+
   const [groups, setGroups] = useState<IGroup[]>();
   const [loading, setLoading] = useState(false);
   const [renOncImun, setRenOncImun] = useState('0');
@@ -82,7 +86,12 @@ const BedRidden: React.FC = () => {
         cpf,
         addressProof,
         medicalReport,
-        medicalAuthorization
+        medicalAuthorization,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        auxDoc
       );
 
       swAlert('success', '', msg);
@@ -434,6 +443,14 @@ const BedRidden: React.FC = () => {
               mandatory
             />
           )}
+
+          <AttachmentField
+            ref={inputAuxDocRef}
+            field={auxDoc}
+            setField={setAuxDoc}
+            refClick={() => inputAuxDocRef.current?.click()}
+            fieldName="Documentação Auxiliar (Certidão de Casamento, Contrato de Aluguel, etc.)"
+          />
         </View>
 
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit}>

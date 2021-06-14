@@ -682,7 +682,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                 field={auxDoc}
                 setField={setAuxDoc}
                 fieldNumber={10}
-                fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+                fieldName="Documentação Auxiliar (Certidão de Casamento, Contrato de Aluguel, etc.)"
                 pickDocument={pickDocument}
                 pickImageFromGallery={pickImageFromGallery}
                 pickImageFromCamera={pickImageFromCamera}

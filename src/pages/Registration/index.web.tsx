@@ -603,7 +603,7 @@ const Registration: React.FC = () => {
             field={auxDoc}
             setField={setAuxDoc}
             refClick={() => inputAuxDocRef.current?.click()}
-            fieldName="Documentação Auxiliar (Certidão de Casamento, etc.)"
+            fieldName="Documentação Auxiliar (Certidão de Casamento, Contrato de Aluguel, etc.)"
           />
         </View>
 
