@@ -605,7 +605,7 @@ const UpdateRegistration: React.FC<Props> = ({ route }) => {
                     field={workContract}
                     setField={setWorkContract}
                     refClick={() => inputWorkContractRef.current?.click()}
-                    fieldName="Contracheque ou Declaração do Local de Trabalho"
+                    fieldName="Contracheque ou Contrato de Trabalho / Declaração do local de estágio informando atividade exercida"
                   />
                 )}
 
